@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_riwayat_tpp', function (Blueprint $table) {
+        Schema::create('tb_unit_kerja', function (Blueprint $table) {
             $table->id();
+            $table->string("nama_unit");
+            $table->string("alamat");
             $table->timestamps();
         });
     }
@@ -22,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_riwayat_tpp');
+        Schema::dropIfExists('tb_unit_kerja');
     }
 };

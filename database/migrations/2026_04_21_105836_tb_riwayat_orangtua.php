@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_riwayat_keluarga_anak', function (Blueprint $table) {
+        Schema::create('tb_riwayat_orangtua', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pegawai_id')->references('id')->on('tb_pegawai');
             $table->string("nik");
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
             $table->enum('pendidikan', ['SD', 'SLTP', 'SLTA', 'D3', 'S1', 'S2', 'S3']);
             $table->string("pekerjaan");
-            $table->enum('status_hubungan', ['Anak Kandung', 'Anak Angkat']);
+            $table->enum('status_hubungan', ['Ayah Kandung', 'Ibu Kandung']);
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_riwayat_keluarga_anak');
+        Schema::dropIfExists('tb_riwayat_orangtua');
     }
 };

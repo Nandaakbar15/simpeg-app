@@ -13,8 +13,7 @@ return new class extends Migration
     {
         Schema::create('tb_riwayat_keluarga_suami_istri', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('pegawai_id');
-            $table->foreignId('id')->references('id')->on('tb_pegawai');
+            $table->foreignId('pegawai_id')->references('id')->on('tb_pegawai');
             $table->string("no_ktp_nik");
             $table->string("nama");
             $table->date('tgl_lahir');

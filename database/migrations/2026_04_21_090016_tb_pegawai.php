@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('tb_pegawai', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
             $table->foreignId('user_id')->references('id')->on('users')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('unit_kerja_id')->references('id')->on('tb_unit_kerja');
             $table->string("foto");
             $table->string("nip");
             $table->string("nama");
