@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserPegawaiController extends Controller
 {
@@ -24,7 +27,7 @@ class UserPegawaiController extends Controller
      */
     public function create()
     {
-        //
+        return view("pages.dashboard.manajemen_setup.userPegawai.tambah_user_pegawai");
     }
 
     /**
@@ -32,7 +35,32 @@ class UserPegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'username' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $validateData['password'] = bcrypt($validateData['password']);
+            $validateData['role'] = 'pegawai';
+
+            User::create($validateData);
+
+            DB::commit();
+
+            return redirect('/manajemen_setup/data_user_pegawai')->with('success', 'Berhasil menambahkan akun!');
+
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal membuat akun : " . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string("tmpt_lahir");
             $table->date('tgl_lahir');
             $table->enum('jenis_kelamin', ['laki-laki', 'perempuan']);
-            $table->enum('agama', ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Buddha']);
+            $table->enum('agama', ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Buddha', 'Kong Hu Cu']);
             $table->enum('golongan_darah', ['A', 'AB', 'B', 'O', 'Tidak Tahu']);
             $table->enum('status_pernikahan', ['Nikah', 'Belum Nikah', 'Cerai Mati', 'Cerai Hidup']);
             $table->string("alamat");

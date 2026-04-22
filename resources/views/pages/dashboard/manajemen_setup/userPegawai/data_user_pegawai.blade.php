@@ -10,6 +10,17 @@
 
         </div>
 
+        <div class="mb-6">
+            <a href="/manajemen_setup/view_form_tambah_user_pegawai"
+                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                    <path
+                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                </svg>
+                <span class="hidden xs:block ml-2">Tambah Data User Pegawai</span>
+            </a>
+        </div>
+
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm text-left rtl:text-right text-body">
@@ -49,17 +60,17 @@
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                    <div class="text-left">
+                                    <div class="text-center">
                                         {{ $data->role }}
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
-                                        <a href="/manajemen_setup/view_edit_user_admin/{{ $data->id }}"
+                                        <a href="/manajemen_setup/view_edit_user_pegawai/{{ $data->id }}"
                                             class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
                                             Edit
                                         </a>
-                                        <form action="/manajemen_setup/delete_user_admin/{{ $data->id }}"
+                                        <form action="/manajemen_setup/delete_user_pegawai/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

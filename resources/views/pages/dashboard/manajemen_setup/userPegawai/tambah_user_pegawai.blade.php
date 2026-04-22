@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data user admin
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data user pegawai
                 </h1>
             </div>
 
@@ -14,7 +14,16 @@
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
-                <form action="/manajemen_setup/tambah_user_admin" method="POST">
+                @if ($errors->any())
+                    <div class="bg-red-500 text-white p-4 mb-5">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+                <form action="/manajemen_setup/tambah_user_pegawai" method="POST">
                     @csrf
                     <div class="mb-5">
                         <label for="username" class="block mb-2.5 text-sm font-medium text-heading">Username</label>
@@ -46,7 +55,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/manajemen_setup/data_user_admin"
+                <a href="/manajemen_setup/data_user_pegawai"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>

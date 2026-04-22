@@ -3,7 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pegawai;
+use App\Models\UnitKerja;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class PegawaiController extends Controller
 {
@@ -12,7 +18,7 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $pegawai = Pegawai::with('unit_kerja');
+        $pegawai = Pegawai::with('unit_kerja')->get();
 
         return view("pages.dashboard.data_pegawai.indexPegawai", [
             "pegawai" => $pegawai
@@ -24,7 +30,10 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        return view("pages.dashboard.tambahPegawai");
+        $unitKerja = UnitKerja::all();
+        return view("pages.dashboard..data_pegawai.tambahPegawai", [
+            'unitKerja' => $unitKerja
+        ]);
     }
 
     /**
@@ -32,7 +41,62 @@ class PegawaiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'nip' => 'required|string',
+            'nama' => 'required|string',
+            'unit_kerja_id' => 'required|exists:tb_unit_kerja,id',
+            'gelar' => 'required|string',
+            'tmpt_lahir' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'gelar' => 'required|string',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'golongan_darah' => 'required',
+            'status_pernikahan' => 'required',
+            'nik' => 'required|string',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string',
+            'email' => 'required|email',
+            'email_gov' => 'required|email',
+            'no_npwp' => 'required|string',
+            'no_bpjs' => 'required|string',
+            'status_kepegawaian' => 'required',
+            'karpeg' => 'required|string',
+            'no_sk_cpns' => 'nullable',
+            'tmt_cpns' => 'required|date',
+            'no_sk_pns' => 'nullable',
+            'tmt_pns' => 'required|date',
+            'gol_awal' => 'required|string',
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nilai_tpp' => 'required'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if($request->has('foto')) {
+                $file = $request->file('foto');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('images', $fileName, 'public');
+                $validateData['foto'] = '/storage/' . $path;
+            }
+
+            $validateData['user_id'] = Auth::id() ?? 1;
+
+            Pegawai::create($validateData);
+
+            DB::commit();
+
+            return redirect('/data_pegawai/pegawai')->with('success', 'Berhasil menambahkan data pegawai!');
+
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal menyimpan data : " . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan sistem!');
+        }
+
     }
 
     /**
@@ -40,7 +104,9 @@ class PegawaiController extends Controller
      */
     public function show(Pegawai $pegawai)
     {
-        //
+        return view("pages.dashboard.data_pegawai.detailPegawai", [
+            'pegawai' => $pegawai
+        ]);
     }
 
     /**
@@ -48,7 +114,11 @@ class PegawaiController extends Controller
      */
     public function edit(Pegawai $pegawai)
     {
-        //
+        $unitKerja = UnitKerja::all();
+        return view("pages.dashboard.data_pegawai.editPegawai", [
+            'pegawai' => $pegawai,
+            'unitKerja' => $unitKerja
+        ]);
     }
 
     /**
@@ -56,7 +126,66 @@ class PegawaiController extends Controller
      */
     public function update(Request $request, Pegawai $pegawai)
     {
-        //
+        $validateData = $request->validate([
+            'nip' => 'required|string',
+            'nama' => 'required|string',
+            'unit_kerja_id' => 'required|exists:tb_unit_kerja,id',
+            'gelar' => 'required|string',
+            'tmpt_lahir' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'gelar' => 'required|string',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'golongan_darah' => 'required',
+            'status_pernikahan' => 'required',
+            'nik' => 'required|string',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string',
+            'email' => 'required|email',
+            'email_gov' => 'required|email',
+            'no_npwp' => 'required|string',
+            'no_bpjs' => 'required|string',
+            'status_kepegawaian' => 'required',
+            'karpeg' => 'required|string',
+            'no_sk_cpns' => 'nullable',
+            'tmt_cpns' => 'required|date',
+            'no_sk_pns' => 'nullable',
+            'tmt_pns' => 'required|date',
+            'gol_awal' => 'required|string',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nilai_tpp' => 'required'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if($request->hasFile('foto')) {
+
+                if($request->gambarLama) {
+                    Storage::disk('public')->delete($request->gambarLama);
+                }
+
+                $file = $request->file('foto');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('images', $fileName, 'public');
+                $validateData['foto'] = '/storage/' . $path;
+            }
+
+            $validateData['user_id'] = Auth::id() ?? 1;
+
+            $pegawai->update($validateData);
+
+
+            DB::commit();
+
+            return redirect('/data_pegawai/pegawai')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal mengubah data : " . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan dengan sistem!');
+        }
     }
 
     /**
@@ -64,6 +193,8 @@ class PegawaiController extends Controller
      */
     public function destroy(Pegawai $pegawai)
     {
-        //
+        $pegawai->delete();
+
+        return redirect('/data_pegawai/pegawai')->with('success', 'Berhasil menghapus data!');
     }
 }

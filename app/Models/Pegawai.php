@@ -12,6 +12,7 @@ class Pegawai extends Model
     protected $primaryKey = 'id';
     protected $fillable = [
         'user_id',
+        'unit_kerja_id',
         'foto',
         'nip',
         'nama',
@@ -31,7 +32,7 @@ class Pegawai extends Model
         'status_kepegawaian',
         'karpeg',
         'no_sk_cpns',
-        'tmt_pns',
+        'tmt_cpns',
         'no_sk_pns',
         'tmt_pns',
         'gol_awal',
@@ -40,12 +41,27 @@ class Pegawai extends Model
 
     public function user()
     {
-        return $this->belongsTo('user_id', User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function unit_kerja()
     {
-        return $this->belongsTo('unit_kerja_id', UnitKerja::class);
+        return $this->belongsTo(UnitKerja::class, 'unit_kerja_id');
+    }
+
+    public function riwayat_keluarga_anak()
+    {
+        return $this->hasOne(RiwayatKeluargaAnak::class, 'id');
+    }
+
+    public function riwayat_keluarga_orangtua()
+    {
+        return $this->hasOne(RiwayatKeluargaOrangtua::class, 'id');
+    }
+
+    public function riwayat_keluarga_suami_istri()
+    {
+        return $this->hasOne(RiwayatKeluargaSuamiIstri::class, 'id');
     }
 
     use HasFactory;

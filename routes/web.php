@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PegawaiController;
+use App\Http\Controllers\RiwayatKeluargaAnakController;
+use App\Http\Controllers\RiwayatKeluargaSuamiIstriController;
 use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Controllers\UserPegawaiController;
@@ -28,7 +30,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/data_pegawai', [PegawaiController::class, 'index']);
+    Route::prefix('data_pegawai')->group(function() {
+        Route::get('/pegawai', [PegawaiController::class, 'index']);
+        Route::get('/view_form_tambah_data_pegawai', [PegawaiController::class, 'create']);
+        Route::post('/tambah_data_pegawai', [PegawaiController::class, 'store']);
+        Route::get('/view_form_edit_data_pegawai/{pegawai}', [PegawaiController::class, 'edit']);
+        Route::put('/ubah_data_pegawai/{pegawai}', [PegawaiController::class, 'update']);
+        Route::delete('/delete_data_pegawai/{pegawai}', [PegawaiController::class, 'destroy']);
+    });
 
     Route::prefix('manajemen_setup')->group(function() {
         Route::get('/instansi_lembaga');
@@ -36,17 +45,38 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/opd_skpd_unitkerja', [UnitKerjaController::class, 'index']);
         Route::get('/view_form_tambah_unitkerja', [UnitKerjaController::class, 'create']);
         Route::post('/opd_skd_unitkerja/tambah_unit_kerja', [UnitKerjaController::class, 'store']);
+
+        // URL buat data user admin
         Route::get('/data_user_admin', [UserAdminController::class, 'index']);
         Route::get('/view_form_tambah_user_admin', [UserAdminController::class, 'create']);
         Route::post('/tambah_user_admin', [UserAdminController::class, 'store']);
         Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
         Route::get('/view_form_edit_user_admin/{user}', [UserAdminController::class, 'edit']);
         Route::put('/edit_data_user_admin', [UserAdminController::class, 'update']);
+
+        // URL buat data user pegawai
+        Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
+        Route::get('/view_form_tambah_user_pegawai', [UserPegawaiController::class, 'create']);
+        Route::get('/view_form_edit_user_pegawai/{user}', [UserPegawaiController::class, 'edit']);
+        Route::post('/tambah_user_pegawai', [UserPegawaiController::class, 'store']);
+        Route::put('/edit_data_user_pegawai', [UserPegawaiController::class, 'update']);
     });
 
     Route::prefix('riwayat_keluarga')->group(function() {
-        Route::get('/suami_istri');
-        Route::get('/anak');
+        // URL Riwayat Keluarga Suami / Istri Pegawai
+        Route::get('/suami_istri', [RiwayatKeluargaSuamiIstriController::class, 'index']);
+        Route::get('/suami_istri/view_form_tambah_suami_istri', [RiwayatKeluargaSuamiIstriController::class, 'create']);
+        Route::post('/suami_istri/tambah_data_suami_istri', [RiwayatKeluargaSuamiIstriController::class, 'store']);
+        Route::get('/suami_istri/view_edit_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'edit']);
+        Route::put('/suami_istri/edit_keluarga_istri', [RiwayatKeluargaSuamiIstriController::class, 'update']);
+
+        // URL Riwayat Keluarga Anak Pegawai
+        Route::get('/anak', [RiwayatKeluargaAnakController::class, 'index']);
+        Route::get('/anak/view_tambah_data_anak', [RiwayatKeluargaAnakController::class, 'create']);
+        Route::post('/anak/tambah_data_anak', [RiwayatKeluargaAnakController::class, 'store']);
+        Route::get('/anak/view_edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'edit']);
+        Route::put('/anak/edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'update']);
+
         Route::get('/orang_tua');
     });
 
