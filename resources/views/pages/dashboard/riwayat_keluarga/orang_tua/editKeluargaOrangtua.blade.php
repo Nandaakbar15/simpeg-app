@@ -6,8 +6,8 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data riwayat
-                    keluarga suami / istri</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form ubah data riwayat
+                    keluarga Orang Tua Pegawai</h1>
             </div>
 
         </div>
@@ -23,30 +23,36 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/riwayat_keluarga/suami_istri/tambah_data_suami_istri" method="POST">
+                <form action="/riwayat_keluarga/orang_tua/edit_data_orang_tua/{{ $riwayatKeluargaOrangTua->id }}"
+                    method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
-                            <option value="">--Pilih Pegawai -- </option>
+                            <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ old('pegawai_id', $riwayatKeluargaOrangTua->pegawai_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="no_ktp_nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK
+                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK
                         </label>
-                        <input type="text" id="no_ktp_nik" name="no_ktp_nik"
+                        <input type="text" id="nik" name="nik"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nik suami / istri" required />
+                            placeholder="Masukan nik Orang Tua" required
+                            value="{{ old('nik', $riwayatKeluargaOrangTua->nik) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama Suami
-                            Istri</label>
+                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama</label>
                         <input type="text" id="nama" name="nama"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nama suami / istri" required />
+                            placeholder="Masukan nama orang tua" required
+                            value="{{ $riwayatKeluargaOrangTua->nama }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tempat_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
@@ -54,37 +60,62 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_lahir" name="tempat_lahir"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan tempat lahir" required />
+                                placeholder="Masukan tempat lahir" required
+                                value="{{ old('tempat_lahir', $riwayatKeluargaOrangTua->tempat_lahir) }}" />
 
                             <input type="date" id="tgl_lahir" name="tgl_lahir"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tgl_lahir', $riwayatKeluargaOrangTua->tgl_lahir) }}" />
                         </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="jenis_kelamin" class="block mb-2.5 text-sm font-medium text-heading">Jenis
+                            kelamin</label>
+                        <select name="jenis_kelamin" id="jenis_kelamin">
+                            <option value="laki-laki"
+                                {{ $riwayatKeluargaOrangTua->jenis_kelamin == 'laki-laki' ? 'selected' : '' }}>Laki-laki
+                            </option>
+                            <option value="perempuan"
+                                {{ $riwayatKeluargaOrangTua->jenis_kelamin == 'perempuan' ? 'selected' : '' }}>
+                                Perempuan</option>
+                        </select>
                     </div>
                     <div class="mb-5">
                         <label for="pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Pendidikan</label>
                         <select name="pendidikan" id="pendidikan">
-                            <option value="SD">SD</option>
-                            <option value="SLTP">SLTP</option>
-                            <option value="SLTA">SLTA</option>
-                            <option value="D3">D3</option>
-                            <option value="S1">S1</option>
-                            <option value="S2">S2</option>
-                            <option value="S3">S3</option>
+                            <option value="SD"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'SD' ? 'selected' : '' }}>SD</option>
+                            <option value="SLTP"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'SLTP' ? 'selected' : '' }}>SLTP</option>
+                            <option value="SLTA"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'SLTA' ? 'selected' : '' }}>SLTA</option>
+                            <option value="D3"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'D3' ? 'selected' : '' }}>D3</option>
+                            <option value="S1"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'S1' ? 'selected' : '' }}>S1</option>
+                            <option value="S2"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'S2' ? 'selected' : '' }}>S2</option>
+                            <option value="S3"
+                                {{ $riwayatKeluargaOrangTua->pendidikan == 'S3' ? 'selected' : '' }}>S3</option>
                         </select>
                     </div>
                     <div class="mb-5">
                         <label for="pekerjaan" class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
                         <input type="text" id="pekerjaan" name="pekerjaan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan Pekerjaan Suami / Istri" required />
+                            placeholder="Masukan Pekerjaan Orang Tua" required
+                            value="{{ old('pekerjaan', $riwayatKeluargaOrangTua->pekerjaan) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="status_hubungan" class="block mb-2.5 text-sm font-medium text-heading">Status
                             Hubungan</label>
                         <select name="status_hubungan" id="status_hubungan">
-                            <option value="Suami">Suami</option>
-                            <option value="Istri">Istri</option>
+                            <option value="Ayah Kandung"
+                                {{ $riwayatKeluargaOrangTua->status_hubungan == 'Ayah Kandung' ? 'selected' : '' }}>
+                                Ayah Kandung</option>
+                            <option value="Ibu Kandung"
+                                {{ $riwayatKeluargaOrangTua->status_hubungan == 'Ibu Kandung' ? 'selected' : '' }}>Ibu
+                                Kandung</option>
                         </select>
                     </div>
                     <button type="submit"
@@ -93,7 +124,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/riwayat_keluarga/suami_istri"
+                <a href="/riwayat_keluarga/orang_tua"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>

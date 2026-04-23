@@ -7,7 +7,7 @@
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
                 <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data riwayat
-                    keluarga suami / istri</h1>
+                    pendidikan lanjut</h1>
             </div>
 
         </div>
@@ -23,7 +23,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/riwayat_keluarga/suami_istri/tambah_data_suami_istri" method="POST">
+                <form action="/riwayat_pendidikan/sekolah_lanjut/tambah_pendidikan_lanjut" method="POST">
                     @csrf
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
@@ -35,56 +35,53 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="no_ktp_nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK
-                        </label>
-                        <input type="text" id="no_ktp_nik" name="no_ktp_nik"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nik suami / istri" required />
-                    </div>
-                    <div class="mb-5">
-                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama Suami
-                            Istri</label>
-                        <input type="text" id="nama" name="nama"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nama suami / istri" required />
-                    </div>
-                    <div class="flex items-center mb-5">
-                        <label for="tempat_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
-                            Lahir</label>
-                        <div class="flex w-3/4 gap-4">
-                            <input type="text" id="tempat_lahir" name="tempat_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan tempat lahir" required />
-
-                            <input type="date" id="tgl_lahir" name="tgl_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
-                        </div>
-                    </div>
-                    <div class="mb-5">
-                        <label for="pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Pendidikan</label>
-                        <select name="pendidikan" id="pendidikan">
+                        <label for="jenjang_pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Jenjang
+                            Pendidikan</label>
+                        <select name="jenjang_pendidikan" id="jenjang_pendidikan">
                             <option value="SD">SD</option>
-                            <option value="SLTP">SLTP</option>
-                            <option value="SLTA">SLTA</option>
+                            <option value="MI">MI</option>
+                            <option value="SMP">SMP</option>
+                            <option value="MTS">MTS</option>
+                            <option value="SMK">SMK</option>
+                            <option value="SMA">SMA</option>
+                            <option value="MA">MA</option>
                             <option value="D3">D3</option>
                             <option value="S1">S1</option>
                             <option value="S2">S2</option>
                             <option value="S3">S3</option>
+                            <option value="Profesi">Profesi</option>
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="pekerjaan" class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
-                        <input type="text" id="pekerjaan" name="pekerjaan"
+                        <label for="nama_sekolah_universitas" class="block mb-2.5 text-sm font-medium text-heading">Nama
+                            Sekolah / Universitas</label>
+                        <input type="text" id="nama_sekolah_universitas" name="nama_sekolah_universitas"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan Pekerjaan Suami / Istri" required />
+                            placeholder="Masukan nama sekolah / universitas" required />
                     </div>
                     <div class="mb-5">
-                        <label for="status_hubungan" class="block mb-2.5 text-sm font-medium text-heading">Status
-                            Hubungan</label>
-                        <select name="status_hubungan" id="status_hubungan">
-                            <option value="Suami">Suami</option>
-                            <option value="Istri">Istri</option>
+                        <label for="jurusan" class="block mb-2.5 text-sm font-medium text-heading">Jurusan</label>
+                        <input type="text" id="jurusan" name="jurusan"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            placeholder="Masukan Jurusan atau Prodi" required />
+                    </div>
+                    <div class="flex items-center mb-5">
+                        <label for="thn_mulai" class="w-1/4 text-sm font-medium text-heading">Periode</label>
+                        <div class="flex w-3/4 gap-4">
+                            <input type="text" id="thn_mulai" name="thn_mulai"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                placeholder="Tahun Mulai" required />
+
+                            <input type="text" id="thn_selesai" name="thn_selesai"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                required placeholder="Tahun Selesai" />
+                        </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="status" class="block mb-2.5 text-sm font-medium text-heading">Status</label>
+                        <select name="status" id="status">
+                            <option value="Tugas Belajar">Tugas Belajar</option>
+                            <option value="Ijin Belajar">Ijin Belajar</option>
                         </select>
                     </div>
                     <button type="submit"
@@ -93,10 +90,9 @@
             </div>
 
             <div class="mt-5">
-                <a href="/riwayat_keluarga/suami_istri"
+                <a href="/riwayat_pendidikan/sekolah_lanjut"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>
-
     </div>
 </x-app-layout>

@@ -6,8 +6,8 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data user admin
-                </h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data riwayat
+                    pendidikan bahasa</h1>
             </div>
 
         </div>
@@ -23,42 +23,46 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/manajemen_setup/tambah_user_admin" method="POST">
+                <form action="/riwayat_pendidikan/pendidikan_bahasa/tambah_data_bahasa" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label for="username" class="block mb-2.5 text-sm font-medium text-heading">Username</label>
-                        <input type="text" id="username" name="username"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan username" required />
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
+                        <select name="pegawai_id" id="pegawai_id">
+                            <option value="">--Pilih Pegawai -- </option>
+                            @foreach ($pegawai as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="mb-5">
-                        <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama User</label>
-                        <input type="text" id="name" name="name"
+                        <label for="jenis_bahasa" class="block mb-2.5 text-sm font-medium text-heading">Jenis
+                            Bahasa</label>
+                        <input type="text" id="jenis_bahasa" name="jenis_bahasa"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan Nama User" required />
+                            placeholder="Masukan jenis Bahasa" required />
                     </div>
                     <div class="mb-5">
-                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
-                        <input type="text" id="email" name="email"
+                        <label for="bahasa" class="block mb-2.5 text-sm font-medium text-heading">Bahasa</label>
+                        <input type="text" id="bahasa" name="bahasa"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan Email User" required />
+                            placeholder="Masukan Bahasa" required />
                     </div>
                     <div class="mb-5">
-                        <label for="password" class="block mb-2.5 text-sm font-medium text-heading">Password</label>
-                        <input type="password" id="password" name="password"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan Password" required />
+                        <label for="kemampuan_bicara" class="block mb-2.5 text-sm font-medium text-heading">Kemampuan
+                            Bahasa</label>
+                        <select name="kemampuan_bicara" id="kemampuan_bicara">
+                            <option value="Aktif">Aktif</option>
+                            <option value="Pasif">Pasif</option>
+                        </select>
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
                 </form>
             </div>
-
             <div class="mt-5">
-                <a href="/manajemen_setup/data_user_admin"
+                <a href="/riwayat_pendidikan/pendidikan_bahasa"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>
-
     </div>
 </x-app-layout>

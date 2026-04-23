@@ -36,7 +36,7 @@ class UserAdminController extends Controller
             'username' => 'required|string',
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users,email',
-            'password' => 'required|string|min:8',
+            'password' => 'required|string',
         ]);
 
         $validateData['password'] = bcrypt($validateData['password']);
@@ -44,7 +44,7 @@ class UserAdminController extends Controller
 
         User::create($validateData);
 
-        return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menamnahkan data user admin!');
+        return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menabahkan data user admin!');
     }
 
     /**

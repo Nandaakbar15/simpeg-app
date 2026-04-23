@@ -13,17 +13,15 @@
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
-                <div class="px-4 sm:px-6 lg:px-8 mt-4">
-                    @if ($errors->any())
-                        <div class="bg-red-500 text-white p-4 mb-5">
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
-                </div>
+                @if ($errors->any())
+                    <div class="bg-red-500 text-white p-4 mb-5">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                 <form action="/data_pegawai/tambah_data_pegawai" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">

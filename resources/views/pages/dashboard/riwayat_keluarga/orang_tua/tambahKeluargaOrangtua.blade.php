@@ -7,7 +7,7 @@
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
                 <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data riwayat
-                    keluarga suami / istri</h1>
+                    keluarga Orang Tua Pegawai</h1>
             </div>
 
         </div>
@@ -23,7 +23,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/riwayat_keluarga/suami_istri/tambah_data_suami_istri" method="POST">
+                <form action="/riwayat_keluarga/orang_tua/tambah_data_orang_tua" method="POST">
                     @csrf
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
@@ -35,18 +35,17 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="no_ktp_nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK
+                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK
                         </label>
-                        <input type="text" id="no_ktp_nik" name="no_ktp_nik"
+                        <input type="text" id="nik" name="nik"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nik suami / istri" required />
+                            placeholder="Masukan nik Orang Tua" required />
                     </div>
                     <div class="mb-5">
-                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama Suami
-                            Istri</label>
+                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama</label>
                         <input type="text" id="nama" name="nama"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nama suami / istri" required />
+                            placeholder="Masukan nama orang tua" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tempat_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
@@ -60,6 +59,14 @@
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required />
                         </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="jenis_kelamin" class="block mb-2.5 text-sm font-medium text-heading">Jenis
+                            kelamin</label>
+                        <select name="jenis_kelamin" id="jenis_kelamin">
+                            <option value="laki-laki">Laki-laki</option>
+                            <option value="perempuan">Perempuan</option>
+                        </select>
                     </div>
                     <div class="mb-5">
                         <label for="pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Pendidikan</label>
@@ -77,14 +84,14 @@
                         <label for="pekerjaan" class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
                         <input type="text" id="pekerjaan" name="pekerjaan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan Pekerjaan Suami / Istri" required />
+                            placeholder="Masukan Pekerjaan Orang Tua" required />
                     </div>
                     <div class="mb-5">
                         <label for="status_hubungan" class="block mb-2.5 text-sm font-medium text-heading">Status
                             Hubungan</label>
                         <select name="status_hubungan" id="status_hubungan">
-                            <option value="Suami">Suami</option>
-                            <option value="Istri">Istri</option>
+                            <option value="Ayah Kandung">Ayah Kandung</option>
+                            <option value="Ibu Kandung">Ibu Kandung</option>
                         </select>
                     </div>
                     <button type="submit"
@@ -93,7 +100,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/riwayat_keluarga/suami_istri"
+                <a href="/riwayat_keluarga/orang_tua"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>

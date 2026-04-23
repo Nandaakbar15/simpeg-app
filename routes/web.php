@@ -3,9 +3,15 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\MasterJabatanController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\RiwayatKeluargaAnakController;
+use App\Http\Controllers\RiwayatKeluargaOrangTuaController;
 use App\Http\Controllers\RiwayatKeluargaSuamiIstriController;
+use App\Http\Controllers\RiwayatPendidikanBahasaController;
+use App\Http\Controllers\RiwayatPendidikanLanjutController;
+use App\Http\Controllers\RiwayatPendidikanSekolahController;
 use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Controllers\UserPegawaiController;
@@ -40,19 +46,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::prefix('manajemen_setup')->group(function() {
-        Route::get('/instansi_lembaga');
-        Route::get('/sekretariat');
-        Route::get('/opd_skpd_unitkerja', [UnitKerjaController::class, 'index']);
-        Route::get('/view_form_tambah_unitkerja', [UnitKerjaController::class, 'create']);
-        Route::post('/opd_skd_unitkerja/tambah_unit_kerja', [UnitKerjaController::class, 'store']);
 
-        // URL buat data user admin
-        Route::get('/data_user_admin', [UserAdminController::class, 'index']);
-        Route::get('/view_form_tambah_user_admin', [UserAdminController::class, 'create']);
-        Route::post('/tambah_user_admin', [UserAdminController::class, 'store']);
-        Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
-        Route::get('/view_form_edit_user_admin/{user}', [UserAdminController::class, 'edit']);
-        Route::put('/edit_data_user_admin', [UserAdminController::class, 'update']);
+        Route::middleware('role:superadmin')->group(function() {
+            Route::get('/instansi_lembaga');
+            Route::get('/sekretariat');
+            Route::get('/opd_skpd_unitkerja', [UnitKerjaController::class, 'index']);
+            Route::get('/view_form_tambah_unitkerja', [UnitKerjaController::class, 'create']);
+            Route::post('/opd_skd_unitkerja/tambah_unit_kerja', [UnitKerjaController::class, 'store']);
+
+             // URL buat data user admin
+            Route::get('/data_user_admin', [UserAdminController::class, 'index']);
+            Route::get('/view_form_tambah_user_admin', [UserAdminController::class, 'create']);
+            Route::post('/tambah_user_admin', [UserAdminController::class, 'store']);
+            Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
+            Route::get('/view_form_edit_user_admin/{user}', [UserAdminController::class, 'edit']);
+            Route::put('/edit_data_user_admin', [UserAdminController::class, 'update']);
+        });
 
         // URL buat data user pegawai
         Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
@@ -60,6 +69,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/view_form_edit_user_pegawai/{user}', [UserPegawaiController::class, 'edit']);
         Route::post('/tambah_user_pegawai', [UserPegawaiController::class, 'store']);
         Route::put('/edit_data_user_pegawai', [UserPegawaiController::class, 'update']);
+        Route::delete('/delete_user_pegawai/{user}', [UserPegawaiController::class, 'destroy']);
     });
 
     Route::prefix('riwayat_keluarga')->group(function() {
@@ -77,17 +87,49 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/anak/view_edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'edit']);
         Route::put('/anak/edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'update']);
 
-        Route::get('/orang_tua');
+        Route::get('/orang_tua', [RiwayatKeluargaOrangTuaController::class, 'index']);
+        Route::get('/orang_tua/view_form_tambah_orang_tua', [RiwayatKeluargaOrangTuaController::class, 'create']);
+        Route::post('/orang_tua/tambah_data_orang_tua', [RiwayatKeluargaOrangTuaController::class, 'store']);
+        Route::get('/orang_tua/view_form_edit_orang_tua/{riwayatKeluargaOrangTua}', [RiwayatKeluargaOrangTuaController::class, 'edit']);
+        Route::put('/orang_tua/edit_data_orang_tua/{riwayatKeluargaOrangTua}', [RiwayatKeluargaOrangTuaController::class, 'update']);
+        Route::delete('/orang_tua/delete_data_orang_tua/{riwayatKeluargaOrangTua}', [RiwayatKeluargaOrangTuaController::class, 'destroy']);
     });
 
     Route::prefix('riwayat_pendidikan')->group(function() {
-        Route::get('/sekolah');
-        Route::get('/sekolah_lanjut');
-        Route::get('/bahasa');
+        // URL Riwayat Pendidikan Sekolah
+        Route::get('/sekolah', [RiwayatPendidikanSekolahController::class, 'index']);
+        Route::get('/sekolah/view_form_tambah_pendidikan_sekolah', [RiwayatPendidikanSekolahController::class, 'create']);
+        Route::post('/sekolah/tambah_pendidikan_sekolah', [RiwayatPendidikanSekolahController::class, 'store']);
+        Route::get('/sekolah/view_form_edit_pendidikan_sekolah/{riwayatPendidikanSekolah}', [RiwayatPendidikanSekolahController::class, 'edit']);
+        Route::put('/sekolah/edit_pendidikan_sekolah/{riwayatPendidikanSekolah}', [RiwayatPendidikanSekolahController::class, 'update']);
+        Route::delete('/sekolah/delete_pendidikan_sekolah/{riwayatPendidikanSekolah}', [RiwayatPendidikanSekolahController::class, 'destroy']);
+
+        // URL Riwayat Pendidikan lanjut
+        Route::get('/sekolah_lanjut', [RiwayatPendidikanLanjutController::class, 'index']);
+        Route::get('/sekolah_lanjut/view_form_tambah_pendidikan_lanjut', [RiwayatPendidikanLanjutController::class, 'create']);
+        Route::post('/sekolah_lanjut/tambah_pendidikan_lanjut', [RiwayatPendidikanLanjutController::class, 'store']);
+        Route::get('/sekolah_lanjut/view_form_edit_pendidikan_lanjut/{riwayatPendidikanLanjut}', [RiwayatPendidikanLanjutController::class, 'edit']);
+        Route::put('/sekolah_lanjut/edit_pendidikan_lanjut/{riwayatPendidikanLanjut}', [RiwayatPendidikanLanjutController::class, 'update']);
+
+
+        // URL Riwayat Pendidikan Bahasa
+        Route::get('/pendidikan_bahasa', [RiwayatPendidikanBahasaController::class, 'index']);
+        Route::get('/pendidikan_bahasa/view_form_tambah_pendidikan_bahasa', [RiwayatPendidikanBahasaController::class, 'create']);
+        Route::post('/pendidikan_bahasa/tambah_data_bahasa', [RiwayatPendidikanBahasaController::class, 'store']);
+        Route::get('/pendidikan_bahasa/view_form_edit_pendidikan_bahasa/{riwayatPendidikanBahasa}', [RiwayatPendidikanBahasaController::class, 'edit']);
+        Route::put('/pendidikan_bahasa/edit_data_bahasa/{riwayatPendidikanBahasa}', [RiwayatPendidikanBahasaController::class, 'update']);
     });
 
     Route::prefix('kepegawaian')->group(function() {
-        Route::get('/jabatan');
+        Route::get('/jabatan', [JabatanController::class, 'index']);
+        Route::get('/jabatan/view_tambah_jabatan', [JabatanController::class, 'create']);
+
+        // URL untuk master data jabatan
+        Route::get('/jabatan/master_data_jabatan', [MasterJabatanController::class, 'index']);
+        Route::get('/jabatan/master_data_jabatan/{masterJabatan}', [MasterJabatanController::class, 'index']);
+        Route::post('/jabatan/tambah_data_master_jabatan', [MasterJabatanController::class, 'store']);
+
+
         Route::get('/pangkat');
         Route::get('/hukuman');
         Route::get('/diklat');

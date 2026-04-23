@@ -11,9 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_jabatan', function (Blueprint $table) {
+        Schema::create('tb_riwayat_pendidikan_bahasa', function (Blueprint $table) {
             $table->id();
-            $table->string("nama_jabatan");
+            $table->foreignId('pegawai_id')->references('id')->on('tb_pegawai');
+            $table->string("jenis_bahasa");
+            $table->string("bahasa");
+            $table->enum('kemampuan_bicara', ['Aktif', 'Pasif']);
             $table->timestamps();
         });
     }
@@ -23,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_jabatan');
+        Schema::dropIfExists('tb_riwayat_pendidikan_bahasa');
     }
 };

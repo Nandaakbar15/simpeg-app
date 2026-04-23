@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\RiwayatKeluargaOrangTua;
 use Illuminate\Http\Request;
+use App\Models\Pegawai;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class RiwayatKeluargaOrangTuaController extends Controller
 {
@@ -12,7 +16,11 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function index()
     {
-        //
+        $riwayatKeluargaOrangTua = RiwayatKeluargaOrangtua::with('pegawai')->paginate(5);
+
+        return view("pages.dashboard.riwayat_keluarga.orang_tua.IndexKeluargaOrangtua", [
+            'riwayatKeluargaOrangTua' => $riwayatKeluargaOrangTua
+        ]);
     }
 
     /**
@@ -20,7 +28,11 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function create()
     {
-        //
+        $pegawai = Pegawai::all();
+
+        return view("pages.dashboard.riwayat_keluarga.orang_tua.tambahKeluargaOrangtua", [
+            'pegawai' => $pegawai
+        ]);
     }
 
     /**
@@ -28,15 +40,33 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'nik' => 'required|string',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'jenis_kelamin' => 'required',
+            'pendidikan' => 'required',
+            'pekerjaan' => 'required',
+            'status_hubungan' => 'required'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(RiwayatKeluargaOrangTua $riwayatKeluargaOrangTua)
-    {
-        //
+        try {
+            DB::beginTransaction();
+
+            RiwayatKeluargaOrangTua::create($validateData);
+
+            DB::commit();
+
+            return redirect("/riwayat_keluarga/orang_tua")->with('success', "Berhasil menambahkan data!");
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal menyimpan data : " . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -44,7 +74,12 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function edit(RiwayatKeluargaOrangTua $riwayatKeluargaOrangTua)
     {
-        //
+        $pegawai = Pegawai::all();
+
+        return view("pages.dashboard.riwayat_keluarga.orang_tua.editKeluargaOrangtua", [
+            "pegawai" => $pegawai,
+            'riwayatKeluargaOrangTua' => $riwayatKeluargaOrangTua
+        ]);
     }
 
     /**
@@ -52,7 +87,33 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function update(Request $request, RiwayatKeluargaOrangTua $riwayatKeluargaOrangTua)
     {
-        //
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'nik' => 'required|string',
+            'nama' => 'required|string',
+            'tempat_lahir' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'jenis_kelamin' => 'required',
+            'pendidikan' => 'required',
+            'pekerjaan' => 'required',
+            'status_hubungan' => 'required'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $riwayatKeluargaOrangTua->update($validateData);
+
+            DB::commit();
+
+            return redirect('/riwayat_keluarga/orang_tua')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal mengubah data : " . $e->getMessage());
+
+            return back()->withInput()->with('error', "Error, terjadi kesalahan pada sistem!");
+        }
     }
 
     /**
@@ -60,6 +121,8 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function destroy(RiwayatKeluargaOrangTua $riwayatKeluargaOrangTua)
     {
-        //
+        $riwayatKeluargaOrangTua->delete();
+
+        return redirect('/riwayat_keluarga/orang_tua')->with('success', 'Berhasil menghapus data!');
     }
 }
