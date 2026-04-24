@@ -15,6 +15,7 @@ use App\Http\Controllers\RiwayatPendidikanSekolahController;
 use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Controllers\UserPegawaiController;
+use App\Http\Controllers\HukumanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -131,7 +132,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
 
         Route::get('/pangkat');
-        Route::get('/hukuman');
+
+        // URL Kepegawaian hukuman
+        Route::get('/hukuman', [HukumanController::class, 'index']);
+        Route::get('/hukuman/view_form_tambah_hukuman', [HukumanController::class, 'create']);
+        Route::post('/hukuman/tambah_data_hukuman', [HukumanController::class, 'store']);
+
         Route::get('/diklat');
         Route::get('/penghargaan');
         Route::get('/penugasanln');
