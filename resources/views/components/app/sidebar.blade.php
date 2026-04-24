@@ -320,15 +320,15 @@
                                     </a>
                                 </li>
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('transaction-details')) {{ 'text-violet-500!' }} @endif"
-                                        href="/">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('kepegawaian/diklat')) {{ 'text-violet-500!' }} @endif"
+                                        href="/kepegawaian/diklat">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Diklat</span>
                                     </a>
                                 </li>
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('transaction-details')) {{ 'text-violet-500!' }} @endif"
-                                        href="/">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('kepegawaian/penghargaan')) {{ 'text-violet-500!' }} @endif"
+                                        href="/kepegawaian/penghargaan">
                                         <span
                                             class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Penghargaan</span>
                                     </a>

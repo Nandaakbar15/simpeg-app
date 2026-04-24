@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Diklat;
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 class DiklatController extends Controller
 {
@@ -26,7 +28,11 @@ class DiklatController extends Controller
      */
     public function create()
     {
-        //
+        $pegawai = Pegawai::all();
+
+        return view("pages.dashboard.kepegawaian.diklat.tambahDiklat", [
+            'pegawai' => $pegawai
+        ]);
     }
 
     /**
@@ -34,15 +40,33 @@ class DiklatController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'nama_diklat' => 'required|string',
+            'jumlah_jam' => 'required|string',
+            'penyelenggara' => 'required|string',
+            'tempat' => 'required|string',
+            'angkatan' => 'required|string',
+            'tahun' => 'required|string',
+            'no_sttpp' => 'required|string',
+            'tgl_sttpp' => 'required|date'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Diklat $diklat)
-    {
-        //
+        try {
+            DB::beginTransaction();
+
+            Diklat::create($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/diklat')->with('success', 'Berhasil menambahkan data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -50,7 +74,12 @@ class DiklatController extends Controller
      */
     public function edit(Diklat $diklat)
     {
-        //
+        $pegawai = Pegawai::all();
+
+        return view("pages.dashboard.kepegawaian.diklat.editDiklat", [
+            'diklat' => $diklat,
+            'pegawai' => $pegawai
+        ]);
     }
 
     /**

@@ -16,6 +16,8 @@ use App\Http\Controllers\UnitKerjaController;
 use App\Http\Controllers\UserAdminController;
 use App\Http\Controllers\UserPegawaiController;
 use App\Http\Controllers\HukumanController;
+use App\Http\Controllers\DiklatController;
+use App\Http\Controllers\PenghargaanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -137,11 +139,32 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/hukuman', [HukumanController::class, 'index']);
         Route::get('/hukuman/view_form_tambah_hukuman', [HukumanController::class, 'create']);
         Route::post('/hukuman/tambah_data_hukuman', [HukumanController::class, 'store']);
+        Route::get('/hukuman/view_form_edit_hukuman/{hukuman}', [HukumanController::class, 'edit']);
+        Route::put('/hukuman/edit_data_hukuman/{hukuman}', [HukumanController::class, 'update']);
 
-        Route::get('/diklat');
-        Route::get('/penghargaan');
+        // URL Kepegawaian Diklat
+        Route::get('/diklat', [DiklatController::class, 'index']);
+        Route::get('/diklat/view_form_tambah_diklat', [DiklatController::class, 'create']);
+        Route::post('/diklat/tambah_diklat', [DiklatController::class, 'store']);
+        Route::get('/diklat/view_form_edit_diklat', [DiklatController::class, 'edit']);
+        Route::put('/diklat/edit_diklat/{diklat}', [DiklatController::class, 'update']);
+        Route::delete('/diklat/delete_data_diklat/{diklat}', [DiklatController::class, 'delete']);
+
+
+        Route::get('/penghargaan', [PenghargaanController::class, 'index']);
+        Route::get('/penghargaan/view_form_tambah_penghargaan', [PenghargaanController::class, 'create']);
+        Route::post('/penghargaan/tambah_penghargaan', [PenghargaanController::class, 'store']);
+        Route::get('/penghargaan/view_form_edit_penghargaan/{penghargaan}', [PenghargaanController::class, 'edit']);
+        Route::put('/penghargaan/edit_penghargaan/{penghargaan}', [PenghargaanController::class, 'update']);
+
+        // URL Kepegawaian Penugasan Luar Negeri
         Route::get('/penugasanln');
+
+        // URL Kepegawaian Seminar
         Route::get('/seminar');
+
+
+        // URL Kepegawaian Cuti
         Route::get('/cuti');
         Route::get('/latihan_jabatan');
         Route::get('/mutasi');

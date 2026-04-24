@@ -6,19 +6,19 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Data Hukuman</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Data Penghargaan</h1>
             </div>
 
         </div>
 
         <div class="mb-6">
-            <a href="/kepegawaian/hukuman/view_form_tambah_hukuman"
+            <a href="/kepegawaian/penghargaan/view_form_tambah_penghargaan"
                 class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path
                         d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span class="hidden xs:block ml-2">Tambah Hukuman</span>
+                <span class="hidden xs:block ml-2">Tambah Penghargaan</span>
             </a>
         </div>
 
@@ -35,16 +35,19 @@
                                 <div class="font-semibold text-left">Pegawai</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">Pelanggaran</div>
+                                <div class="font-semibold text-left">Nama Penghargaan</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-left">Tingkat</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">Jenis</div>
+                                <div class="font-semibold text-left">Tahun</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">No. SK</div>
+                                <div class="font-semibold text-left">No. Sertitifkat</div>
+                            </th>
+                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">Sertifikat</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-center">Aksi</div>
@@ -52,7 +55,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($hukuman as $data)
+                        @foreach ($penghargaan as $data)
                             <tr>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">{{ $data->id }}
@@ -64,30 +67,38 @@
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                    <div class="text-left">{{ $data->pelanggaran_yg_dilakukan }}</div>
+                                    <div class="text-left">{{ $data->nama_penghargaan }}</div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="text-left">
-                                        {{ $data->tingkat_hukuman }}
+                                        {{ $data->tingkat_kegiatan }}
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        {{ $data->jenis_hukuman }}
+                                        {{ $data->tahun }}
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        {{ $data->no_sk }}
+                                        {{ $data->no_sertifikat }}
+                                    </div>
+                                </td>
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                    <div class="font-medium text-gray-800 dark:text-gray-100">
+                                        <a href="/kepegawaian/penghargaan/download_sertifikat/{{ $data->id }}"
+                                            class="inline-block py-2 px-3 bg-blue-500 text-white hover:bg-blue-700 rounded-lg shadow-lg">Download
+                                            Sertifikat</a>
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
-                                        <a href="/kepegawaian/hukuman/view_form_edit_hukuman/{{ $data->id }}"
+                                        <a href="/kepegawaian/penghargaan/view_form_edit_penghargaan/{{ $data->id }}"
                                             class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
                                             Edit
                                         </a>
-                                        <form action="/kepegawaian/hukuman/delete_data_hukuman/{{ $data->id }}"
+                                        <form
+                                            action="/kepegawaian/penghargaan/delete_data_penghargaan/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -97,10 +108,6 @@
                                                 Delete
                                             </button>
                                         </form>
-                                        <a href="/kepegawaian/hukuman/download_sk/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
-                                            Download SK
-                                        </a>
                                     </div>
                                 </td>
                             </tr>

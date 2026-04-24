@@ -46,8 +46,8 @@ class HukumanController extends Controller
             'pelanggaran_yg_dilakukan' => 'required|string',
             'tingkat_hukuman' => 'required',
             'jenis_hukuman' => 'required',
-            'isi_hukuman' => 'required|string',
-            'pejabat_pengesahan_hukuman' => 'required|string',
+            'isi_teguran' => 'required|string',
+            'pejabat_pengesahan_sk_hukuman' => 'required|string',
             'no_sk' => 'required|string',
             'tgl_pengesahan_sk' => 'required|date',
             'tmt_hukuman_mulai' => 'required|date',
@@ -73,21 +73,17 @@ class HukumanController extends Controller
             return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Hukuman $hukuman)
-    {
-        //
-    }
-
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(Hukuman $hukuman)
     {
-        //
+        $pegawai = Pegawai::all();
+
+        return view("pages.dashboard.kepegawaian.hukuman.editHukuman", [
+            'pegawai' => $pegawai,
+            'hukuman' => $hukuman
+        ]);
     }
 
     /**
@@ -95,7 +91,37 @@ class HukumanController extends Controller
      */
     public function update(Request $request, Hukuman $hukuman)
     {
-        //
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'pelanggaran_yg_dilakukan' => 'required|string',
+            'tingkat_hukuman' => 'required',
+            'jenis_hukuman' => 'required',
+            'isi_teguran' => 'required|string',
+            'pejabat_pengesahan_sk_hukuman' => 'required|string',
+            'no_sk' => 'required|string',
+            'tgl_pengesahan_sk' => 'required|date',
+            'tmt_hukuman_mulai' => 'required|date',
+            'tmt_hukuman_pemulihan' => 'required|date',
+            'pejabat_pemulihan_hukuman' => 'required|string',
+            'no_pemulihan_hukuman' => 'required|string',
+            'tgl_pemulihan_hukuman' => 'required|date'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $hukuman->update($validateData);
+
+            DB::commit();
+
+            return redirect("/kepegawaian/hukuman")->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal mengubah data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', "Error, terjadi kesalahan pada sistem!");
+        }
     }
 
     /**
@@ -103,6 +129,8 @@ class HukumanController extends Controller
      */
     public function destroy(Hukuman $hukuman)
     {
-        //
+        $hukuman->delete();
+
+        return redirect('/kepegawaian/hukuman')->with('success', 'Berhasil menghapus data!');
     }
 }

@@ -20,7 +20,7 @@ class Hukuman extends Model
         'no_sk',
         'tgl_pengesahan_sk',
         'tmt_hukuman_mulai',
-        'tmt_hukuman_selesai',
+        'tmt_hukuman_pemulihan',
         'no_pemulihan_hukuman',
         'pejabat_pemulihan_hukuman',
         'tgl_pemulihan_hukuman'

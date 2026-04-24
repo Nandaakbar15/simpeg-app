@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah diklat</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form edit diklat</h1>
             </div>
 
         </div>
@@ -22,14 +22,18 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/diklat/tambah_diklat" method="POST">
+                <form action="/kepegawaian/diklat/edit_diklat/{{ $diklat->id }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
-                            <option value="">--Pilih Pegawai -- </option>
+                            <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ old('pegawai_id', $diklat->pegawai_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -38,32 +42,35 @@
                             Diklat</label>
                         <input type="text" id="nama_diklat" name="nama_diklat"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nama diklat" required />
+                            placeholder="Masukan nama diklat" required
+                            value="{{ old('nama_diklat', $diklat->nama_diklat) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="jumlah_jam" class="block mb-2.5 text-sm font-medium text-heading">Jumlah Jam</label>
                         <input type="text" id="jumlah_jam" name="jumlah_jam"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan jumlah jam diklat" required />
+                            placeholder="Masukan jumlah jam diklat" required value="{{ $diklat->jumlah_jam }}" />
                     </div>
                     <div class="mb-5">
                         <label for="penyelenggara"
                             class="block mb-2.5 text-sm font-medium text-heading">Penyelanggara</label>
                         <input type="text" id="penyelenggara" name="penyelenggara"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan penyelenggara diklat" required />
+                            placeholder="Masukan penyelenggara diklat" required
+                            value="{{ old('penyelenggara', $diklat->penyelenggara) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="tempat" class="block mb-2.5 text-sm font-medium text-heading">Tempat</label>
                         <input type="text" id="tempat" name="tempat"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan tempat diklat" required />
+                            placeholder="Masukan tempat diklat" required value="{{ old('tempat', $diklat->tempat) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="angkatan" class="block mb-2.5 text-sm font-medium text-heading">Angkatan</label>
                         <input type="text" id="angkatan" name="angkatan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan angkatan diklat" required />
+                            placeholder="Masukan angkatan diklat" required
+                            value="{{ old('angkatan', $diklat->angkatan) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
@@ -77,11 +84,13 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sttpp" name="no_sttpp"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan nomor STTPP" required />
+                                placeholder="Masukan nomor STTPP" required
+                                value="{{ old('no_sttpp', $diklat->no_sttpp) }}" />
 
                             <input type="date" id="tgl_sttpp" name="tgl_sttpp"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required placeholder="Masukan tanggal STTPP" />
+                                required placeholder="Masukan tanggal STTPP"
+                                value="{{ old('tgl_sttpp', $diklat->tgl_sttpp) }}" />
                         </div>
                     </div>
                     <button type="submit"
