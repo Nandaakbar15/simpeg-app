@@ -18,6 +18,7 @@ use App\Http\Controllers\UserPegawaiController;
 use App\Http\Controllers\HukumanController;
 use App\Http\Controllers\DiklatController;
 use App\Http\Controllers\PenghargaanController;
+use App\Http\Controllers\PenugasanLuarNegeriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -158,7 +159,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/penghargaan/edit_penghargaan/{penghargaan}', [PenghargaanController::class, 'update']);
 
         // URL Kepegawaian Penugasan Luar Negeri
-        Route::get('/penugasanln');
+        Route::get('/penugasan_ln', [PenugasanLuarNegeriController::class, 'index']);
+        Route::get('/penugasan_ln/view_form_tambah_penugasan', [PenugasanLuarNegeriController::class, 'create']);
+        Route::post('/penugasan_ln/tambah_penugasan', [PenugasanLuarNegeriController::class, 'store']);
+        Route::get('/penugasan_ln/view_form_edit_penugasan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'edit']);
+        Route::put('/penugasan_ln/edit_penugasan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'update']);
+        Route::get('/penugasan_ln/download_surat_tugas/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'download']);
 
         // URL Kepegawaian Seminar
         Route::get('/seminar');

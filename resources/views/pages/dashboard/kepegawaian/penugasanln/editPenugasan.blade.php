@@ -23,14 +23,20 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/penugasan_ln/tambah_penugasan" method="POST" enctype="multipart/form-data">
+                <form action="/kepegawaian/penugasan_ln/edit_penugasan/{{ $penugasanLuarNegeri->id }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
+                    <input type="hidden" name="fileLama" id="fileLama" value="{{ $penugasanLuarNegeri->st }}">
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
-                            <option value="">--Pilih Pegawai -- </option>
+                            <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ old('pegawai_id', $penugasanLuarNegeri->pegawai_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -39,27 +45,30 @@
                             Penugasan</label>
 
                         <textarea id="alasan_penugasan" name="alasan_penugasan" rows="4" cols="50"
-                            placeholder="Masukan alasan penugasan"></textarea>
+                            placeholder="Masukan alasan penugasan">{{ old('alasan_penugasan', $penugasanLuarNegeri->alasan_penugasan) }}</textarea>
                     </div>
                     <div class="mb-5">
                         <label for="negara_tujuan" class="block mb-2.5 text-sm font-medium text-heading">Negara
                             Tujuan</label>
                         <input type="text" id="negara_tujuan" name="negara_tujuan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan negara tujuan" required />
+                            placeholder="Masukan negara tujuan" required
+                            value="{{ old('negara_tujuan', $penugasanLuarNegeri->negara_tujuan) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
                         <input type="text" id="tahun" name="tahun"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan tahun penugasan" required />
+                            placeholder="Masukan tahun penugasan" required
+                            value="{{ old('tahun', $penugasanLuarNegeri->tahun) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="durasi_hari" class="block mb-2.5 text-sm font-medium text-heading">Lama
                             (Hari)</label>
                         <input type="text" id="durasi_hari" name="durasi_hari"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan durasi hari" required />
+                            placeholder="Masukan durasi hari" required
+                            value="{{ old('durasi_hari', $penugasanLuarNegeri->durasi_hari) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_st" class="w-1/4 text-sm font-medium text-heading">Nomor dan Tanggal
@@ -67,18 +76,20 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_st" name="no_st"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan nomor st" required />
+                                placeholder="Masukan nomor st" required
+                                value="{{ old('no_st', $penugasanLuarNegeri->no_st) }}" />
 
                             <input type="date" id="tgl_st" name="tgl_st"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required placeholder="Masukan tanggal st" />
+                                required placeholder="Masukan tanggal st"
+                                value="{{ old('tgl_st', $penugasanLuarNegeri->tgl_st) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="st" class="block mb-2.5 text-sm font-medium text-heading">Surat Tugas</label>
                         <input type="file" id="st" name="st"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan file ST" required />
+                            placeholder="Masukan file ST" />
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
@@ -86,7 +97,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/kepegawaian/penghargaan"
+                <a href="/kepegawaian/penugasan_ln"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>
