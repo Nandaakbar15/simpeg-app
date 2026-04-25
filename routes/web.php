@@ -19,6 +19,9 @@ use App\Http\Controllers\HukumanController;
 use App\Http\Controllers\DiklatController;
 use App\Http\Controllers\PenghargaanController;
 use App\Http\Controllers\PenugasanLuarNegeriController;
+use App\Http\Controllers\SeminarController;
+use App\Http\Controllers\CutiController;
+use App\Http\Controllers\LatihanJabatanController;
 
 /*
 |--------------------------------------------------------------------------
@@ -167,12 +170,31 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/penugasan_ln/download_surat_tugas/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'download']);
 
         // URL Kepegawaian Seminar
-        Route::get('/seminar');
+        Route::get('/seminar', [SeminarController::class, 'index']);
+        Route::get('/seminar/view_form_tambah_seminar', [SeminarController::class, 'create']);
+        Route::post('/seminar/tambah_seminar', [SeminarController::class, 'store']);
+        Route::get('/seminar/view_form_edit_seminar/{seminar}', [SeminarController::class, 'edit']);
+        Route::put('/seminar/edit_seminar/{seminar}', [SeminarController::class, 'update']);
+        Route::get('/seminar/download_piagam/{seminar}', [SeminarController::class, 'downloadPiagam']);
 
 
         // URL Kepegawaian Cuti
-        Route::get('/cuti');
-        Route::get('/latihan_jabatan');
+        Route::get('/cuti', [CutiController::class, 'index']);
+        Route::get('/cuti/view_form_tambah_cuti', [CutiController::class, 'create']);
+        Route::post('/cuti/tambah_cuti', [CutiController::class, 'store']);
+        Route::get('/cuti/view_form_edit_cuti/{cuti}', [CutiController::class, 'edit']);
+        Route::put('/cuti/edit_riwayat_cuti/{cuti}', [CutiController::class, 'update']);
+        Route::delete('/cuti/delete_riwayat_cuti/{cuti}', [CutiController::class, 'destroy']);
+
+
+
+        Route::get('/latihan_jabatan', [LatihanJabatanController::class, 'index']);
+        Route::get('/latihan_jabatan/view_form_tambah_latihan_jabatan', [LatihanJabatanController::class, 'create']);
+        Route::post('/latihan_jabatan/tambah_latihan_jabatan', [LatihanJabatanController::class, 'store']);
+        Route::get('/latihan_jabatan/view_form_edit_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'edit']);
+        Route::get('/latihan_jabatan/download_sertifikat/{latihanJabatan}', [LatihanJabatanController::class, 'downloadSertifikat']);
+
+
         Route::get('/mutasi');
         Route::get('/tunjangan');
         Route::get('/izin_kawin');

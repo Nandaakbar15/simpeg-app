@@ -156,6 +156,6 @@ class PenugasanLuarNegeriController extends Controller
             abort(404, 'File tidak ditemukan');
         }
 
-        return Storage::disk('public')->download($filePath);
+        return response()->download(storage_path('app/public/' . $filePath));
     }
 }

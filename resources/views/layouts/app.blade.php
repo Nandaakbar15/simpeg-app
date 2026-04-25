@@ -8,6 +8,10 @@
 
         <title>{{ config('app.name', 'Simpeg App') }}</title>
 
+        <link rel="icon" type="image/png" href="images/logo_asn.png">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

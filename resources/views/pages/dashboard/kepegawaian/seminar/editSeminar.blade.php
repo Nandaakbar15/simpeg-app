@@ -6,8 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah penghargaan
-                    pegawai</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form edit seminar</h1>
             </div>
 
         </div>
@@ -23,14 +22,19 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/seminar/tambah_seminar" method="POST" enctype="multipart/form-data">
+                <form action="/kepegawaian/seminar/edit_seminar/{{ $seminar->id }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
+                    @method('PUT')
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
-                            <option value="">--Pilih Pegawai -- </option>
+                            <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ old('pegawai_id', $seminar->pegawai_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -38,16 +42,21 @@
                         <label for="nama_seminar" class="block mb-2.5 text-sm font-medium text-heading">Nama
                             Seminar</label>
 
-                        <textarea id="nama_seminar" name="nama_seminar" rows="4" cols="50" placeholder="Masukan nama seminar"></textarea>
+                        <textarea id="nama_seminar" name="nama_seminar" rows="4" cols="50" placeholder="Masukan nama seminar">{{ old('nama_seminar', $seminar->nama_seminar) }}</textarea>
                     </div>
                     <div class="mb-5">
                         <label for="tingkat_kegiatan" class="block mb-2.5 text-sm font-medium text-heading">Tingkat
                             Kegiatan</label>
                         <select name="tingkat_kegiatan" id="tingkat_kegiatan">
-                            <option value="Lokal">Lokal</option>
-                            <option value="Regional">Regional</option>
-                            <option value="Nasional">Nasional</option>
-                            <option value="Internasional">Internasional</option>
+                            <option value="Lokal" {{ $seminar->tingkat_kegiatan == 'Lokal' ? 'selected' : '' }}>Lokal
+                            </option>
+                            <option value="Regional" {{ $seminar->tingkat_kegiatan == 'Regional' ? 'selected' : '' }}>
+                                Regional</option>
+                            <option value="Nasional" {{ $seminar->tingkat_kegiatan == 'Nasional' ? 'selected' : '' }}>
+                                Nasional</option>
+                            <option value="Internasional"
+                                {{ $seminar->tingkat_kegiatan == 'Internasional' ? 'selected' : '' }}>Internasional
+                            </option>
                         </select>
                     </div>
                     <div class="flex items-center mb-5">
@@ -56,11 +65,13 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_seminar" name="tempat_seminar"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan tempat seminar" required />
+                                placeholder="Masukan tempat seminar" required
+                                value="{{ old('tempat_seminar', $seminar->tempat_seminar) }}" />
 
                             <input type="date" id="tgl_seminar" name="tgl_seminar"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required placeholder="Masukan tanggal seminar" />
+                                required placeholder="Masukan tanggal seminar"
+                                value="{{ old('tgl_seminar', $seminar->tgl_seminar) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -68,13 +79,15 @@
                             class="block mb-2.5 text-sm font-medium text-heading">Penyelenggara</label>
                         <input type="text" id="penyelenggara" name="penyelenggara"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan penyelenggara" required />
+                            placeholder="Masukan penyelenggara" required
+                            value="{{ old('penyelenggara', $seminar->penyelenggara) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="jumlah_jam" class="block mb-2.5 text-sm font-medium text-heading">Jumlah Jam</label>
                         <input type="text" id="jumlah_jam" name="jumlah_jam"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan jumlah jam" required />
+                            placeholder="Masukan jumlah jam" required
+                            value="{{ old('jumlah_jam', $seminar->jumlah_jam) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_piagam" class="w-1/4 text-sm font-medium text-heading">Nomor dan Tanggal
@@ -82,11 +95,13 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_piagam" name="no_piagam"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan nomor piagam" required />
+                                placeholder="Masukan nomor piagam" required
+                                value="{{ old('no_piagam', $seminar->no_piagam) }}" />
 
                             <input type="date" id="tgl_piagam" name="tgl_piagam"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required placeholder="Masukan tanggal piagam" />
+                                required placeholder="Masukan tanggal piagam"
+                                value="{{ old('tgl_piagam', $seminar->tgl_piagam) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -94,7 +109,7 @@
                             Piagam</label>
                         <input type="file" id="file_piagam" name="file_piagam"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan file piagam" required />
+                            placeholder="Masukan file piagam" />
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
@@ -102,7 +117,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/kepegawaian/penghargaan"
+                <a href="/kepegawaian/seminar"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>

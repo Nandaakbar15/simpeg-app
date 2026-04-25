@@ -15,6 +15,7 @@ class Pegawai extends Model
         'unit_kerja_id',
         'foto',
         'nip',
+        'nik',
         'nama',
         'gelar',
         'tmpt_lahir',

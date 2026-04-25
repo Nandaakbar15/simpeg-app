@@ -25,6 +25,7 @@ return new class extends Migration
             $table->enum('agama', ['Islam', 'Protestan', 'Katolik', 'Hindu', 'Buddha', 'Kong Hu Cu']);
             $table->enum('golongan_darah', ['A', 'AB', 'B', 'O', 'Tidak Tahu']);
             $table->enum('status_pernikahan', ['Nikah', 'Belum Nikah', 'Cerai Mati', 'Cerai Hidup']);
+            $table->string('nik');
             $table->string("alamat");
             $table->string("no_hp");
             $table->string("email");
