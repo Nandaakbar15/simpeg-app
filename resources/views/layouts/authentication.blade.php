@@ -16,6 +16,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        <link rel="icon" type="image/png" href="images/logo_asn.png">
+
         <!-- Styles -->
         @livewireStyles
 

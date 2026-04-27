@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DataFeedController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\InstansiLembagaController;
+use App\Http\Controllers\SekretariatController;
 use App\Http\Controllers\MasterJabatanController;
 use App\Http\Controllers\PegawaiController;
 use App\Http\Controllers\RiwayatKeluargaAnakController;
@@ -22,6 +24,9 @@ use App\Http\Controllers\PenugasanLuarNegeriController;
 use App\Http\Controllers\SeminarController;
 use App\Http\Controllers\CutiController;
 use App\Http\Controllers\LatihanJabatanController;
+use App\Http\Controllers\MutasiController;
+use App\Http\Controllers\TunjanganController;
+use App\Http\Controllers\IzinKawinController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +60,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::prefix('manajemen_setup')->group(function() {
 
         Route::middleware('role:superadmin')->group(function() {
-            Route::get('/instansi_lembaga');
-            Route::get('/sekretariat');
+            Route::get('/instansi_lembaga', [InstansiLembagaController::class, 'index']);
+            Route::get('/instansi_lembaga/setup', [InstansiLembagaController::class, 'create']);
+            Route::post('/instansi_lembaga/buat_data_instansi', [InstansiLembagaController::class, 'store']);
+            Route::get('/setup_instansi_lembaga/{instansiLembaga}', [InstansiLembagaController::class, 'edit']);
+
+
+            Route::get('/sekretariat', [SekretariatController::class, 'index']);
+            Route::get('/sekretariat/create', [SekretariatController::class, 'create']);
+            Route::post('/sekretariat/buat_data_sekretariat', [SekretariatController::class, 'store']);
+            Route::get('/sekretariat/setup_sekretariat/{sekretariat}', [SekretariatController::class, 'edit']);
+
+
             Route::get('/opd_skpd_unitkerja', [UnitKerjaController::class, 'index']);
             Route::get('/view_form_tambah_unitkerja', [UnitKerjaController::class, 'create']);
             Route::post('/opd_skd_unitkerja/tambah_unit_kerja', [UnitKerjaController::class, 'store']);
@@ -194,10 +209,26 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/latihan_jabatan/view_form_edit_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'edit']);
         Route::get('/latihan_jabatan/download_sertifikat/{latihanJabatan}', [LatihanJabatanController::class, 'downloadSertifikat']);
 
+        // URL kepegawaian mutasi
+        Route::get('/mutasi', [MutasiController::class, 'index']);
+        Route::get('/mutasi/view_form_tambah_mutasi', [MutasiController::class, 'create']);
+        Route::post('/mutasi/tambah_mutasi', [MutasiController::class, 'store']);
+        Route::get('/mutasi/view_form_edit_mutasi/{mutasi}', [MutasiController::class, 'edit']);
+        Route::put('/mutasi/edit_mutasi/{mutasi}', [MutasiController::class, 'update']);
+        Route::delete('/mutasi/delete_mutasi/{mutasi}', [MutasiController::class, 'destroy']);
 
-        Route::get('/mutasi');
-        Route::get('/tunjangan');
-        Route::get('/izin_kawin');
+        // URL untuk kepegawaian tunjangan
+        Route::get('/tunjangan', [TunjanganController::class, 'index']);
+        Route::get('/tunjangan/view_form_tambah_tunjangan', [TunjanganController::class, 'create']);
+        Route::post('/tunjangan/tambah_tunjangan', [TunjanganController::class, 'store']);
+        Route::get('/tunjangan/view_form_edit_tunjangan/{tunjangan}', [TunjanganController::class, 'edit']);
+
+
+        // URL untuk kepegawaian izin kawin
+        Route::get('/izin_kawin', [IzinKawinController::class, 'index']);
+        Route::get('/izin_kawin/view_form_tambah_izin_kawin', [IzinKawinController::class, 'create']);
+        Route::post('/izin_kawin/tambah_izin_kawin', [IzinKawinController::class, 'store']);
+        Route::get('/izin_kawin/view_form_edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'edit']);
     });
 
 });

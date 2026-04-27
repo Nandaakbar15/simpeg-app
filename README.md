@@ -6,7 +6,7 @@ Aplikasi kepegawaian ASN berbasis web untuk mengelola data pegawai, riwayat kelu
 
 Fitur-Fitur yang sudah ada :
 
-- superadmin : CRUD User Admin, User Pegawai, CRUD Data Pegawai, CRUD Riwayat Keluarga Anak dan Suami / Istri
+- superadmin : CRUD User Admin, User Pegawai, CRUD Data Pegawai, CRUD Riwayat Keluarga Anak dan Suami / Istri, CRUD Hukuman, CRUD Diklat dll
 
 - admin : CRUD User Pegawai, CRUD Data Pegawai, CRUD Riwayat Keluarga Anak dan Suami
 
@@ -14,16 +14,6 @@ Fitur-Fitur yang belum ada :
 
 - CRUD Jabatan
 - CRUD Pangkat
-- CRUD Hukuman
-- CRUD Diklat
-- CRUD Penghargaan
-- CRUD Penugasan LN
-- CRUD Seminar
-- CRUD Cuti
-- CRUD Latihan Jabatan
-- CRUD Mutasi
-- CRUD Tunjangan
-- CRUD Izin Kawin
 
 ## Tech Stack
 
