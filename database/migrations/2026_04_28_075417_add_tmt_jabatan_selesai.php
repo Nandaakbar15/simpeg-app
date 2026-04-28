@@ -11,10 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_eselon', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId("master_eselon_id")->constrained('tb_master_eselon');
-            $table->timestamps();
+        Schema::table('tb_jabatan', function (Blueprint $table) {
+            $table->date('tmt_jabatan_selesai')->nullable()->after('tmt_jabatan_mulai');
         });
     }
 
@@ -23,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_eselon');
+        Schema::table('tb_jabatan', function (Blueprint $table) {
+            $table->dropColumn('tmt_jabatan_selesai');
+        });
     }
 };

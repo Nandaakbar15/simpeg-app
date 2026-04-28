@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data pangkat</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form edit data pangkat</h1>
             </div>
 
         </div>
@@ -23,14 +23,18 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/pangkat/tambah_data_pangkat" method="POST">
+                <form action="/kepegawaian/pangkat/edit_data_pangkat/{{ $pangkat->id }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
-                            <option value="">--Pilih Pegawai -- </option>
+                            <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ old('pegawai_id', $pangkat->pegawai_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
@@ -42,7 +46,9 @@
                                 <select name="master_pangkat_id" id="master_pangkat_id"
                                     class="flex-1 rounded-lg border-gray-300 shadow-sm">
                                     @foreach ($masterPangkat as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_pangkat }}</option>
+                                        <option value="{{ $item->id }}"
+                                            {{ old('master_pangkat_id', $pangkat->master_pangkat_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->nama_pangkat }}</option>
                                     @endforeach
                                 </select>
 
@@ -125,7 +131,9 @@
                                 <select name="master_golongan_id" id="master_golongan_id"
                                     class="flex-1 rounded-md border-gray-300 shadow-sm">
                                     @foreach ($masterGolongan as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_golongan }}</option>
+                                        <option value="{{ $item->id }}"
+                                            {{ old('master_golongan_id', $pangkat->master_golongan_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->nama_golongan }}</option>
                                     @endforeach
                                 </select>
                                 <button type="button" @click="openGolongan = true"
@@ -205,7 +213,8 @@
                             Pangkat</label>
                         <input type="text" id="jenis_pangkat" name="jenis_pangkat"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan jenis pangkat" required />
+                            placeholder="Masukan jenis pangkat" required
+                            value="{{ old('jenis_pangkat', $pangkat->jenis_pangkat) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmt_pangkat_mulai" class="w-1/4 text-sm font-medium text-heading">TMT
@@ -213,11 +222,12 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tmt_pangkat_mulai" name="tmt_pangkat_mulai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Dari" required />
+                                placeholder="Dari" required
+                                value="{{ old('tmt_pangkat_mulai', $pangkat->tmt_pangkat_mulai) }}" />
 
                             <input type="date" id="tmt_pangkat_selesai" name="tmt_pangkat_selesai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tmt_pangkat_selesai', $pangkat->tmt_pangkat_selesai) }}" />
                         </div>
                     </div>
                     <div class="flex items-center mb-5">
@@ -226,11 +236,12 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan nomor SK" required />
+                                placeholder="Masukan nomor SK" required
+                                value="{{ old('no_sk', $pangkat->no_sk) }}" />
 
                             <input type="date" id="tgl_sk" name="tgl_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tgl_sk', $pangkat->tgl_sk) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -238,7 +249,8 @@
                             Pengesah SK</label>
                         <input type="text" id="pejabat_pengesah_sk" name="pejabat_pengesah_sk"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Diterbikan oleh" required />
+                            placeholder="Diterbikan oleh" required
+                            value="{{ old('pejabat_pengesah_sk', $pangkat->pejabat_pengesah_sk) }}" />
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
@@ -278,25 +290,6 @@
                 this.listPangkat.push(data);
                 this.nama_pangkat = '';
             }
-
-            async deletePangkat(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
-
-                let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listPangkat = this.listPangkat.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
-            }
         }
     }
 
@@ -324,24 +317,6 @@
 
                 this.listGolongan.push(data);
                 this.nama_golongan = '';
-            }
-            async deleteGolongan(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
-
-                let res = await fetch(`/kepegawaian/master_golongan/delete_master_golongan/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listGolongan = this.listGolongan.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
             }
         }
     }

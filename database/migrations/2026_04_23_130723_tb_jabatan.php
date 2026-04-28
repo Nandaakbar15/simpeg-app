@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('pegawai_id')->references('id')->on('tb_pegawai');
             $table->foreignId("master_jabatan_id")->constrained('tb_master_jabatan');
-            $table->foreignId('eselon_id')->constrained('tb_eselon');
+            $table->foreignId('master_eselon_id')->constrained('tb_master_eselon');
 
             $table->enum('jenis_jabatan', ['Jabatan Struktural', 'Jabatan Fungsional Tertentu', 'Jabatan Fungsional Umum']);
 

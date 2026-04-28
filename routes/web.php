@@ -27,6 +27,11 @@ use App\Http\Controllers\LatihanJabatanController;
 use App\Http\Controllers\MutasiController;
 use App\Http\Controllers\TunjanganController;
 use App\Http\Controllers\IzinKawinController;
+use App\Http\Controllers\MasterEselonController;
+use App\Http\Controllers\MasterPangkatController;
+use App\Http\Controllers\MasterGolonganController;
+use App\Http\Controllers\PangkatController;
+use App\Http\Controllers\PrestasiKerjaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,16 +148,34 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     });
 
     Route::prefix('kepegawaian')->group(function() {
+        // URL Kepegawaian Jabatan
         Route::get('/jabatan', [JabatanController::class, 'index']);
         Route::get('/jabatan/view_tambah_jabatan', [JabatanController::class, 'create']);
+        Route::post('/jabatan/tambah_data_jabatan', [JabatanController::class, 'store']);
+        Route::get('/jabatan/view_form_edit_jabatan/{jabatan}', [JabatanController::class, 'edit']);
+        Route::put('/jabatan/edit_data_jabatan/{jabatan}', [JabatanController::class, 'update']);
+        Route::delete('/jabatan/delete_data_jabatan/{jabatan}', [JabatanController::class, 'destroy']);
 
         // URL untuk master data jabatan
-        Route::get('/jabatan/master_data_jabatan', [MasterJabatanController::class, 'index']);
+        // Route::get('/jabatan/master_data_jabatan', [MasterJabatanController::class, 'index']);
         Route::get('/jabatan/master_data_jabatan/{masterJabatan}', [MasterJabatanController::class, 'index']);
-        Route::post('/jabatan/tambah_data_master_jabatan', [MasterJabatanController::class, 'store']);
 
+        // url untuk ajax master jabatan dan eselon
+        Route::post('/master_jabatan/store', [MasterJabatanController::class, 'store']);
+        Route::get('/master_jabatan/view_form_edit_master_jabatan/{masterJabatan}', [MasterJabatanController::class, 'edit']);
+        Route::delete('/master_jabatan/delete_master_jabatan/{masterJabatan}', [MasterJabatanController::class, 'destroy']);
+        Route::post('/master_eselon/store', [MasterEselonController::class, 'store']);
 
-        Route::get('/pangkat');
+        // URL untuk kepegawaian pangkat
+        Route::get('/pangkat', [PangkatController::class, 'index']);
+        Route::get('/pangkat/view_form_tambah_pangkat', [PangkatController::class, 'create']);
+        Route::post('/pangkat/tambah_data_pangkat', [PangkatController::class, 'store']);
+        Route::get('/pangkat/view_form_edit_data_pangkat/{pangkat}', [PangkatController::class, 'edit']);
+        Route::put('/pangkat/edit_data_pangkat/{pangkat}', [PangkatController::class, 'update']);
+
+        // URL master pangkat dan master golongan dengan ajax
+        Route::post('/master_pangkat/store', [MasterPangkatController::class, 'store']);
+        Route::post('/master_golongan/store', [MasterGolonganController::class, 'store']);
 
         // URL Kepegawaian hukuman
         Route::get('/hukuman', [HukumanController::class, 'index']);
@@ -169,7 +192,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/diklat/edit_diklat/{diklat}', [DiklatController::class, 'update']);
         Route::delete('/diklat/delete_data_diklat/{diklat}', [DiklatController::class, 'delete']);
 
-
+        // URL Kepegawaian penghargaan
         Route::get('/penghargaan', [PenghargaanController::class, 'index']);
         Route::get('/penghargaan/view_form_tambah_penghargaan', [PenghargaanController::class, 'create']);
         Route::post('/penghargaan/tambah_penghargaan', [PenghargaanController::class, 'store']);
@@ -202,7 +225,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('/cuti/delete_riwayat_cuti/{cuti}', [CutiController::class, 'destroy']);
 
 
-
+        // URL Kepegawaian Latihan jabatan
         Route::get('/latihan_jabatan', [LatihanJabatanController::class, 'index']);
         Route::get('/latihan_jabatan/view_form_tambah_latihan_jabatan', [LatihanJabatanController::class, 'create']);
         Route::post('/latihan_jabatan/tambah_latihan_jabatan', [LatihanJabatanController::class, 'store']);
@@ -229,6 +252,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/izin_kawin/view_form_tambah_izin_kawin', [IzinKawinController::class, 'create']);
         Route::post('/izin_kawin/tambah_izin_kawin', [IzinKawinController::class, 'store']);
         Route::get('/izin_kawin/view_form_edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'edit']);
+    });
+
+    Route::prefix('skp_prestasi_kerja')->group(function() {
+        Route::get('/data_prestasi_kerja', [PrestasiKerjaController::class, 'index']);
+        Route::get('/view_form_tambah_prestasi_kerja', [PrestasiKerjaController::class, 'create']);
+        Route::post('/tambah_prestasi_kerja', [PrestasiKerjaController::class, 'store']);
     });
 
 });

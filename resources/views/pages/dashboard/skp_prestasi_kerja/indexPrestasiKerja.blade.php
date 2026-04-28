@@ -6,18 +6,19 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Data Jabatan</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Data Prestasi Kerja</h1>
             </div>
 
         </div>
 
         <div class="mb-6">
-            <a href="/kepegawaian/jabatan/view_tambah_jabatan" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+            <a href="/skp_prestasi_kerja/view_form_tambah_prestasi_kerja"
+                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path
                         d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span class="hidden xs:block ml-2">Tambah Jabatan</span>
+                <span class="hidden xs:block ml-2">Tambah Data Prestasi Kerja</span>
             </a>
         </div>
 
@@ -34,16 +35,16 @@
                                 <div class="font-semibold text-left">Pegawai</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">Jabatan</div>
+                                <div class="font-semibold text-left">Periode</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">ESL</div>
+                                <div class="font-semibold text-left">Tahun</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">Diterbitkan oleh</div>
+                                <div class="font-semibold text-left">Nilai</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">No. SK</div>
+                                <div class="font-semibold text-left">Tgl. Diterima</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-center">Aksi</div>
@@ -51,7 +52,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($jabatan as $data)
+                        @foreach ($prestasiKerja as $data)
                             <tr>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">{{ $data->id }}
@@ -63,30 +64,25 @@
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                    <div class="text-left">{{ $data->master_jabatan->nama_jabatan }}</div>
+                                    <div class="text-left">{{ $data->periode_nilai_dari }} /
+                                        {{ $data->periode_nilai_sampai }}</div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                    <div class="text-left">
-                                        {{ $data->master_eselon->nama_eselon }}
-                                    </div>
+                                    <div class="text-left">{{ $data->tahun_periode }}</div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                    <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        {{ $data->terbit }}
-                                    </div>
+                                    <div class="text-left">{{ $data->total_nilai }}</div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                    <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        {{ $data->no_sk }}
-                                    </div>
+                                    <div class="text-left">{{ $data->tgl_diterima_pegawai }}</div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
-                                        <a href="/kepegawaian/jabatan/view_form_edit_jabatan/{{ $data->id }}"
+                                        <a href="/kepegawaian/seminar/view_form_edit_seminar/{{ $data->id }}"
                                             class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
                                             Edit
                                         </a>
-                                        <form action="/kepegawaian/jabatan/delete_data_jabatan/{{ $data->id }}"
+                                        <form action="/kepegawaian/seminar/delete_data_seminar/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

@@ -6,12 +6,12 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data pangkat</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data jabatan</h1>
             </div>
 
         </div>
 
-        <div x-data="{ openPangkat: false, openPangkat: false }"
+        <div x-data="{ openJabatan: false, openEselon: false }"
             class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 @if ($errors->any())
@@ -23,35 +23,41 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/pangkat/tambah_data_pangkat" method="POST">
+                <form action="/kepegawaian/jabatan/edit_data_jabatan/{{ $jabatan->id }}" method="POST">
                     @csrf
+                    @method('PUT')
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
-                            <option value="">--Pilih Pegawai -- </option>
+                            <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                                <option value="{{ $item->id }}"
+                                    {{ old('pegawai_id', $jabatan->pegawai_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="master_pangkat_id"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pangkat</label>
-                        <div x-data="pangkatComponent()">
+                        <label for="master_jabatan_id"
+                            class="block mb-2.5 text-sm font-medium text-heading">Jabatan</label>
+                        <div x-data="jabatanComponent()">
                             <div class="flex gap-2">
-                                <select name="master_pangkat_id" id="master_pangkat_id"
+                                <select name="master_jabatan_id" id="master_jabatan_id"
                                     class="flex-1 rounded-lg border-gray-300 shadow-sm">
-                                    @foreach ($masterPangkat as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_pangkat }}</option>
+                                    @foreach ($masterJabatan as $item)
+                                        <option value="{{ $item->id }}"
+                                            {{ old('master_jabatan_id', $jabatan->master_jabatan_id) == $item->id ? 'selected' : '' }}>
+                                            {{ $item->nama_jabatan }}</option>
                                     @endforeach
                                 </select>
 
-                                <button type="button" @click="openPangkat = true"
+                                <button type="button" @click="openJabatan = true"
                                     class="bg-orange-500 text-white px-3 py-1 rounded shadow hover:bg-orange-600 transition shrink-0">
-                                    + ADD PAN
+                                    + ADD JAB
                                 </button>
 
-                                <div x-show="openPangkat" class="fixed inset-0 z-50 overflow-y-auto"
+                                <div x-show="openJabatan" class="fixed inset-0 z-50 overflow-y-auto"
                                     x-transition:enter="transition ease-out duration-300"
                                     x-transition:enter-start="opacity-0 -translate-y-10"
                                     x-transition:enter-end="opacity-100 translate-y-0"
@@ -61,22 +67,22 @@
                                     class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
                                     <div class="flex items-center justify-center min-h-screen p-4">
                                         <div class="fixed inset-0 bg-black/40 backdrop-blur-sm"
-                                            @click="openPangkat = false">
+                                            @click="openJabatan = false">
                                         </div>
                                         <div class="relative bg-white rounded-lg shadow-xl sm:max-w-4xl sm:w-full">
                                             <div class="px-4 py-3 border-b flex justify-between items-center">
-                                                <h3 class="text-lg font-bold text-blue-600">Master Nama Pangkat</h3>
-                                                <button @click="openPangkat = false" class="text-2xl">&times;</button>
+                                                <h3 class="text-lg font-bold text-blue-600">Master Nama Jabatan</h3>
+                                                <button @click="openJabatan = false" class="text-2xl">&times;</button>
                                             </div>
                                             <div class="p-6">
 
                                                 <!-- FORM TAMBAH -->
                                                 <div class="flex gap-2 mb-4">
-                                                    <input type="text" x-model="nama_pangkat"
+                                                    <input type="text" x-model="nama_jabatan"
                                                         class="border rounded px-3 py-2 w-full"
-                                                        placeholder="Masukan nama pangkat">
+                                                        placeholder="Masukan nama jabatan">
 
-                                                    <button type="button" @click="addPangkat"
+                                                    <button type="button" @click="addJabatan"
                                                         class="bg-blue-500 text-white px-4 rounded">
                                                         Save
                                                     </button>
@@ -87,21 +93,21 @@
                                                     <thead>
                                                         <tr class="bg-gray-100">
                                                             <th class="border p-2 text-left w-12">No</th>
-                                                            <th class="border p-2 text-left">Nama Pangkat</th>
+                                                            <th class="border p-2 text-left">Nama Jabatan</th>
                                                             <th class="border p-2 text-left w-40">Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <template x-for="(item, index) in listPangkat"
+                                                        <template x-for="(item, index) in listJabatan"
                                                             :key="item.id">
                                                             <tr class="hover:bg-gray-50">
                                                                 <td class="border p-2 text-center" x-text="index + 1">
                                                                 </td>
-                                                                <td class="border p-2" x-text="item.nama_pangkat"></td>
+                                                                <td class="border p-2" x-text="item.nama_jabatan"></td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a href="/kepegawaian/master_pangkat/edit_master_pangkat/(item.id)"
+                                                                    <a href="/kepegawaian/master_jabatan/editjabatan/(item.id)"
                                                                         class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
-                                                                    <button @click="deletePangkat(item.id)"
+                                                                    <button @click="deleteJabatan(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
                                                                         Delete
                                                                     </button>
@@ -118,22 +124,24 @@
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="master_golongan_id"
-                            class="block mb-2.5 text-sm font-medium text-heading">Golongan</label>
-                        <div x-data="golonganComponent()">
+                        <label for="master_eselon_id"
+                            class="block mb-2.5 text-sm font-medium text-heading">Eselon</label>
+                        <div x-data="eselonComponent()">
                             <div class="flex gap-2">
-                                <select name="master_golongan_id" id="master_golongan_id"
+                                <select name="master_eselon_id" id="master_eselon_id"
                                     class="flex-1 rounded-md border-gray-300 shadow-sm">
-                                    @foreach ($masterGolongan as $item)
-                                        <option value="{{ $item->id }}">{{ $item->nama_golongan }}</option>
+                                    @foreach ($masterEselon as $item)
+                                        <option value="{{ $item->id }}"
+                                            value="{{ old('master_eselon_id', $jabatan->master_eselon_id) == $item->id ? 'selected' : '' }}">
+                                            {{ $item->nama_eselon }}</option>
                                     @endforeach
                                 </select>
-                                <button type="button" @click="openGolongan = true"
+                                <button type="button" @click="openEselon = true"
                                     class="bg-orange-500 text-white px-3 py-1 rounded shadow hover:bg-orange-600 transition shrink-0">
-                                    + ADD GOL
+                                    + ADD ESL
                                 </button>
 
-                                <div x-show="openGolongan" class="fixed inset-0 z-50 overflow-y-auto"
+                                <div x-show="openEselon" class="fixed inset-0 z-50 overflow-y-auto"
                                     x-transition:enter="transition ease-out duration-300"
                                     x-transition:enter-start="opacity-0 -translate-y-10"
                                     x-transition:enter-end="opacity-100 translate-y-0"
@@ -143,22 +151,22 @@
                                     class="fixed inset-0 z-50 overflow-y-auto" x-cloak>
                                     <div class="flex items-center justify-center min-h-screen p-4">
                                         <div class="fixed inset-0 bg-black/40 backdrop-blur-sm"
-                                            @click="openGolongan = false">
+                                            @click="openEselon = false">
                                         </div>
                                         <div class="relative bg-white rounded-lg shadow-xl sm:max-w-4xl sm:w-full">
                                             <div class="px-4 py-3 border-b flex justify-between items-center">
-                                                <h3 class="text-lg font-bold text-green-600">Master Data Golongan</h3>
-                                                <button @click="openGolongan = false" class="text-2xl">&times;</button>
+                                                <h3 class="text-lg font-bold text-green-600">Master Data Eselon</h3>
+                                                <button @click="openEselon = false" class="text-2xl">&times;</button>
                                             </div>
                                             <div class="p-6">
 
                                                 <!-- FORM TAMBAH -->
                                                 <div class="flex gap-2 mb-4">
-                                                    <input type="text" x-model="nama_golongan"
+                                                    <input type="text" x-model="nama_eselon"
                                                         class="border rounded px-3 py-2 w-full"
                                                         placeholder="Masukan nama eselon">
 
-                                                    <button type="button" @click="addGolongan"
+                                                    <button type="button" @click="addEselon"
                                                         class="bg-blue-500 text-white px-4 rounded">
                                                         Save
                                                     </button>
@@ -169,22 +177,22 @@
                                                     <thead>
                                                         <tr class="bg-gray-100">
                                                             <th class="border p-2 text-left w-12">No</th>
-                                                            <th class="border p-2 text-left">Nama Golongan</th>
+                                                            <th class="border p-2 text-left">Nama Eselon</th>
                                                             <th class="border p-2 text-left w-40">Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <template x-for="(item, index) in listGolongan"
+                                                        <template x-for="(item, index) in listEselon"
                                                             :key="item.id">
                                                             <tr class="hover:bg-gray-50">
                                                                 <td class="border p-2 text-center" x-text="index + 1">
                                                                 </td>
-                                                                <td class="border p-2" x-text="item.nama_golongan">
+                                                                <td class="border p-2" x-text="item.nama_eselon">
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a href="/kepegawaian/master_golongan/edit_master_golongan/(item.id)"
+                                                                    <a href="/kepegawaian/master_eselon/edit_eselon/(item.id)"
                                                                         class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
-                                                                    <button @click="deleteGolongan(item.id)"
+                                                                    <button @click="deleteEselon(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
                                                                         Delete
                                                                     </button>
@@ -201,24 +209,55 @@
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="jenis_pangkat" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Pangkat</label>
-                        <input type="text" id="jenis_pangkat" name="jenis_pangkat"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan jenis pangkat" required />
+                        <label for="jenis_jabatan" class="block mb-2.5 text-sm font-medium text-heading">Jenis
+                            Jabatan</label>
+                        <select name="jenis_jabatan" id="jenis_jabatan" class="rounded-lg">
+                            <option value="Jabatan Struktural"
+                                {{ $jabatan->jenis_jabatan == 'Jabatan Struktural' ? 'selected' : '' }}>Jabatan
+                                Struktural</option>
+                            <option value="Jabatan Fungsional Tertentu"
+                                {{ $jabatan->jenis_jabatan == 'Jabatan Fungsional Tertentu' ? 'selected' : '' }}>
+                                Jabatan Fungsional Tertentu</option>
+                            <option value="Jabatan Fungsional Umum"
+                                {{ $jabatan->jenis_jabatan == 'Jabatan Fungsional Umum' ? 'selected' : '' }}>Jabatan
+                                Fungsional Umum</option>
+                        </select>
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="tmt_pangkat_mulai" class="w-1/4 text-sm font-medium text-heading">TMT
-                            Pangkat</label>
+                        <label for="tmt_jabatan_mulai" class="w-1/4 text-sm font-medium text-heading">TMT
+                            Jabatan</label>
                         <div class="flex w-3/4 gap-4">
-                            <input type="date" id="tmt_pangkat_mulai" name="tmt_pangkat_mulai"
+                            <input type="date" id="tmt_jabatan_mulai" name="tmt_jabatan_mulai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Dari" required />
+                                placeholder="Dari" required
+                                value="{{ old('tmt_jabatan_mulai', $jabatan->tmt_jabatan_mulai) }}" />
 
-                            <input type="date" id="tmt_pangkat_selesai" name="tmt_pangkat_selesai"
+                            <input type="date" id="tmt_jabatan_selesai" name="tmt_jabatan_selesai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tmt_jabatan_selesai', $jabatan->tmt_jabatan_selesai) }}" />
                         </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="periode" class="block mb-2.5 text-sm font-medium text-heading">Periode</label>
+                        <select name="periode" id="periode" class="rounded-lg">
+                            <option value="-" {{ $jabatan->periode == '-' ? 'selected' : '' }}>-</option>
+                            <option value="I" {{ $jabatan->periode == 'I' ? 'selected' : '' }}>I</option>
+                            <option value="II" {{ $jabatan->periode == 'II' ? 'selected' : '' }}>II</option>
+                            <option value="Sudah Selesai"
+                                {{ $jabatan->periode == 'Sudah Selesai' ? 'selected' : '' }}>Sudah Selesai</option>
+                        </select>
+                    </div>
+                    <div class="mb-5">
+                        <label for="tahun_ke" class="block mb-2.5 text-sm font-medium text-heading">Tahun Ke</label>
+                        <select name="tahun_ke" id="tahun_ke" class="rounded-lg">
+                            <option value="-" {{ $jabatan->tahun_ke == '-' ? 'selected' : '' }}>-</option>
+                            <option value="1" {{ $jabatan->periode == '1' ? 'selected' : '' }}>1</option>
+                            <option value="2" {{ $jabatan->periode == '2' ? 'selected' : '' }}>2</option>
+                            <option value="3" {{ $jabatan->periode == '3' ? 'selected' : '' }}>3</option>
+                            <option value="4" {{ $jabatan->periode == '4' ? 'selected' : '' }}>4</option>
+                            <option value="Sudah Selesai"
+                                {{ $jabatan->periode == 'Sudah Selesai' ? 'selected' : '' }}>Sudah Selesai</option>
+                        </select>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
@@ -226,19 +265,20 @@
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan nomor SK" required />
+                                placeholder="Masukan nomor SK" required
+                                value="{{ old('no_sk', $jabatan->no_sk) }}" />
 
                             <input type="date" id="tgl_sk" name="tgl_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tgl_sk', $jabatan->tgl_sk) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="pejabat_pengesah_sk" class="block mb-2.5 text-sm font-medium text-heading">Pejabat
-                            Pengesah SK</label>
-                        <input type="text" id="pejabat_pengesah_sk" name="pejabat_pengesah_sk"
+                        <label for="terbit" class="block mb-2.5 text-sm font-medium text-heading">Diterbitkan
+                            oleh</label>
+                        <input type="text" id="terbit" name="terbit"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Diterbikan oleh" required />
+                            placeholder="Diterbikan oleh" required value="{{ old('terbit', $jabatan->terbit) }}" />
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
@@ -246,102 +286,65 @@
             </div>
 
             <div class="mt-5">
-                <a href="/kepegawaian/pangkat"
+                <a href="/kepegawaian/jabatan"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>
     </div>
 </x-app-layout>
 <script>
-    function pangkatComponent() {
+    function jabatanComponent() {
         return {
-            openPangkat: false,
-            nama_pangkat: '',
-            listPangkat: @json($masterPangkat),
+            openJabatan: false,
+            nama_jabatan: '',
+            listJabatan: @json($masterJabatan),
 
-            async addPangkat() {
-                if (!this.nama_pangkat) return;
+            async addJabatan() {
+                if (!this.nama_jabatan) return;
 
-                let res = await fetch('/kepegawaian/master_pangkat/store', {
+                let res = await fetch('/kepegawaian/master_jabatan/store', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        nama_pangkat: this.nama_pangkat
+                        nama_jabatan: this.nama_jabatan
                     })
                 });
 
                 let data = await res.json();
 
-                this.listPangkat.push(data);
-                this.nama_pangkat = '';
-            }
-
-            async deletePangkat(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
-
-                let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listPangkat = this.listPangkat.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
+                this.listJabatan.push(data);
+                this.nama_jabatan = '';
             }
         }
     }
 
-    function golonganComponent() {
+    function eselonComponent() {
         return {
-            openGolongan: false,
-            nama_golongan: '',
-            listGolongan: @json($masterGolongan),
+            openEselon: false,
+            nama_eselon: '',
+            listEselon: @json($masterEselon),
 
-            async addGolongan() {
-                if (!this.nama_golongan) return;
+            async addEselon() {
+                if (!this.nama_eselon) return;
 
-                let res = await fetch('/kepegawaian/master_golongan/store', {
+                let res = await fetch('/kepegawaian/master_eselon/store', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     body: JSON.stringify({
-                        nama_golongan: this.nama_golongan
+                        nama_eselon: this.nama_eselon
                     })
                 });
 
                 let data = await res.json();
 
-                this.listGolongan.push(data);
-                this.nama_golongan = '';
-            }
-            async deleteGolongan(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
-
-                let res = await fetch(`/kepegawaian/master_golongan/delete_master_golongan/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listGolongan = this.listGolongan.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
+                this.listEselon.push(data);
+                this.nama_eselon = '';
             }
         }
     }

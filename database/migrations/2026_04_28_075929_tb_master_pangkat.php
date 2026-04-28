@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tb_eselon', function (Blueprint $table) {
+        Schema::create('tb_master_pangkat', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("master_eselon_id")->constrained('tb_master_eselon');
+            $table->string('nama_pangkat');
             $table->timestamps();
         });
     }
@@ -23,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tb_eselon');
+        Schema::dropIfExists('tb_master_pangkat');
     }
 };

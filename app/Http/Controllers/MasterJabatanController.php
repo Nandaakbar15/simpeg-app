@@ -4,39 +4,36 @@ namespace App\Http\Controllers;
 
 use App\Models\MasterJabatan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class MasterJabatanController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
-    }
+        $validateData = $request->validate([
+            'nama_jabatan' => 'required|string'
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(MasterJabatan $masterJabatan)
-    {
-        //
+        try {
+            DB::beginTransaction();
+
+            $masterJabatan = MasterJabatan::create($validateData);
+
+            DB::commit();
+
+            return response()->json($masterJabatan);
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -44,7 +41,9 @@ class MasterJabatanController extends Controller
      */
     public function edit(MasterJabatan $masterJabatan)
     {
-        //
+        return view("pages.dashboard.kepegawaian.jabatan.master_jabatan.editMasterJabatan", [
+            'masterJabatan' => $masterJabatan
+        ]);
     }
 
     /**
@@ -52,7 +51,25 @@ class MasterJabatanController extends Controller
      */
     public function update(Request $request, MasterJabatan $masterJabatan)
     {
-        //
+        $validateData = $request->validate([
+            'nama_jabatan' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $masterJabatan->update($validateData);
+
+            DB::commit();
+
+            return back()->with('Berhasil mengubah master data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -60,6 +77,8 @@ class MasterJabatanController extends Controller
      */
     public function destroy(MasterJabatan $masterJabatan)
     {
-        //
+        $masterJabatan->delete();
+
+        return response()->json($masterJabatan);
     }
 }

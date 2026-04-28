@@ -26,6 +26,7 @@
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="gambarLama" value="{{ $sekretariat->gambarLama }}">
                     <div class="mb-5">
                         <label for="nama_sekretariat" class="block mb-2.5 text-sm font-medium text-heading">Nama
                             sekretariat</label>

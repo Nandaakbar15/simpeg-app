@@ -7,6 +7,8 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+
 
 class SekretariatController extends Controller
 {
@@ -86,14 +88,45 @@ class SekretariatController extends Controller
      */
     public function update(Request $request, Sekretariat $sekretariat)
     {
-        //
-    }
+        $validateData = $request->validate([
+            'nama_sekretariat' => 'required|string',
+            'kabupaten_kota' => 'required',
+            'nama_kabupaten_kota' => 'required|string',
+            'alamat' => 'required|string',
+            'no_telp' => 'required|string',
+            'email' => 'required|string',
+            'sekretaris' => 'required|string',
+            'nip' => 'required|string',
+            'gambar_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Sekretariat $sekretariat)
-    {
-        //
+        try {
+            DB::beginTransaction();
+
+
+            if($request->hasFile('gambar_logo')) {
+
+                if($request->gambarLama) {
+                    Storage::disk('public')->delete($request->gambarLama);
+                }
+
+                $file = $request->file('gambar_logo');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('images', $fileName, 'public');
+                $validateData['gambar_logo'] = '/storage/' . $path;
+            }
+
+            $sekretariat->update($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/manajemen_setup')->with('success', 'Berhasil setup sekretariat!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal setup sekretariat : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 }
