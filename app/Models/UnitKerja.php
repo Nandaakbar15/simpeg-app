@@ -14,7 +14,8 @@ class UnitKerja extends Model
 
     public function pegawai()
     {
-        return $this->hasOne('pegawai_id', Pegawai::class);
+        // Parameter kedua haruslah nama kolom 'foreign key' yang ada di tabel tb_pegawai
+        return $this->hasMany(Pegawai::class, 'unit_kerja_id');
     }
 
     use HasFactory;

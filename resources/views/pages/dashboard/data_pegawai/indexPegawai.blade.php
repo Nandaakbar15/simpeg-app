@@ -102,7 +102,7 @@
                                 </td>
                             </tr>
                         @endforeach
-                        <div class="flex justify-center">
+                        <div class="flex justify-center mt-6">
                             {{ $pegawai->links() }}
                         </div>
                     </tbody>

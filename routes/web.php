@@ -32,6 +32,7 @@ use App\Http\Controllers\MasterPangkatController;
 use App\Http\Controllers\MasterGolonganController;
 use App\Http\Controllers\PangkatController;
 use App\Http\Controllers\PrestasiKerjaController;
+use App\Http\Controllers\RekapitulasiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +81,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/opd_skpd_unitkerja', [UnitKerjaController::class, 'index']);
             Route::get('/view_form_tambah_unitkerja', [UnitKerjaController::class, 'create']);
             Route::post('/opd_skd_unitkerja/tambah_unit_kerja', [UnitKerjaController::class, 'store']);
+            Route::get('/view_form_edit_unitkerja/{unitKerja}', [UnitKerjaController::class, 'edit']);
+            Route::put("/opd_skd_unitkerja/edit_unit_kerja/{unitKerja}", [UnitKerjaController::class, 'update']);
 
              // URL buat data user admin
             Route::get('/data_user_admin', [UserAdminController::class, 'index']);
@@ -258,6 +261,26 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/data_prestasi_kerja', [PrestasiKerjaController::class, 'index']);
         Route::get('/view_form_tambah_prestasi_kerja', [PrestasiKerjaController::class, 'create']);
         Route::post('/tambah_prestasi_kerja', [PrestasiKerjaController::class, 'store']);
+        Route::get('/view_form_edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'edit']);
+        Route::put('/edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'update']);
+    });
+
+    Route::prefix('tpp')->group(function() {
+        Route::get('/input_tpp');
+        Route::get('/laporan_bulanan');
+    });
+
+    Route::prefix('rekapitulasi')->group(function() {
+        Route::get('/opd_skpd_unit_kerja', [RekapitulasiController::class, 'rekapUnitKerja']);
+        Route::get('/golongan', [RekapitulasiController::class, 'rekapGolongan']);
+        Route::get('/pangkat', [RekapitulasiController::class, 'rekapPangkat']);
+        Route::get('/jabatan', [RekapitulasiController::class, 'rekapJabatan']);
+        Route::get('/eselon', [RekapitulasiController::class, 'rekapEselon']);
+        Route::get('/status_kepegawaian', [RekapitulasiController::class, 'rekapStatusKepegawaian']);
+        Route::get('/agama', [RekapitulasiController::class, 'rekapAgama']);
+        Route::get('/jenis_kelamin', [RekapitulasiController::class, 'rekapJenisKelamin']);
+        Route::get('/status_pernikahan', [RekapitulasiController::class, 'rekapStatusPernikahan']);
+        Route::get('/pendidikan_terakhir', [RekapitulasiController::class, 'rekapPendidikanAkhir']);
     });
 
 });

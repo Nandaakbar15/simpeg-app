@@ -17,5 +17,10 @@ class MasterEselon extends Model
         return $this->hasOne(Eselon::class, 'id');
     }
 
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class, 'id');
+    }
+
     use HasFactory;
 }

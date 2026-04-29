@@ -47,7 +47,7 @@ class UnitKerjaController extends Controller
     public function edit(UnitKerja $unitKerja)
     {
         return view("pages.dashboard.manajemen_setup.OPD_SKD_UnitKerja.editUnitKerja", [
-            'unitkerja' => $unitKerja
+            'unitKerja' => $unitKerja
         ]);
     }
 
@@ -63,7 +63,7 @@ class UnitKerjaController extends Controller
 
         $unitKerja->update($validateData);
 
-        return redirect('/manajemen_setup/opd_skd_unitkerja')->with('success', 'Berhasil mengubah data!');
+        return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil mengubah data!');
     }
 
     /**
@@ -73,6 +73,6 @@ class UnitKerjaController extends Controller
     {
         $unitKerja->delete();
 
-        return redirect('/manajemen_setup/opd_skd_unitkerja')->with('success', 'Berhasil menghapus data!');
+        return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil menghapus data!');
     }
 }

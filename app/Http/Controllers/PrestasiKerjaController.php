@@ -104,7 +104,12 @@ class PrestasiKerjaController extends Controller
      */
     public function edit(PrestasiKerja $prestasiKerja)
     {
-        //
+        $pegawai = Pegawai::all();
+
+        return view("pages.dashboard.skp_prestasi_kerja.editPrestasiKerja", [
+            'pegawai' => $pegawai,
+            'prestasiKerja' => $prestasiKerja
+        ]);
     }
 
     /**
@@ -112,7 +117,63 @@ class PrestasiKerjaController extends Controller
      */
     public function update(Request $request, PrestasiKerja $prestasiKerja)
     {
-        //
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'periode_nilai_dari' => 'required|date',
+            'periode_nilai_sampai' => 'required|date',
+            'tahun_periode' => 'required|string',
+            'nama_pejabat_nilai' => 'required|string',
+            'nama_atasan_pejabat_penilai' => 'required|string',
+            'skp' => 'required|numeric',
+            'orientasi_pelayanan' => 'required|numeric',
+            'integritas' => 'required|numeric',
+            'komitmen' => 'required|numeric',
+            'disiplin' => 'required|numeric',
+            'kerjasama' => 'required|numeric',
+            'kepemimpinan' => 'required|numeric',
+            'tgl_keberatan_pegawai' => 'required|date',
+            'isi_keberatan' => 'required|string',
+            'tgl_keputusan_atasan_pejabat_penilai' => 'required|date',
+            'isi_keputusan' => 'required|string',
+            'rekomendasi' => 'required|string',
+            'tgl_diterima_pegawai' => 'required|date',
+            'tgl_diterima_atasan' => 'required|date',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $perilaku = [
+                $request->orientasi_pelayanan,
+                $request->integritas,
+                $request->komitmen,
+                $request->disiplin,
+                $request->kerjasama,
+                $request->kepemimpinan
+            ];
+
+            // Filter nilai yang lebih dari 0 untuk pembagi rata-rata (menghindari division by zero)
+            $rataPerilaku = array_sum($perilaku) / count($perilaku);
+
+            // Hitung Total Nilai (Contoh Rumus Standar PNS: 60% SKP + 40% Perilaku)
+            $totalNilai = ($request->skp * 0.6) + ($rataPerilaku * 0.4);
+
+            // Simpan ke Database
+            $validateData = $request->all();
+            $validateData['total_nilai'] = $totalNilai;
+
+            $prestasiKerja->update($validateData);
+
+            DB::commit();
+
+            return redirect('/skp_prestasi_kerja/data_prestasi_kerja')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal mengubah data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -120,6 +181,8 @@ class PrestasiKerjaController extends Controller
      */
     public function destroy(PrestasiKerja $prestasiKerja)
     {
-        //
+        $prestasiKerja->delete();
+
+        return redirect('/skp_prestasi_kerja/data_prestasi_kerja')->with('success', 'Berhasil menghapus data!');
     }
 }
