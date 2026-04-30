@@ -28,15 +28,15 @@
                                 <tr>
                                     <td class="px-4 py-3">{{ $index + 1 }}</td>
                                     <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
-                                        {{ $data->jenjang_pendidikan }}</td>
-                                    <td class="px-4 py-3 text-center">{{ $data->pegawai_count }}</td>
+                                        {{ $data['jenjang_pendidikan'] }}</td>
+                                    <td class="px-4 py-3 text-center">{{ $data['jumlah'] }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
                         <tfoot class="bg-gray-50 dark:bg-gray-700">
                             <tr class="font-bold text-gray-800 dark:text-gray-100">
                                 <td colspan="2" class="px-4 py-3 text-right">TOTAL</td>
-                                <td class="px-4 py-3 text-center">{{ $pendidikanAkhir->sum('pegawai_count') }}</td>
+                                <td class="px-4 py-3 text-center">{{ $pendidikanAkhir->sum('jumlah') }}</td>
                             </tr>
                         </tfoot>
                     </table>

@@ -28,6 +28,7 @@ class User extends Authenticatable
         'name',
         'email',
         'role',
+        'unit_kerja_id',
         'password',
     ];
 
@@ -58,4 +59,9 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function unit_kerja()
+    {
+        return $this->belongsTo(UnitKerja::class, 'unit_kerja_id');
+    }
 }

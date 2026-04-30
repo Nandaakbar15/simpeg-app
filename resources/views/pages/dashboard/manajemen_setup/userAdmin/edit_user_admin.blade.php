@@ -14,9 +14,18 @@
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
-                <form action="/manajemen_setup/edit_user_admin/{{ $user->id }}" method="POST">
+                <form action="/manajemen_setup/edit_data_user_admin/{{ $user->id }}" method="POST">
                     @csrf
                     @method('PUT')
+                    @if ($errors->any())
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+                            <ul class="list-disc list-inside text-sm">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="mb-5">
                         <label for="username" class="block mb-2.5 text-sm font-medium text-heading">Username</label>
                         <input type="text" id="username" name="username"
@@ -34,6 +43,19 @@
                         <input type="text" id="email" name="email"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Email User" required value="{{ old('email', $user->email) }}" />
+                    </div>
+                    <div class="mb-5">
+                        <label for="unit_kerja_id" class="block mb-2.5 text-sm font-medium text-heading">OPD / SKPD /
+                            Unit Kerja</label>
+                        <select name="unit_kerja_id" id="unit_kerja_id">
+                            <option value="">--Pilih Unit Kerja --</option>
+                            @foreach ($unitKerja as $item)
+                                <option value="{{ $item->id }}"
+                                    {{ old('unit_kerja_id', $user->unit_kerja_id) == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama_unit }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>

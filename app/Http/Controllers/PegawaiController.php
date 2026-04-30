@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use App\Models\User;
 
 class PegawaiController extends Controller
 {
@@ -18,7 +19,16 @@ class PegawaiController extends Controller
      */
     public function index()
     {
-        $pegawai = Pegawai::with('unit_kerja')->paginate(5);
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::with('unit_kerja')
+                ->where('unit_kerja_id', $user->unit_kerja_id)
+                ->paginate(5);
+        } else {
+            // super admin / lainnya bisa lihat semua
+            $pegawai = Pegawai::with('unit_kerja')->paginate(5);
+        }
 
         return view("pages.dashboard.data_pegawai.indexPegawai", [
             "pegawai" => $pegawai

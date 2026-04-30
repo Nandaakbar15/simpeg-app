@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\UnitKerja;
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class UserAdminController extends Controller
 {
@@ -12,7 +16,7 @@ class UserAdminController extends Controller
      */
     public function index()
     {
-        $user = User::where('role', 'admin')->get();
+        $user = User::where('role', 'admin')->with("unit_kerja")->get();
 
         return view('pages.dashboard.manajemen_setup.userAdmin.data_user_admin', [
             'user' => $user
@@ -24,7 +28,10 @@ class UserAdminController extends Controller
      */
     public function create()
     {
-        return view('pages.dashboard.manajemen_setup.userAdmin.tambah_user_admin');
+        $unitKerja = UnitKerja::all();
+        return view('pages.dashboard.manajemen_setup.userAdmin.tambah_user_admin', [
+            'unitKerja' => $unitKerja
+        ]);
     }
 
     /**
@@ -36,15 +43,31 @@ class UserAdminController extends Controller
             'username' => 'required|string',
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users,email',
+            'unit_kerja_id' => 'required|exists:tb_unit_kerja,id',
             'password' => 'required|string',
         ]);
 
-        $validateData['password'] = bcrypt($validateData['password']);
-        $validateData['role'] = 'admin';
+        try {
+            DB::beginTransaction();
 
-        User::create($validateData);
+            $validateData['password'] = bcrypt($validateData['password']);
+            $validateData['role'] = 'admin';
 
-        return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menabahkan data user admin!');
+            User::create($validateData);
+
+            DB::commit();
+
+            return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menabahkan data user admin!');
+
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan user admin : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+
+
     }
 
     /**
@@ -52,8 +75,10 @@ class UserAdminController extends Controller
      */
     public function edit(User $user)
     {
+        $unitKerja = UnitKerja::all();
         return view("pages.dashboard.manajemen_setup.userAdmin.edit_user_admin", [
-            'user' => $user
+            'user' => $user,
+            'unitKerja' => $unitKerja
         ]);
     }
 
@@ -65,15 +90,28 @@ class UserAdminController extends Controller
         $validateData = $request->validate([
             'username' => 'required|string',
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'unit_kerja_id' => 'required|exists:tb_unit_kerja,id'
         ]);
 
-        $validateData['role'] = 'admin';
+        try {
+            DB::beginTransaction();
 
-        $user->update($validateData);
+            $validateData['role'] = 'admin';
 
-        return redirect('/manajamen_setup/data_user_admin')->with('success', 'Berhasil mengubah data user admin!');
+            $user->update($validateData);
 
+            DB::commit();
+
+            return redirect('/manajamen_setup/data_user_admin')->with('success', 'Berhasil mengubah data user admin!');
+
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal mengubah user admin : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -81,6 +119,8 @@ class UserAdminController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menghapus data!');
     }
 }

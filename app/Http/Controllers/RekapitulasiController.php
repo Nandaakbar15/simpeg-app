@@ -10,6 +10,7 @@ use App\Models\MasterPangkat;
 use App\Models\MasterJabatan;
 use App\Models\MasterEselon;
 use App\Models\RiwayatPendidikanSekolah;
+use App\Models\RiwayatPendidikanLanjut;
 
 class RekapitulasiController extends Controller
 {
@@ -149,15 +150,49 @@ class RekapitulasiController extends Controller
 
     public function rekapPendidikanAkhir()
     {
-        $pendidikanAkhir = RiwayatPendidikanSekolah::withCount("pegawai")->get();
+        // Ambil pendidikan tertinggi per pegawai berdasarkan urutan jenjang,
+        // lalu group by jenjang_pendidikan untuk menghitung jumlah pegawai.
+        // Urutan jenjang: SD < SMP < SMA/SMK < D1 < D2 < D3 < D4 < S1 < S2 < S3
+        $jenjangOrder = ['SD', 'SMP', 'SMA', 'SMK', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
 
-        $chartCategories = $pendidikanAkhir->pluck("jenjang_pendidikan")->toArray();
-        $chartData = $pendidikanAkhir->pluck("pegawai_count")->toArray();
+        // Subquery: ambil jenjang_pendidikan terbaru (FIELD order) per pegawai_id
+        // Karena tidak ada kolom "level", kita ambil semua record lalu proses di PHP
+        $semuaRiwayat = RiwayatPendidikanSekolah::select('pegawai_id', 'jenjang_pendidikan')->get();
+
+        // Juga gabungkan dari pendidikan lanjut (D1-S3)
+        $riwayatLanjut = \App\Models\RiwayatPendidikanLanjut::select('pegawai_id', 'jenjang_pendidikan')->get();
+
+        $semuaRiwayat = $semuaRiwayat->concat($riwayatLanjut);
+
+        // Untuk setiap pegawai, ambil jenjang tertinggi
+        $pendidikanPerPegawai = $semuaRiwayat
+            ->groupBy('pegawai_id')
+            ->map(function ($records) use ($jenjangOrder) {
+                $tertinggi = $records->sortByDesc(function ($r) use ($jenjangOrder) {
+                    $idx = array_search(strtoupper(trim($r->jenjang_pendidikan)), $jenjangOrder);
+                    return $idx !== false ? $idx : -1;
+                })->first();
+                return $tertinggi->jenjang_pendidikan;
+            });
+
+        // Group by jenjang dan hitung
+        $grouped = $pendidikanPerPegawai
+            ->groupBy(fn($j) => $j)
+            ->map(fn($items, $jenjang) => [
+                'jenjang_pendidikan' => $jenjang,
+                'jumlah'             => $items->count(),
+            ])
+            ->values()
+            ->sortByDesc(fn($item) => array_search(strtoupper(trim($item['jenjang_pendidikan'])), $jenjangOrder))
+            ->values();
+
+        $chartCategories = $grouped->pluck('jenjang_pendidikan')->toArray();
+        $chartData       = $grouped->pluck('jumlah')->toArray();
 
         return view("pages.dashboard.rekapitulasi.rekapPendidikanAkhir", [
-            'pendidikanAkhir' => $pendidikanAkhir,
+            'pendidikanAkhir' => $grouped,
             'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'chartData'       => $chartData,
         ]);
     }
 

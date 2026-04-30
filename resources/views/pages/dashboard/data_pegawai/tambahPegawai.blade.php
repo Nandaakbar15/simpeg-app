@@ -194,16 +194,31 @@
                             placeholder="Masukan Gol Awal" required />
                     </div>
                     <div class="mb-5">
-                        <label for="unit_kerja_id" class="block mb-2.5 text-sm font-medium text-heading">OPD /
-                            SKPD /
-                            Unit
-                            Kerja</label>
-                        <select name="unit_kerja_id" id="unit_kerja_id">
-                            <option value="">--Pilih Unit Kerja -- </option>
-                            @foreach ($unitKerja as $item)
-                                <option value="{{ $item->id }}">{{ $item->nama_unit }}</option>
-                            @endforeach
-                        </select>
+                        <label class="block mb-2.5 text-sm font-medium text-heading">
+                            OPD / SKPD / Unit Kerja
+                        </label>
+
+                        @if (auth()->user()->role === 'admin')
+                            <!-- Admin: dikunci -->
+                            <input type="hidden" name="unit_kerja_id" value="{{ auth()->user()->unit_kerja_id }}">
+
+                            <select disabled class="bg-gray-100 cursor-not-allowed">
+                                @foreach ($unitKerja as $item)
+                                    <option value="{{ $item->id }}"
+                                        {{ $item->id == auth()->user()->unit_kerja_id ? 'selected' : '' }}>
+                                        {{ $item->nama_unit }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        @else
+                            <!-- Superadmin: bebas pilih -->
+                            <select name="unit_kerja_id" id="unit_kerja_id">
+                                <option value="">--Pilih Unit Kerja --</option>
+                                @foreach ($unitKerja as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nama_unit }}</option>
+                                @endforeach
+                            </select>
+                        @endif
                     </div>
                     <div class="mb-5">
                         <label for="foto" class="block mb-2.5 text-sm font-medium text-heading">Foto

@@ -33,6 +33,8 @@ use App\Http\Controllers\MasterGolonganController;
 use App\Http\Controllers\PangkatController;
 use App\Http\Controllers\PrestasiKerjaController;
 use App\Http\Controllers\RekapitulasiController;
+use App\Http\Controllers\TppController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +92,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::post('/tambah_user_admin', [UserAdminController::class, 'store']);
             Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
             Route::get('/view_form_edit_user_admin/{user}', [UserAdminController::class, 'edit']);
-            Route::put('/edit_data_user_admin', [UserAdminController::class, 'update']);
+            Route::put('/edit_data_user_admin/{user}', [UserAdminController::class, 'update']);
         });
 
         // URL buat data user pegawai
@@ -257,6 +259,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/izin_kawin/view_form_edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'edit']);
     });
 
+    // SKP Prestasi Kerja
     Route::prefix('skp_prestasi_kerja')->group(function() {
         Route::get('/data_prestasi_kerja', [PrestasiKerjaController::class, 'index']);
         Route::get('/view_form_tambah_prestasi_kerja', [PrestasiKerjaController::class, 'create']);
@@ -265,11 +268,18 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'update']);
     });
 
+    // TPP
     Route::prefix('tpp')->group(function() {
-        Route::get('/input_tpp');
-        Route::get('/laporan_bulanan');
+        Route::get('/input_tpp', [TppController::class, 'index'])->name('tpp.index');
+        Route::get('/tambah_tpp', [TppController::class, 'create'])->name('tpp.create');
+        Route::post('/simpan_tpp', [TppController::class, 'store'])->name('tpp.store');
+        Route::get('/edit_tpp/{tpp}', [TppController::class, 'edit'])->name('tpp.edit');
+        Route::put('/update_tpp/{tpp}', [TppController::class, 'update'])->name('tpp.update');
+        Route::delete('/hapus_tpp/{tpp}', [TppController::class, 'destroy'])->name('tpp.destroy');
+        Route::get('/laporan_bulanan', [TppController::class, 'laporanBulanan'])->name('tpp.laporan_bulanan');
     });
 
+    // Rekapitulasi
     Route::prefix('rekapitulasi')->group(function() {
         Route::get('/opd_skpd_unit_kerja', [RekapitulasiController::class, 'rekapUnitKerja']);
         Route::get('/golongan', [RekapitulasiController::class, 'rekapGolongan']);
@@ -281,6 +291,19 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/jenis_kelamin', [RekapitulasiController::class, 'rekapJenisKelamin']);
         Route::get('/status_pernikahan', [RekapitulasiController::class, 'rekapStatusPernikahan']);
         Route::get('/pendidikan_terakhir', [RekapitulasiController::class, 'rekapPendidikanAkhir']);
+    });
+
+    // Report
+    Route::prefix('report')->group(function() {
+        Route::get('/nominatif', [ReportController::class, 'reportNominatif'])->name('report.nominatif');
+        Route::get('/nominatif/print', [ReportController::class, 'printNominatif'])->name('report.nominatif.print');
+        Route::get('/duk', [ReportController::class, 'reportDUK'])->name('report.duk');
+        Route::get('/duk/print', [ReportController::class, 'printDUK'])->name('report.duk.print');
+        Route::get('/bezetting', [ReportController::class, 'reportBezetting'])->name('report.bezetting');
+        Route::get('/bezetting/print', [ReportController::class, 'printBezetting'])->name('report.bezetting.print');
+        Route::get('/keadaan_pegawai', [ReportController::class, 'reportKeadaanPegawai'])->name('report.keadaan_pegawai');
+        Route::get('/keadaan_pegawai/print', [ReportController::class, 'printKeadaanPegawai'])->name('report.keadaan_pegawai.print');
+        Route::get('/pensiun', [ReportController::class, 'reportPensiun'])->name('report.pensiun');
     });
 
 });

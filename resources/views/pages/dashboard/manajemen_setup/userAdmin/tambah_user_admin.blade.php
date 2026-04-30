@@ -49,6 +49,17 @@
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Password" required />
                     </div>
+                    <div class="mb-5">
+                        <label for="unit_kerja_id" class="block mb-2.5 text-sm font-medium text-heading">OPD / SKPD /
+                            Unit
+                            Kerja</label>
+                        <select name="unit_kerja_id" id="unit_kerja_id">
+                            <option value="">--Pilih Pegawai -- </option>
+                            @foreach ($unitKerja as $item)
+                                <option value="{{ $item->id }}">{{ $item->nama_unit }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
                 </form>

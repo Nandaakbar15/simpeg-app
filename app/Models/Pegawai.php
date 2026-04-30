@@ -65,5 +65,15 @@ class Pegawai extends Model
         return $this->hasOne(RiwayatKeluargaSuamiIstri::class, 'id');
     }
 
+    public function jabatan()
+    {
+        return $this->hasMany(Jabatan::class, 'pegawai_id');
+    }
+
+    public function jabatan_aktif()
+    {
+        return $this->hasOne(Jabatan::class, 'pegawai_id')->latest('tmt_jabatan_mulai');
+    }
+
     use HasFactory;
 }
