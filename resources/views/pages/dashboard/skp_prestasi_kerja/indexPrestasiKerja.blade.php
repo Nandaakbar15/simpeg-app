@@ -82,7 +82,7 @@
                                             class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
                                             Edit
                                         </a>
-                                        <form action="/kepegawaian/delete_data_prestasi_kerja/{{ $data->id }}"
+                                        <form action="/skp_prestasi_kerja/delete_data_prestasi_kerja/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

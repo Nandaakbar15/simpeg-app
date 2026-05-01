@@ -41,7 +41,9 @@ class MasterGolonganController extends Controller
      */
     public function edit(MasterGolongan $masterGolongan)
     {
-        //
+        return view("pages.dashboard.kepegawaian.pangkat.master_golongan.editMasterGolongan", [
+            'masterGolongan' => $masterGolongan
+        ]);
     }
 
     /**
@@ -49,7 +51,25 @@ class MasterGolonganController extends Controller
      */
     public function update(Request $request, MasterGolongan $masterGolongan)
     {
-        //
+        $validateData = $request->validate([
+            'nama_golongan' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $masterGolongan->update($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/pangkat')->with('success', 'Berhasil mengubah master golongan data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -57,6 +77,8 @@ class MasterGolonganController extends Controller
      */
     public function destroy(MasterGolongan $masterGolongan)
     {
-        //
+        $masterGolongan->delete();
+
+        return response()->json($masterGolongan);
     }
 }

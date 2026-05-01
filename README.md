@@ -10,10 +10,7 @@ Fitur-Fitur yang sudah ada :
 
 - admin : CRUD User Pegawai, CRUD Data Pegawai, CRUD Riwayat Keluarga Anak dan Suami
 
-Fitur-Fitur yang belum ada :
-
-- CRUD Jabatan
-- CRUD Pangkat
+- pegawai : Melihat profil, riwayat pendidikan, prestasi kerja, dll.
 
 ## Tech Stack
 

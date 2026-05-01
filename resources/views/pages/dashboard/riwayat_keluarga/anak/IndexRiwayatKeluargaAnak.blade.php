@@ -84,6 +84,11 @@
                                         {{ $data->pekerjaan }}
                                     </div>
                                 </td>
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                    <div class="font-medium text-gray-800 dark:text-gray-100">
+                                        {{ $data->status_hubungan }}
+                                    </div>
+                                </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/riwayat_keluarga/anak/view_edit_data_anak/{{ $data->id }}"

@@ -106,14 +106,14 @@
                             value="{{ old('pekerjaan', $riwayatKeluargaAnak->pekerjaan) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="status" class="block mb-2.5 text-sm font-medium text-heading">Status
+                        <label for="status_hubungan" class="block mb-2.5 text-sm font-medium text-heading">Status
                             Hubungan</label>
-                        <select name="status" id="status">
+                        <select name="status_hubungan" id="status_hubungan">
                             <option value="Anak Kandung"
-                                {{ $riwayatKeluargaAnak->status == 'Anak Kandung' ? 'selected' : '' }}>Anak Kandung
+                                {{ $riwayatKeluargaAnak->status_hubungan == 'Anak Kandung' ? 'selected' : '' }}>Anak Kandung
                             </option>
                             <option value="Anak Angkat"
-                                {{ $riwayatKeluargaAnak->status == 'Anak Angkat' ? 'selected' : '' }}>Anak Angkat
+                                {{ $riwayatKeluargaAnak->status_hubungan == 'Anak Angkat' ? 'selected' : '' }}>Anak Angkat
                             </option>
                         </select>
                     </div>

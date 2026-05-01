@@ -51,7 +51,25 @@ class MasterPangkatController extends Controller
      */
     public function update(Request $request, MasterPangkat $masterPangkat)
     {
-        //
+        $validateData = $request->validate([
+            'nama_pangkat' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $masterPangkat->update($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/pangkat')->with('success', 'Berhasil mengubah data master pangkat');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -59,6 +77,8 @@ class MasterPangkatController extends Controller
      */
     public function destroy(MasterPangkat $masterPangkat)
     {
-        //
+        $masterPangkat->delete();
+
+        return response()->json($masterPangkat);
     }
 }

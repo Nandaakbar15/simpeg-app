@@ -85,7 +85,15 @@
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        <i class="fas fa-download"></i>
+                                        <a href="/kepegawaian/cuti/download_surat_cuti/{{ $data->id }}"
+                                           target="_blank"
+                                           title="Download / Cetak Surat Cuti"
+                                           class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3"/>
+                                            </svg>
+                                        </a>
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">

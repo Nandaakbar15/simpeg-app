@@ -35,6 +35,7 @@ use App\Http\Controllers\PrestasiKerjaController;
 use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\TppController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProfilePegawaiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,6 +56,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/json-data-feed', [DataFeedController::class, 'getDataFeed'])->name('json_data_feed');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Profile Pegawai (role: pegawai)
+    Route::get('/profile_saya', [ProfilePegawaiController::class, 'index'])->name('profile.pegawai');
 
     Route::prefix('data_pegawai')->group(function() {
         Route::get('/pegawai', [PegawaiController::class, 'index']);
@@ -93,6 +97,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/data_user_pegawai', [UserPegawaiController::class, 'index']);
             Route::get('/view_form_edit_user_admin/{user}', [UserAdminController::class, 'edit']);
             Route::put('/edit_data_user_admin/{user}', [UserAdminController::class, 'update']);
+            Route::delete('/delete_user_admin/{user}', [UserAdminController::class, 'destroy']);
         });
 
         // URL buat data user pegawai
@@ -169,7 +174,11 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/master_jabatan/store', [MasterJabatanController::class, 'store']);
         Route::get('/master_jabatan/view_form_edit_master_jabatan/{masterJabatan}', [MasterJabatanController::class, 'edit']);
         Route::delete('/master_jabatan/delete_master_jabatan/{masterJabatan}', [MasterJabatanController::class, 'destroy']);
+        Route::put('/master_jabatan/update_master_jabatan/{masterJabatan}', [MasterJabatanController::class, 'update']);
         Route::post('/master_eselon/store', [MasterEselonController::class, 'store']);
+        Route::get('/master_eselon/view_form_edit_master_eselon/{masterEselon}', [MasterEselonController::class, 'edit']);
+        Route::put('/master_eselon/edit_master_eselon/{masterEselon}', [MasterEselonController::class, 'update']);
+        Route::delete('/master_eselon/delete_master_eselon/{masterEselon}', [MasterEselonController::class, 'destroy']);
 
         // URL untuk kepegawaian pangkat
         Route::get('/pangkat', [PangkatController::class, 'index']);
@@ -180,7 +189,12 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
         // URL master pangkat dan master golongan dengan ajax
         Route::post('/master_pangkat/store', [MasterPangkatController::class, 'store']);
+        Route::get('/master_pangkat/view_form_edit_master_pangkat/{masterPangkat}', [MasterPangkatController::class, 'edit']);
+        Route::put('/master_pangkat/edit_master_pangkat/{masterPangkat}', [MasterPangkatController::class, 'update']);
+        Route::delete('/master_pangkat/delete_master_pangkat/{masterPangkat}', [MasterPangkatController::class, 'destroy']);
         Route::post('/master_golongan/store', [MasterGolonganController::class, 'store']);
+        Route::get('/master_golongan/view_form_edit_master_golongan/{masterGolongan}', [MasterGolonganController::class, 'edit']);
+        Route::delete('/master_golongan/delete_master_golongan/{masterGolongan}', [MasterGolonganController::class, 'destroy']);
 
         // URL Kepegawaian hukuman
         Route::get('/hukuman', [HukumanController::class, 'index']);
@@ -188,6 +202,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/hukuman/tambah_data_hukuman', [HukumanController::class, 'store']);
         Route::get('/hukuman/view_form_edit_hukuman/{hukuman}', [HukumanController::class, 'edit']);
         Route::put('/hukuman/edit_data_hukuman/{hukuman}', [HukumanController::class, 'update']);
+        Route::delete('/hukuman/delete_data_hukuman/{hukuman}', [HukumanController::class, 'destroy']);
+        Route::get('/hukuman/download_sk/{hukuman}', [HukumanController::class, 'downloadSK']);
 
         // URL Kepegawaian Diklat
         Route::get('/diklat', [DiklatController::class, 'index']);
@@ -203,6 +219,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/penghargaan/tambah_penghargaan', [PenghargaanController::class, 'store']);
         Route::get('/penghargaan/view_form_edit_penghargaan/{penghargaan}', [PenghargaanController::class, 'edit']);
         Route::put('/penghargaan/edit_penghargaan/{penghargaan}', [PenghargaanController::class, 'update']);
+        Route::delete('/penghargaan/delete_data_penghargaan/{penghargaan}', [PenghargaanController::class, 'destroy']);
+        Route::get('/penghargaan/download_sertifikat/{penghargaan}', [PenghargaanController::class, 'downloadSertifikat']);
 
         // URL Kepegawaian Penugasan Luar Negeri
         Route::get('/penugasan_ln', [PenugasanLuarNegeriController::class, 'index']);
@@ -228,6 +246,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/cuti/view_form_edit_cuti/{cuti}', [CutiController::class, 'edit']);
         Route::put('/cuti/edit_riwayat_cuti/{cuti}', [CutiController::class, 'update']);
         Route::delete('/cuti/delete_riwayat_cuti/{cuti}', [CutiController::class, 'destroy']);
+        Route::get('/cuti/download_surat_cuti/{cuti}', [CutiController::class, 'downloadSuratCuti']);
 
 
         // URL Kepegawaian Latihan jabatan
@@ -266,6 +285,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/tambah_prestasi_kerja', [PrestasiKerjaController::class, 'store']);
         Route::get('/view_form_edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'edit']);
         Route::put('/edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'update']);
+        Route::delete("/delete_data_prestasi_kerja/{prestasiKerja}", [PrestasiKerjaController::class, 'destroy']);
     });
 
     // TPP

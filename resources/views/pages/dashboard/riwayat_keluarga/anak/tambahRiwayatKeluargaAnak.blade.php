@@ -87,9 +87,9 @@
                             placeholder="Masukan Pekerjaan Anak" required />
                     </div>
                     <div class="mb-5">
-                        <label for="status" class="block mb-2.5 text-sm font-medium text-heading">Status
+                        <label for="status_hubungan" class="block mb-2.5 text-sm font-medium text-heading">Status
                             Hubungan</label>
-                        <select name="status" id="status">
+                        <select name="status_hubungan" id="status_hubungan">
                             <option value="Anak Kandung">Anak Kandung</option>
                             <option value="Anak Angkat">Anak Angkat</option>
                         </select>

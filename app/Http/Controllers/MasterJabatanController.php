@@ -62,7 +62,7 @@ class MasterJabatanController extends Controller
 
             DB::commit();
 
-            return back()->with('Berhasil mengubah master data!');
+            return redirect("/kepegawaian/jabatan")->with("success", 'Berhasil mengubah master data jabatan!');
         } catch(Exception $e) {
             DB::rollBack();
 

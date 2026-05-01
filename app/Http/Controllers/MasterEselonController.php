@@ -37,19 +37,13 @@ class MasterEselonController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(MasterEselon $masterEselon)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(MasterEselon $masterEselon)
     {
-        //
+        return view("pages.dashboard.kepegawaian.jabatan.master_eselon.editMasterEselon", [
+            'masterEselon' => $masterEselon
+        ]);
     }
 
     /**
@@ -57,7 +51,25 @@ class MasterEselonController extends Controller
      */
     public function update(Request $request, MasterEselon $masterEselon)
     {
-        //
+        $validateData = $request->validate([
+            'nama_eselon' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $eselon = MasterEselon::create($validateData);
+
+            DB::commit();
+
+            return redirect("/kepegawaian/jabatan")->with('success', 'Berhasil mengubah data master eselon!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -65,6 +77,8 @@ class MasterEselonController extends Controller
      */
     public function destroy(MasterEselon $masterEselon)
     {
-        //
+        $masterEselon->delete();
+
+        return response()->json($masterEselon);
     }
 }

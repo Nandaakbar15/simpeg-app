@@ -133,4 +133,22 @@ class CutiController extends Controller
 
         return redirect('/kepegawaian/cuti')->with('success', 'Berhasil menghapus data!');
     }
+
+    /**
+     * Download / cetak form surat cuti.
+     */
+    public function downloadSuratCuti(Cuti $cuti)
+    {
+        $cuti->load('pegawai.unit_kerja', 'pegawai.jabatan_aktif.master_jabatan');
+
+        $instansi = \App\Models\InstansiLembaga::first();
+
+        // Pangkat terakhir pegawai
+        $pangkat = \App\Models\Pangkat::with(['master_pangkat', 'master_golongan'])
+            ->where('pegawai_id', $cuti->pegawai_id)
+            ->latest('tmt_pangkat_mulai')
+            ->first();
+
+        return view('pages.dashboard.kepegawaian.cuti.suratCuti', compact('cuti', 'instansi', 'pangkat'));
+    }
 }

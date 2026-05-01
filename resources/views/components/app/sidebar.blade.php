@@ -37,6 +37,7 @@
                         aria-hidden="true">•••</span>
                     <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Simpeg App</span>
                 </h3>
+                @if (auth()->user()->role !== 'pegawai')
                 <ul class="mt-3">
                     <!-- Dashboard -->
                     <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r @if (in_array(Request::segment(1), ['dashboard'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif"
@@ -87,8 +88,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['manajemen_setup'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 @if (in_array(auth()->user()->role, ['superadmin']))
                                     <li class="mb-1 last:mb-0">
                                         <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('/manajemen_setup/instansi_lembaga')) {{ 'text-violet-500!' }} @endif"
@@ -181,8 +188,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['riwayat_keluarga'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('/riwayat_keluarga/suami_istri')) {{ 'text-violet-500!' }} @endif"
                                         href="/riwayat_keluarga/suami_istri">
@@ -239,8 +252,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['riwayat_pendidikan'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('/riwayat_pendidikan/sekolah')) {{ 'text-violet-500!' }} @endif"
                                         href="/riwayat_pendidikan/sekolah">
@@ -296,8 +315,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['kepegawaian'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('kepegawaian/jabatan')) {{ 'text-violet-500!' }} @endif"
                                         href="/kepegawaian/jabatan">
@@ -306,25 +331,17 @@
                                     </a>
                                 </li>
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('report/bezetting')) {{ 'text-violet-500!' }} @endif"
-                                        href="/report/bezetting">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('kepegawaian/pangkat')) {{ 'text-violet-500!' }} @endif"
+                                        href="/kepegawaian/pangkat">
                                         <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Bezetting</span>
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Pangkat</span>
                                     </a>
                                 </li>
                                 <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('report/keadaan_pegawai')) {{ 'text-violet-500!' }} @endif"
-                                        href="/report/keadaan_pegawai">
+                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('kepegawaian/hukuman')) {{ 'text-violet-500!' }} @endif"
+                                        href="/kepegawaian/hukuman">
                                         <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Keadaan
-                                            Pegawai</span>
-                                    </a>
-                                </li>
-                                <li class="mb-1 last:mb-0">
-                                    <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('report/pensiun')) {{ 'text-violet-500!' }} @endif"
-                                        href="/report/pensiun">
-                                        <span
-                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Pensiun</span>
+                                            class="text-sm font-medium lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">Hukuman</span>
                                     </a>
                                 </li>
                                 <li class="mb-1 last:mb-0">
@@ -439,8 +456,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['tpp'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('tpp/data_tpp')) {{ 'text-violet-500!' }} @endif"
                                         href="/tpp/input_tpp">
@@ -490,8 +513,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['rekapitulasi'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('rekapitulasi/opd_skpd_unit_kerja')) {{ 'text-violet-500!' }} @endif"
                                         href="/rekapitulasi/opd_skpd_unit_kerja">
@@ -599,8 +628,14 @@
                             </div>
                         </a>
                         <div class="lg:hidden lg:sidebar-expanded:block 2xl:block">
-                            <ul class="pl-8 mt-1 @if (!in_array(Request::segment(1), ['report'])) {{ 'hidden' }} @endif"
-                                :class="open ? 'block!' : 'hidden'">
+                            <ul class="pl-8 mt-1 overflow-hidden"
+                                x-show="open"
+                                x-transition:enter="transition ease-out duration-200"
+                                x-transition:enter-start="opacity-0 -translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                                x-transition:leave="transition ease-in duration-150"
+                                x-transition:leave-start="opacity-100 translate-y-0"
+                                x-transition:leave-end="opacity-0 -translate-y-2">
                                 <li class="mb-1 last:mb-0">
                                     <a class="block text-gray-500/90 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition truncate @if (Route::is('report/nominatif')) {{ 'text-violet-500!' }} @endif"
                                         href="/report/nominatif">
@@ -641,7 +676,43 @@
                         </div>
                     </li>
                 </ul>
+                @endif
             </div>
+
+            {{-- ===== MENU KHUSUS ROLE PEGAWAI ===== --}}
+            @if (auth()->user()->role === 'pegawai')
+            <div>
+                <h3 class="text-xs uppercase text-gray-400 dark:text-gray-500 font-semibold pl-3">
+                    <span class="hidden lg:block lg:sidebar-expanded:hidden 2xl:hidden text-center w-6" aria-hidden="true">•••</span>
+                    <span class="lg:hidden lg:sidebar-expanded:block 2xl:block">Navigation</span>
+                </h3>
+                <ul class="mt-3">
+                    <!-- Profile Saya -->
+                    <li class="pl-4 pr-3 py-2 rounded-lg mb-0.5 last:mb-0 bg-linear-to-r @if (in_array(Request::segment(1), ['profile_saya'])) {{ 'from-violet-500/[0.12] dark:from-violet-500/[0.24] to-violet-500/[0.04]' }} @endif">
+                        <a class="block text-gray-800 dark:text-gray-100 truncate transition hover:text-gray-900 dark:hover:text-white"
+                            href="{{ route('profile.pegawai') }}">
+                            <div class="flex items-center">
+                                <svg class="shrink-0 fill-current @if (in_array(Request::segment(1), ['profile_saya'])) {{ 'text-violet-500' }} @else {{ 'text-gray-400 dark:text-gray-500' }} @endif"
+                                    xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+                                    <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6Zm-5 6s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Z"/>
+                                </svg>
+                                <span class="text-sm font-medium ml-4 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                    Profile Saya
+                                </span>
+                                @php
+                                    $notifCount = 0; // placeholder untuk notifikasi
+                                @endphp
+                                @if ($notifCount > 0)
+                                    <span class="ml-auto inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100 duration-200">
+                                        {{ $notifCount }}
+                                    </span>
+                                @endif
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            @endif
 
         </div>
 

@@ -40,9 +40,15 @@ class PegawaiController extends Controller
      */
     public function create()
     {
-        $unitKerja = UnitKerja::all();
-        return view("pages.dashboard..data_pegawai.tambahPegawai", [
-            'unitKerja' => $unitKerja
+        $unitKerja   = UnitKerja::all();
+        $userPegawai = User::where('role', 'pegawai')
+            ->whereNotIn('id', \App\Models\Pegawai::whereNotNull('user_id')->pluck('user_id'))
+            ->orderBy('name')
+            ->get();
+
+        return view("pages.dashboard.data_pegawai.tambahPegawai", [
+            'unitKerja'   => $unitKerja,
+            'userPegawai' => $userPegawai,
         ]);
     }
 
@@ -52,13 +58,13 @@ class PegawaiController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
+            'user_id' => 'required|exists:users,id',
             'nip' => 'required|string',
             'nama' => 'required|string',
             'unit_kerja_id' => 'required|exists:tb_unit_kerja,id',
             'gelar' => 'required|string',
             'tmpt_lahir' => 'required|string',
             'tgl_lahir' => 'required|date',
-            'gelar' => 'required|string',
             'jenis_kelamin' => 'required',
             'agama' => 'required',
             'golongan_darah' => 'required',
@@ -78,7 +84,7 @@ class PegawaiController extends Controller
             'tmt_pns' => 'required|date',
             'gol_awal' => 'required|string',
             'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'nilai_tpp' => 'required'
+            'nilai_tpp' => 'required',
         ]);
 
         try {
@@ -91,7 +97,7 @@ class PegawaiController extends Controller
                 $validateData['foto'] = '/storage/' . $path;
             }
 
-            $validateData['user_id'] = Auth::id() ?? 1;
+            $validateData['user_id'] = $request->input('user_id');
 
             Pegawai::create($validateData);
 
@@ -124,10 +130,20 @@ class PegawaiController extends Controller
      */
     public function edit(Pegawai $pegawai)
     {
-        $unitKerja = UnitKerja::all();
+        $unitKerja   = UnitKerja::all();
+        $userPegawai = User::where('role', 'pegawai')
+            ->where(function ($q) use ($pegawai) {
+                // Tampilkan user yang belum terhubung ke pegawai lain, ATAU user yang sudah terhubung ke pegawai ini
+                $q->whereNotIn('id', \App\Models\Pegawai::whereNotNull('user_id')->where('id', '!=', $pegawai->id)->pluck('user_id'))
+                  ->orWhere('id', $pegawai->user_id);
+            })
+            ->orderBy('name')
+            ->get();
+
         return view("pages.dashboard.data_pegawai.editPegawai", [
-            'pegawai' => $pegawai,
-            'unitKerja' => $unitKerja
+            'pegawai'     => $pegawai,
+            'unitKerja'   => $unitKerja,
+            'userPegawai' => $userPegawai,
         ]);
     }
 
@@ -181,7 +197,7 @@ class PegawaiController extends Controller
                 $validateData['foto'] = '/storage/' . $path;
             }
 
-            $validateData['user_id'] = Auth::id() ?? 1;
+            $validateData['user_id'] = $request->input('user_id');
 
             $pegawai->update($validateData);
 

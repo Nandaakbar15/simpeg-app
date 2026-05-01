@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Hukuman;
 use App\Models\Pegawai;
+use App\Models\InstansiLembaga;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -132,5 +133,19 @@ class HukumanController extends Controller
         $hukuman->delete();
 
         return redirect('/kepegawaian/hukuman')->with('success', 'Berhasil menghapus data!');
+    }
+
+    /**
+     * Download / cetak SK Hukuman.
+     */
+    public function downloadSK(Hukuman $hukuman)
+    {
+        $hukuman->load('pegawai.unit_kerja');
+        $instansi = InstansiLembaga::first();
+
+        return view('pages.dashboard.kepegawaian.hukuman.skHukuman', [
+            'hukuman'  => $hukuman,
+            'instansi' => $instansi,
+        ]);
     }
 }

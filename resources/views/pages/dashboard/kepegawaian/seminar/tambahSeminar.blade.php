@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah penghargaan
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah data seminar
                     pegawai</h1>
             </div>
 
@@ -102,7 +102,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/kepegawaian/penghargaan"
+                <a href="/kepegawaian/seminar"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>

@@ -11,7 +11,7 @@
 
         </div>
 
-        <div x-data="{ openPangkat: false, openPangkat: false }"
+        <div x-data="{ openPangkat: false, openGolongan: false }"
             class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 @if ($errors->any())
@@ -99,7 +99,7 @@
                                                                 </td>
                                                                 <td class="border p-2" x-text="item.nama_pangkat"></td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a href="/kepegawaian/master_pangkat/edit_master_pangkat/(item.id)"
+                                                                    <a :href="`/kepegawaian/master_pangkat/view_form_edit_master_pangkat/${item.id}`"
                                                                         class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
                                                                     <button @click="deletePangkat(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
@@ -182,7 +182,7 @@
                                                                 <td class="border p-2" x-text="item.nama_golongan">
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a href="/kepegawaian/master_golongan/edit_master_golongan/(item.id)"
+                                                                    <a :href="`/kepegawaian/master_golongan/view_form_edit_master_golongan/${item.id}`"
                                                                         class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
                                                                     <button @click="deleteGolongan(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
@@ -277,12 +277,12 @@
 
                 this.listPangkat.push(data);
                 this.nama_pangkat = '';
-            }
+            },
 
             async deletePangkat(id) {
                 if (!confirm('Yakin ingin menghapus?')) return;
 
-                let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat${id}`, {
+                let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat/${id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -324,7 +324,8 @@
 
                 this.listGolongan.push(data);
                 this.nama_golongan = '';
-            }
+            },
+
             async deleteGolongan(id) {
                 if (!confirm('Yakin ingin menghapus?')) return;
 

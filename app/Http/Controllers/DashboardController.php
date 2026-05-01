@@ -9,6 +9,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Role pegawai langsung diarahkan ke halaman profil
+        if (auth()->user()->role === 'pegawai') {
+            return redirect()->route('profile.pegawai');
+        }
+
         $dataFeed = new DataFeed();
 
         return view('pages/dashboard/dashboard', compact('dataFeed'));

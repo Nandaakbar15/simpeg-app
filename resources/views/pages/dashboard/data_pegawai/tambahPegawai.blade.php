@@ -25,6 +25,22 @@
                 <form action="/data_pegawai/tambah_data_pegawai" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
+                        <label for="user_id" class="block mb-2.5 text-sm font-medium text-heading">
+                            Hubungkan ke Akun User Pegawai
+                        </label>
+                        <select name="user_id" id="user_id"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                            required>
+                            <option value="">-- Pilih Akun User Pegawai --</option>
+                            @foreach ($userPegawai as $u)
+                                <option value="{{ $u->id }}" {{ old('user_id') == $u->id ? 'selected' : '' }}>
+                                    {{ $u->name }} ({{ $u->email }})
+                                </option>
+                            @endforeach
+                        </select>
+                        <p class="text-xs text-gray-400 mt-1">Hanya menampilkan akun dengan role pegawai yang belum terhubung.</p>
+                    </div>
+                    <div class="mb-5">
                         <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP</label>
                         <input type="text" id="nip" name="nip"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"

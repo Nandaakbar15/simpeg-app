@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Penghargaan;
 use App\Models\Pegawai;
+use App\Models\InstansiLembaga;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -121,5 +122,19 @@ class PenghargaanController extends Controller
         $penghargaan->delete();
 
         return redirect("/kepegawaian/penghargaan")->with('success', 'Berhasil menghapus data!');
+    }
+
+    /**
+     * Download / cetak sertifikat penghargaan.
+     */
+    public function downloadSertifikat(Penghargaan $penghargaan)
+    {
+        $penghargaan->load('pegawai.unit_kerja');
+        $instansi = \App\Models\InstansiLembaga::first();
+
+        return view('pages.dashboard.kepegawaian.penghargaan.sertifikatPenghargaan', [
+            'penghargaan' => $penghargaan,
+            'instansi'    => $instansi,
+        ]);
     }
 }
