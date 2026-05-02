@@ -58,3 +58,58 @@ Dengan begitu, database akan dibuatkan secara otomatis.
 ### Menjalankan project
 
 Untuk menjalankan projectnya masukan perintah composer run dev
+
+### Screenshot website atau aplikasi
+
+- Halaman Login
+  ![Halaman Login](./public/images/Screenshot/Halaman%20Login.png)
+
+<br>
+
+- Halaman Dashboard untuk superadmin dan admin
+  ![Halaman Dashboard](./public/images/Screenshot/Halaman%20Dashboard%20untuk%20superadmin%20dan%20admin.png)
+
+<br>
+
+- Halaman Instansi Lembaga
+  ![Halaman Instansi Lembaga](./public/images/Screenshot/Halaman%20Instansi%20Lembaga.png)
+
+<br>
+
+- Halaman Sekretariat
+  ![Halaman Sekretariat](./public/images/Screenshot/Halaman%20Sekretariat.png)
+
+<br>
+
+- Halaman Data User Admin
+  ![Halaman Data User Admin](./public/images/Screenshot/Halaman%20Data%20User%20Admin.png)
+
+<br>
+
+- Halaman Data User Pegawai
+  ![Halaman Data User Pegawai](./public/images/Screenshot/Halaman%20Data%20User%20Pegawai.png)
+
+<br>
+
+- Halaman Data Pegawai
+  ![Halaman Data Pegawai](./public/images/Screenshot/Halaman%20Data%20Pegawai.png)
+
+<br>
+
+- Halaman Riwayat Pendidikan
+  ![Halaman Data Riwayat Pendidikan](./public/images/Screenshot/Halaman%20Data%20Riwayat%20Pendidikan%20Sekolah.png)
+
+<br>
+
+- Halaman Data TPP
+  ![Halaman Data TPP](./public/images/Screenshot/Halaman%20Data%20TPP.png)
+
+<br>
+
+- Halaman Data Rekapitulasi Jabatan
+  ![Halaman Data Rekapitulasi Jabatan](./public/images/Screenshot/Halaman%20Data%20Rekapitulasi%20Jabatan.png)
+
+<br>
+
+- Halaman Report Nominatif
+  ![Halaman Report Nominatif](./public/images/Screenshot/Halaman%20Report%20Nominatif.png)
