@@ -18,7 +18,17 @@ class PangkatController extends Controller
      */
     public function index()
     {
-        $pangkat = Pangkat::with(['master_pangkat', 'master_golongan'])->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pangkat = Pangkat::with(['master_pangkat', 'master_golongan', 'pegawai'])
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $pangkat = Pangkat::with(['master_pangkat', 'master_golongan'])->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.pangkat.indexPangkat", [
             'pangkat' => $pangkat
@@ -30,7 +40,14 @@ class PangkatController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
+
         $masterPangkat = MasterPangkat::all();
         $masterGolongan = MasterGolongan::all();
 
@@ -80,7 +97,14 @@ class PangkatController extends Controller
      */
     public function edit(Pangkat $pangkat)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
+
         $masterPangkat = MasterPangkat::all();
         $masterGolongan = MasterGolongan::all();
 

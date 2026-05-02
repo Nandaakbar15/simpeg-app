@@ -38,7 +38,8 @@
                                 </option>
                             @endforeach
                         </select>
-                        <p class="text-xs text-gray-400 mt-1">Hanya menampilkan akun dengan role pegawai yang belum terhubung.</p>
+                        <p class="text-xs text-gray-400 mt-1">Hanya menampilkan akun dengan role pegawai yang belum
+                            terhubung.</p>
                     </div>
                     <div class="mb-5">
                         <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP</label>
@@ -53,11 +54,17 @@
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama pegawai" required />
                     </div>
-                    <div class="mb-5">
-                        <label for="gelar" class="block mb-2.5 text-sm font-medium text-heading">Gelar</label>
-                        <input type="text" id="gelar" name="gelar"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan gelar pegawai" required />
+                    <div class="flex items-center mb-5">
+                        <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar</label>
+                        <div class="flex w-3/4 gap-4">
+                            <input type="text" id="gelar_depan" name="gelar_depan"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                placeholder="Masukan Gelar depan" required />
+
+                            <input type="text" id="gelar" name="gelar"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                placeholder="Masukan Gelar Belakang" required />
+                        </div>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmpt_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal

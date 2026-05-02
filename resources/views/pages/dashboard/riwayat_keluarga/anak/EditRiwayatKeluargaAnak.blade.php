@@ -64,7 +64,7 @@
 
                             <input type="date" id="tgl_lahir" name="tgl_lahir"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tgl_lahir', $riwayatKeluargaAnak->tgl_lahir) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -110,15 +110,19 @@
                             Hubungan</label>
                         <select name="status_hubungan" id="status_hubungan">
                             <option value="Anak Kandung"
-                                {{ $riwayatKeluargaAnak->status_hubungan == 'Anak Kandung' ? 'selected' : '' }}>Anak Kandung
+                                {{ $riwayatKeluargaAnak->status_hubungan == 'Anak Kandung' ? 'selected' : '' }}>Anak
+                                Kandung
                             </option>
                             <option value="Anak Angkat"
-                                {{ $riwayatKeluargaAnak->status_hubungan == 'Anak Angkat' ? 'selected' : '' }}>Anak Angkat
+                                {{ $riwayatKeluargaAnak->status_hubungan == 'Anak Angkat' ? 'selected' : '' }}>Anak
+                                Angkat
                             </option>
                         </select>
                     </div>
-                    <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                    <button type="button"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        data-title="Simpan Perubahan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data anak ini?">Save</button>
                 </form>
             </div>
 

@@ -16,7 +16,17 @@ class PrestasiKerjaController extends Controller
      */
     public function index()
     {
-        $prestasiKerja = PrestasiKerja::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $prestasiKerja = PrestasiKerja::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $prestasiKerja = PrestasiKerja::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.skp_prestasi_kerja.indexPrestasiKerja", [
             'prestasiKerja' => $prestasiKerja
@@ -28,7 +38,13 @@ class PrestasiKerjaController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.skp_prestasi_kerja.tambahPrestasiKerja", [
             'pegawai' => $pegawai
@@ -104,7 +120,13 @@ class PrestasiKerjaController extends Controller
      */
     public function edit(PrestasiKerja $prestasiKerja)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.skp_prestasi_kerja.editPrestasiKerja", [
             'pegawai' => $pegawai,

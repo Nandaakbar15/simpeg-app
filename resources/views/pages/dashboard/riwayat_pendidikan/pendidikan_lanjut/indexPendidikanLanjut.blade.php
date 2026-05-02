@@ -93,7 +93,9 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/riwayat_pendidikan/sekolah_lanjut/view_form_edit_pendidikan_lanjut/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
+                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg confirm-edit"
+                                            data-title="Edit Pendidikan Lanjut"
+                                            data-message="Anda akan membuka form edit data pendidikan lanjut ini. Lanjutkan?">
                                             Edit
                                         </a>
                                         <form
@@ -101,9 +103,8 @@
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
+                                            <button type="button"
+                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg confirm-delete">
                                                 Delete
                                             </button>
                                         </form>

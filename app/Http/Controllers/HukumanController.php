@@ -8,8 +8,9 @@ use App\Models\InstansiLembaga;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HukumanController extends Controller
 {
@@ -18,7 +19,17 @@ class HukumanController extends Controller
      */
     public function index()
     {
-        $hukuman = Hukuman::with('pegawai')->paginate(5);
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $hukuman = Hukuman::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $hukuman = Hukuman::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.hukuman.indexHukuman", [
             'hukuman' => $hukuman
@@ -30,7 +41,13 @@ class HukumanController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.hukuman.tambahHukuman", [
             'pegawai' => $pegawai
@@ -50,6 +67,7 @@ class HukumanController extends Controller
             'isi_teguran' => 'required|string',
             'pejabat_pengesahan_sk_hukuman' => 'required|string',
             'no_sk' => 'required|string',
+            'file_sk_hukuman' => 'required|file|mimes:pdf,docx,txt|max:10240',
             'tgl_pengesahan_sk' => 'required|date',
             'tmt_hukuman_mulai' => 'required|date',
             'tmt_hukuman_pemulihan' => 'required|date',
@@ -60,6 +78,13 @@ class HukumanController extends Controller
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_sk_hukuman')) {
+                $file = $request->file('file_sk_hukuman');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sk_hukuman'] = '/storage/' . $path;
+            }
 
             Hukuman::create($validateData);
 
@@ -79,7 +104,13 @@ class HukumanController extends Controller
      */
     public function edit(Hukuman $hukuman)
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.hukuman.editHukuman", [
             'pegawai' => $pegawai,
@@ -100,6 +131,7 @@ class HukumanController extends Controller
             'isi_teguran' => 'required|string',
             'pejabat_pengesahan_sk_hukuman' => 'required|string',
             'no_sk' => 'required|string',
+            'file_sk_hukuman' => 'file|mimes:pdf,docx,txt|max:10240',
             'tgl_pengesahan_sk' => 'required|date',
             'tmt_hukuman_mulai' => 'required|date',
             'tmt_hukuman_pemulihan' => 'required|date',
@@ -110,6 +142,18 @@ class HukumanController extends Controller
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_sk_hukuman')) {
+
+                if($request->fileLama) {
+                    Storage::disk('public')->delete($request->fileLama);
+                }
+
+                $file = $request->file('file_sk_hukuman');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sk_hukuman'] = '/storage/' . $path;
+            }
 
             $hukuman->update($validateData);
 
@@ -140,12 +184,12 @@ class HukumanController extends Controller
      */
     public function downloadSK(Hukuman $hukuman)
     {
-        $hukuman->load('pegawai.unit_kerja');
-        $instansi = InstansiLembaga::first();
+        $filePath = str_replace('/storage/', '', trim($hukuman->file_sk_hukuman));
 
-        return view('pages.dashboard.kepegawaian.hukuman.skHukuman', [
-            'hukuman'  => $hukuman,
-            'instansi' => $instansi,
-        ]);
+        if (!Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        return response()->download(storage_path('app/public/' . $filePath));
     }
 }

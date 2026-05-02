@@ -18,7 +18,17 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $jabatan = Jabatan::with(['master_jabatan', 'master_eselon'])->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $jabatan = Jabatan::with(['master_jabatan', 'master_eselon', 'pegawai'])
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $jabatan = Jabatan::with(['master_jabatan', 'master_eselon'])->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.jabatan.indexJabatan", [
             'jabatan' => $jabatan
@@ -30,7 +40,14 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
+
         $masterJabatan = MasterJabatan::all();
         $masterEselon = MasterEselon::all();
         return view("pages.dashboard.kepegawaian.jabatan.tambahJabatan", [
@@ -82,7 +99,14 @@ class JabatanController extends Controller
      */
     public function edit(Jabatan $jabatan)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
+
         $masterJabatan = MasterJabatan::all();
         $masterEselon = MasterEselon::all();
 

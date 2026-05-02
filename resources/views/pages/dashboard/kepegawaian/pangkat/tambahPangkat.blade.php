@@ -100,7 +100,9 @@
                                                                 <td class="border p-2" x-text="item.nama_pangkat"></td>
                                                                 <td class="border p-2 space-x-2">
                                                                     <a :href="`/kepegawaian/master_pangkat/view_form_edit_master_pangkat/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
+                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500 confirm-edit"
+                                                                        data-title="Edit Master Pangkat"
+                                                                        data-message="Anda akan membuka form edit master pangkat ini. Lanjutkan?">Edit</a>
                                                                     <button @click="deletePangkat(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
                                                                         Delete
@@ -183,7 +185,9 @@
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
                                                                     <a :href="`/kepegawaian/master_golongan/view_form_edit_master_golongan/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
+                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500 confirm-edit"
+                                                                        data-title="Edit Master Golongan"
+                                                                        data-message="Anda akan membuka form edit master golongan ini. Lanjutkan?">Edit</a>
                                                                     <button @click="deleteGolongan(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
                                                                         Delete
@@ -280,22 +284,27 @@
             },
 
             async deletePangkat(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
+                showConfirm({
+                    type: 'danger',
+                    title: 'Hapus Master Pangkat',
+                    message: 'Data master pangkat yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
+                    confirmText: 'Ya, Hapus',
+                    callback: async () => {
+                        let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        });
 
-                let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
+                        if (res.ok) {
+                            this.listPangkat = this.listPangkat.filter(item => item.id !== id);
+                        } else {
+                            alert('Gagal menghapus data');
+                        }
                     }
                 });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listPangkat = this.listPangkat.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
             }
         }
     }
@@ -327,22 +336,27 @@
             },
 
             async deleteGolongan(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
+                showConfirm({
+                    type: 'danger',
+                    title: 'Hapus Master Golongan',
+                    message: 'Data master golongan yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
+                    confirmText: 'Ya, Hapus',
+                    callback: async () => {
+                        let res = await fetch(`/kepegawaian/master_golongan/delete_master_golongan/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        });
 
-                let res = await fetch(`/kepegawaian/master_golongan/delete_master_golongan/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
+                        if (res.ok) {
+                            this.listGolongan = this.listGolongan.filter(item => item.id !== id);
+                        } else {
+                            alert('Gagal menghapus data');
+                        }
                     }
                 });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listGolongan = this.listGolongan.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
             }
         }
     }

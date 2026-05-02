@@ -104,16 +104,19 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/kepegawaian/latihan_jabatan/view_form_edit_latihan_jabatan/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
+                                            class="confirm-edit inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg"
+                                            data-title="Konfirmasi Edit"
+                                            data-message="Apakah Anda yakin ingin mengedit data latihan jabatan ini?">
                                             Edit
                                         </a>
                                         <form action="/kepegawaian/latihan/delete_latihan_jabatan/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
+                                            <button type="button"
+                                                class="confirm-delete inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
+                                                data-title="Konfirmasi Hapus"
+                                                data-message="Apakah Anda yakin ingin menghapus data latihan jabatan ini? Data yang dihapus tidak dapat dikembalikan.">
                                                 Delete
                                             </button>
                                         </form>

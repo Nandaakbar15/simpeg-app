@@ -9,6 +9,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PenghargaanController extends Controller
 {
@@ -17,7 +19,17 @@ class PenghargaanController extends Controller
      */
     public function index()
     {
-        $penghargaan = Penghargaan::with('pegawai')->paginate(5);
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $penghargaan = Penghargaan::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $penghargaan = Penghargaan::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.penghargaan.indexPenghargaan", [
             'penghargaan' => $penghargaan
@@ -29,7 +41,13 @@ class PenghargaanController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.penghargaan.tambahPenghargaan", [
             'pegawai' => $pegawai
@@ -49,11 +67,19 @@ class PenghargaanController extends Controller
             'tempat_penghargaan' => 'required',
             'tgl_penghargaan' => 'required|date',
             'tahun' => 'required|string',
-            'no_sertifikat' => 'required'
+            'no_sertifikat' => 'required',
+            'file_sertifikat_penghargaan' => 'required|file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_sertifikat_penghargaan')) {
+                $file = $request->file('file_sertifikat_penghargaan');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sertifikat_penghargaan'] = '/storage/' . $path;
+            }
 
             Penghargaan::create($validateData);
 
@@ -73,7 +99,13 @@ class PenghargaanController extends Controller
      */
     public function edit(Penghargaan $penghargaan)
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.penghargaan.editPenghargaan", [
             'penghargaan' => $penghargaan,
@@ -94,11 +126,24 @@ class PenghargaanController extends Controller
             'tempat_penghargaan' => 'required',
             'tgl_penghargaan' => 'required|date',
             'tahun' => 'required|string',
-            'no_sertifikat' => 'required'
+            'no_sertifikat' => 'required',
+            'file_sertifikat_penghargaan' => 'file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_sertifikat_penghargaan')) {
+
+                if($request->fileLama) {
+                    Storage::disk('public')->delete($request->fileLama);
+                }
+
+                $file = $request->file('file_sertifikat_penghargaan');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sertifikat_penghargaan'] = '/storage/' . $path;
+            }
 
             $penghargaan->update($validateData);
 
@@ -129,12 +174,12 @@ class PenghargaanController extends Controller
      */
     public function downloadSertifikat(Penghargaan $penghargaan)
     {
-        $penghargaan->load('pegawai.unit_kerja');
-        $instansi = \App\Models\InstansiLembaga::first();
+        $filePath = str_replace('/storage/', '', trim($penghargaan->file_sertifikat_penghargaan));
 
-        return view('pages.dashboard.kepegawaian.penghargaan.sertifikatPenghargaan', [
-            'penghargaan' => $penghargaan,
-            'instansi'    => $instansi,
-        ]);
+        if (!Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        return response()->download(storage_path('app/public/' . $filePath));
     }
 }

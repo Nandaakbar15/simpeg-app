@@ -16,7 +16,17 @@ class RiwayatKeluargaSuamiIstriController extends Controller
      */
     public function index()
     {
-        $riwayatkeluargaSuamiIstri = RiwayatKeluargaSuamiIstri::with('pegawai')->get();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $riwayatkeluargaSuamiIstri = RiwayatKeluargaSuamiIstri::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->get();
+        } else {
+            $riwayatkeluargaSuamiIstri = RiwayatKeluargaSuamiIstri::with('pegawai')->get();
+        }
 
         return view('pages.dashboard.riwayat_keluarga.suami_istri.indexKeluargaSuami_Istri', [
             'riwayatkeluargaSuamiIstri' => $riwayatkeluargaSuamiIstri
@@ -28,7 +38,13 @@ class RiwayatKeluargaSuamiIstriController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.suami_istri.tambahKeluargaSuami_Istri", [
             'pegawai' => $pegawai
@@ -74,7 +90,13 @@ class RiwayatKeluargaSuamiIstriController extends Controller
      */
     public function edit(RiwayatKeluargaSuamiIstri $riwayatKeluargaSuamiIstri)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.suami_istri.editKeluargaSuami_Istri", [
             'pegawai' => $pegawai,

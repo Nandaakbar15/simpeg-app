@@ -16,7 +16,17 @@ class TunjanganController extends Controller
      */
     public function index()
     {
-        $tunjangan = Tunjangan::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $tunjangan = Tunjangan::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $tunjangan = Tunjangan::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.tunjangan.indexTunjangan", [
             'tunjangan' => $tunjangan
@@ -28,7 +38,13 @@ class TunjanganController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.tunjangan.tambahTunjangan", [
             'pegawai' => $pegawai
@@ -78,7 +94,13 @@ class TunjanganController extends Controller
      */
     public function edit(Tunjangan $tunjangan)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.tunjangan.editTunjangan", [
             'pegawai' => $pegawai,

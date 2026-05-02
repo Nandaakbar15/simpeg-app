@@ -66,7 +66,7 @@
 
                             <input type="date" id="tgl_lahir" name="tgl_lahir"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required />
+                                required value="{{ old('tgl_lahir', $riwayatKeluargaSuamiIstri->tgl_lahir) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -95,8 +95,10 @@
                             </option>
                         </select>
                     </div>
-                    <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                    <button type="button"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        data-title="Simpan Perubahan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data suami / istri ini?">Save</button>
                 </form>
             </div>
 

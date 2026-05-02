@@ -25,6 +25,7 @@
                 <form action="/kepegawaian/hukuman/edit_data_hukuman/{{ $hukuman->id }}" method="POST">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="fileLama" id="fileLama" value="{{ $hukuman->file_sk_hukuman }}">
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
@@ -143,8 +144,17 @@
                                 value="{{ old('tgl_pemulihan_hukuman', $hukuman->tgl_pemulihan_hukuman) }}" />
                         </div>
                     </div>
-                    <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                    <div class="mb-5">
+                        <label for="file_sk_hukuman" class="block mb-2.5 text-sm font-medium text-heading">File SK
+                            Hukuman</label>
+                        <input type="file" id="file_sk_hukuman" name="file_sk_hukuman"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            placeholder="Masukan file sk hukuman" required />
+                    </div>
+                    <button type="button"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        data-title="Simpan Perubahan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data hukuman ini?">Save</button>
                 </form>
             </div>
 

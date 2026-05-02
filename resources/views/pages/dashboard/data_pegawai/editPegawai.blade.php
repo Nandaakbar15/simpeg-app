@@ -42,7 +42,8 @@
                                 </option>
                             @endforeach
                         </select>
-                        <p class="text-xs text-gray-400 mt-1">Hanya menampilkan akun dengan role pegawai yang belum terhubung ke pegawai lain.</p>
+                        <p class="text-xs text-gray-400 mt-1">Hanya menampilkan akun dengan role pegawai yang belum
+                            terhubung ke pegawai lain.</p>
                     </div>
                     <div class="mb-5">
                         <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP</label>
@@ -57,11 +58,19 @@
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama pegawai" required value="{{ old('nama', $pegawai->nama) }}" />
                     </div>
-                    <div class="mb-5">
-                        <label for="gelar" class="block mb-2.5 text-sm font-medium text-heading">Gelar</label>
-                        <input type="text" id="gelar" name="gelar"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan gelar pegawai" required value="{{ old('gelar', $pegawai->gelar) }}" />
+                    <div class="flex items-center mb-5">
+                        <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar</label>
+                        <div class="flex w-3/4 gap-4">
+                            <input type="text" id="gelar_depan" name="gelar_depan"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                placeholder="Masukan Gelar depan" required
+                                value="{{ old('gelar_depan', $pegawai->gelar_depan) }}" />
+
+                            <input type="text" id="gelar" name="gelar"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                placeholder="Masukan Gelar Belakang" required
+                                value="{{ old('gelar', $pegawai->gelar) }}" />
+                        </div>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmpt_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
@@ -117,7 +126,8 @@
                         <label for="status_pernikahan" class="block mb-2.5 text-sm font-medium text-heading">Status
                             Pernikahan</label>
                         <select name="status_pernikahan" id="status_pernikahan">
-                            <option value="Nikah" {{ $pegawai->status_pernikahan == 'Nikah' ? 'selected' : '' }}>Nikah
+                            <option value="Nikah" {{ $pegawai->status_pernikahan == 'Nikah' ? 'selected' : '' }}>
+                                Nikah
                             </option>
                             <option value="Belum Nikah"
                                 {{ $pegawai->status_pernikahan == 'Belum Nikah' ? 'selected' : '' }}>Belum Nikah
@@ -211,7 +221,7 @@
 
                             <input type="date" id="tmt_cpns" name="tmt_cpns"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required value="{{ old("tmt_cpns", $pegawai->tmt_cpns) }}"/>
+                                required value="{{ old('tmt_cpns', $pegawai->tmt_cpns) }}" />
                         </div>
                     </div>
 
@@ -226,7 +236,7 @@
 
                             <input type="date" id="tmt_pns" name="tmt_pns"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required value="{{ old("tmt_pns", $pegawai->tmt_pns) }}"/>
+                                required value="{{ old('tmt_pns', $pegawai->tmt_pns) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -277,8 +287,10 @@
                             placeholder="Masukan Nilai awai TPP" required
                             value="{{ old('nilai_tpp', $pegawai->nilai_tpp) }}" />
                     </div>
-                    <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                    <button type="button"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        data-title="Simpan Perubahan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data pegawai ini?">Save</button>
                 </form>
             </div>
 

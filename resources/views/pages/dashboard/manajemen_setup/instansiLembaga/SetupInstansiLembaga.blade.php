@@ -22,10 +22,11 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/manajemen_setup/setup_instansi_lembaga/{{ $instansiLembaga->id }}" method="POST"
+                <form action="/manajemen_setup/setupInstansiLembaga/{{ $instansiLembaga->id }}" method="POST"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="gambarLama" id="gambarLama">
                     <div class="mb-5">
                         <label for="nama_instansi_lembaga" class="block mb-2.5 text-sm font-medium text-heading">Nama
                             Instansi Lembaga</label>

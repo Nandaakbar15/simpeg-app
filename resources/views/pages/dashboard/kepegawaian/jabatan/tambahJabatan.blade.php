@@ -99,8 +99,10 @@
                                                                 </td>
                                                                 <td class="border p-2" x-text="item.nama_jabatan"></td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a :href="`/kepegawaian/master_jabatan/view_form_edit_master_jabatan/${item.id}`" 
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600">
+                                                                    <a :href="`/kepegawaian/master_jabatan/view_form_edit_master_jabatan/${item.id}`"
+                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600 confirm-edit"
+                                                                        data-title="Edit Master Jabatan"
+                                                                        data-message="Anda akan membuka form edit master jabatan ini. Lanjutkan?">
                                                                         Edit
                                                                     </a>
                                                                     <button @click="deleteJabatan(item.id)"
@@ -185,7 +187,9 @@
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
                                                                     <a :href="`/kepegawaian/master_eselon/view_form_edit_master_eselon/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
+                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500 confirm-edit"
+                                                                        data-title="Edit Master Eselon"
+                                                                        data-message="Anda akan membuka form edit master eselon ini. Lanjutkan?">Edit</a>
                                                                     <button @click="deleteEselon(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
                                                                         Delete
@@ -304,22 +308,27 @@
             },
 
             async deleteJabatan(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
+                showConfirm({
+                    type: 'danger',
+                    title: 'Hapus Master Jabatan',
+                    message: 'Data master jabatan yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
+                    confirmText: 'Ya, Hapus',
+                    callback: async () => {
+                        let res = await fetch(`/kepegawaian/master_jabatan/delete_master_jabatan/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        });
 
-                let res = await fetch(`/kepegawaian/master_jabatan/delete_master_jabatan/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
+                        if (res.ok) {
+                            this.listJabatan = this.listJabatan.filter(item => item.id !== id);
+                        } else {
+                            alert('Gagal menghapus data');
+                        }
                     }
                 });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listJabatan = this.listJabatan.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
             }
         }
     }
@@ -351,22 +360,27 @@
             },
 
             async deleteEselon(id) {
-                if (!confirm('Yakin ingin menghapus?')) return;
+                showConfirm({
+                    type: 'danger',
+                    title: 'Hapus Master Eselon',
+                    message: 'Data master eselon yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
+                    confirmText: 'Ya, Hapus',
+                    callback: async () => {
+                        let res = await fetch(`/kepegawaian/master_eselon/delete_master_eselon/${id}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                'Accept': 'application/json'
+                            }
+                        });
 
-                let res = await fetch(`/kepegawaian/master_eselon/delete_master_eselon/${id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Accept': 'application/json'
+                        if (res.ok) {
+                            this.listEselon = this.listEselon.filter(item => item.id !== id);
+                        } else {
+                            alert('Gagal menghapus data');
+                        }
                     }
                 });
-
-                if (res.ok) {
-                    // hapus dari list (UI langsung update)
-                    this.listEselon = this.listEselon.filter(item => item.id !== id);
-                } else {
-                    alert('Gagal menghapus data');
-                }
             }
         }
     }

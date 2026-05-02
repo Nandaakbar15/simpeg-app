@@ -16,7 +16,17 @@ class IzinKawinController extends Controller
      */
     public function index()
     {
-        $izinKawin = IzinKawin::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $izinKawin = IzinKawin::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $izinKawin = IzinKawin::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.izinKawin.indexIzinKawin", [
             'izinKawin' => $izinKawin
@@ -28,7 +38,13 @@ class IzinKawinController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.izinKawin.tambahIzinKawin", [
             'pegawai' => $pegawai
@@ -95,7 +111,13 @@ class IzinKawinController extends Controller
      */
     public function edit(IzinKawin $izinKawin)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.izinKawin.editIzinKawin", [
             'pegawai' => $pegawai,
@@ -108,7 +130,54 @@ class IzinKawinController extends Controller
      */
     public function update(Request $request, IzinKawin $izinKawin)
     {
-        //
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'no_surat_izin_perkawinan' => 'required|string',
+            'tgl_izin_surat_perkawinan' => 'required|date',
+            'kebangsaan_pegawai' => 'required|string',
+            'nama_wali_bapak_pegawai' => 'required|string',
+            'pekerjaan_wali_bapak_pegawai' => 'required|string',
+            'alamat_wali_bapak' => 'required|string',
+            'nama_wali_ibu_pegawai' => 'required|string',
+            'pekerjaan_wali_ibu_pegawai' => 'required|string',
+            'alamat_wali_ibu_pegawai' => 'required|string',
+            'nama_calon_suami_istri' => 'required|string',
+            'tempat_lahir_calon_suami_istri' => 'required|string',
+            'tgl_lahir_calon_suami_istri' => 'required|string',
+            'pekerjaan_calon_suami_istri' => 'required|string',
+            'nip_nik_calon_suami_istri' => 'required|string',
+            'pangkat_golongan_calon_suami_istri' => 'required|string',
+            'jabatan_calon_suami_istri' => 'required|string',
+            'instansi_calon_suami_istri' => 'required|string',
+            'kebangsaan_calon_suami_istri' => 'required|string',
+            'agama_calon_suami_istri' => 'required|string',
+            'alamat_calon_suami_istri' => 'required|string',
+            'nama_wali_bapak_calon_suami_istri' => 'required|string',
+            'pekerjaan_wali_bapak_calon_suami_istri' => 'required|string',
+            'alamat_wali_bapak_calon_suami_istri' => 'required|string',
+            'nama_wali_ibu_calon_suami_istri' => 'required|string',
+            'pekerjaan_wali_ibu_calon_suami_istri' => 'required|string',
+            'alamat_wali_ibu_calon_suami_istri' => 'required|string',
+            'tempat_perkawinan' => 'required|string',
+            'tgl_perkawinan' => 'required|date',
+            'tgl_ditetapkan_perkawinan' => 'required|date'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $izinKawin->update($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/izin_kawin')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem');
+        }
     }
 
     /**
@@ -116,6 +185,8 @@ class IzinKawinController extends Controller
      */
     public function destroy(IzinKawin $izinKawin)
     {
-        //
+        $izinKawin->delete();
+
+        return redirect('/kepegawaian/izin_kawin')->with('success', 'Berhasil menghapus data!');
     }
 }

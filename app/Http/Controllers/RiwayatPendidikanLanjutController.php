@@ -17,7 +17,17 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function index()
     {
-        $riwayatPendidikanLanjut = RiwayatPendidikanLanjut::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $riwayatPendidikanLanjut = RiwayatPendidikanLanjut::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $riwayatPendidikanLanjut = RiwayatPendidikanLanjut::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.riwayat_pendidikan.pendidikan_lanjut.indexPendidikanLanjut", [
             'riwayatPendidikanLanjut' => $riwayatPendidikanLanjut
@@ -29,7 +39,13 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_pendidikan.pendidikan_lanjut.tambahPendidikanLanjut", [
             'pegawai' => $pegawai
@@ -73,7 +89,13 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function edit(RiwayatPendidikanLanjut $riwayatPendidikanLanjut)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_pendidikan.pendidikan_lanjut.editPendidikanLanjut", [
             'pegawai' => $pegawai,

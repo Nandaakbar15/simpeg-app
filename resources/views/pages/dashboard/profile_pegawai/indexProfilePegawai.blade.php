@@ -20,6 +20,18 @@
             </div>
         @else
 
+        @if (session('success'))
+            <div class="mb-4 px-4 py-3 rounded bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-800 dark:text-green-200">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="mb-4 px-4 py-3 rounded bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200">
+                {{ session('error') }}
+            </div>
+        @endif
+
         {{-- Tab Navigation + Content (satu x-data agar tab sinkron) --}}
         <div x-data="{ tab: 'profil' }">
 
@@ -46,8 +58,15 @@
                     </button>
                 @endforeach
 
-                {{-- Print button --}}
-                <div class="ml-auto">
+                {{-- Print button + Edit button --}}
+                <div class="ml-auto flex gap-2">
+                    <a href="{{ route('profile.pegawai.edit') }}"
+                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-indigo-500 hover:bg-indigo-600 text-white text-xs font-medium rounded shadow-sm">
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 16 16">
+                            <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z"/>
+                        </svg>
+                        Edit Profile
+                    </a>
                     <button onclick="window.print()"
                         class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-500 hover:bg-green-600 text-white text-xs font-medium rounded shadow-sm">
                         <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 16 16">

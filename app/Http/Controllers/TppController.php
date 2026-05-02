@@ -16,7 +16,18 @@ class TppController extends Controller
      */
     public function index()
     {
-        $tpp = Tpp::with('pegawai')->orderBy('created_at', 'desc')->paginate(10);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $tpp = Tpp::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
+        } else {
+            $tpp = Tpp::with('pegawai')->orderBy('created_at', 'desc')->paginate(10);
+        }
 
         return view('pages.dashboard.tpp.indexTpp', [
             'tpp' => $tpp,
@@ -28,7 +39,13 @@ class TppController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::orderBy('nama')->get();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->orderBy('nama')->get();
+        } else {
+            $pegawai = Pegawai::orderBy('nama')->get();
+        }
 
         return view('pages.dashboard.tpp.tambahTpp', [
             'pegawai' => $pegawai,
@@ -127,7 +144,13 @@ class TppController extends Controller
      */
     public function edit(Tpp $tpp)
     {
-        $pegawai = Pegawai::orderBy('nama')->get();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->orderBy('nama')->get();
+        } else {
+            $pegawai = Pegawai::orderBy('nama')->get();
+        }
 
         return view('pages.dashboard.tpp.editTpp', [
             'tpp'     => $tpp,

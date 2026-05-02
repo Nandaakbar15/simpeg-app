@@ -85,16 +85,18 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/riwayat_keluarga/orang_tua/view_form_edit_orang_tua/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
+                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg confirm-edit"
+                                            data-title="Edit Data Orang Tua"
+                                            data-message="Anda akan membuka form edit data orang tua ini. Lanjutkan?">
                                             Edit
                                         </a>
-                                        <form action="/riwayat_keluarga/orang_tua/delete_orang_tua/{{ $data->id }}"
+                                        <form
+                                            action="/riwayat_keluarga/orang_tua/delete_data_orang_tua/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
+                                            <button type="button"
+                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg confirm-delete">
                                                 Delete
                                             </button>
                                         </form>

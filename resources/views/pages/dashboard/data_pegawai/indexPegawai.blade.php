@@ -86,15 +86,19 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/data_pegawai/view_form_edit_data_pegawai/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
+                                            class="confirm-edit inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg confirm-edit"
+                                            data-title="Edit Data Pegawai"
+                                            data-message="Anda akan membuka form edit data pegawai ini. Lanjutkan?">
                                             Edit
                                         </a>
-                                        <form action="/admin/delete-buku/{{ $data->id }}" method="POST">
+                                        <form action="/data_pegawai/delete_data_pegawai/{{ $data->id }}"
+                                            method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit"
-                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
+                                            <button type="button"
+                                                class="confirm-delete inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg confirm-delete"
+                                                data-title="Konfirmasi Hapus"
+                                                data-message="Apakah Anda yakin ingin menghapus data pegawai ini? Data yang dihapus tidak dapat dikembalikan.">
                                                 Delete
                                             </button>
                                         </form>

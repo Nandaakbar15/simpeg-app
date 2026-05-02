@@ -67,6 +67,65 @@
 
         </div>
 
+        {{-- Modal Konfirmasi Global --}}
+        <x-app.confirm-modal />
+
+        {{-- Event delegation untuk tombol Edit & Delete dengan konfirmasi --}}
+        <script>
+        document.addEventListener('click', function(e) {
+            // Tombol Edit dengan konfirmasi
+            const editLink = e.target.closest('.confirm-edit');
+            if (editLink) {
+                e.preventDefault();
+                const href    = editLink.getAttribute('href');
+                const title   = editLink.dataset.title   || 'Edit Data';
+                const message = editLink.dataset.message || 'Anda akan membuka form edit data ini. Lanjutkan?';
+                showConfirm({
+                    type: 'warning',
+                    title: title,
+                    message: message,
+                    confirmText: 'Ya, Edit',
+                    callback: () => { window.location.href = href; }
+                });
+                return;
+            }
+
+            // Tombol Delete dengan konfirmasi
+            const deleteBtn = e.target.closest('.confirm-delete');
+            if (deleteBtn) {
+                e.preventDefault();
+                const form    = deleteBtn.closest('form');
+                const title   = deleteBtn.dataset.title   || 'Hapus Data';
+                const message = deleteBtn.dataset.message || 'Data yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?';
+                showConfirm({
+                    type: 'danger',
+                    title: title,
+                    message: message,
+                    confirmText: 'Ya, Hapus',
+                    callback: () => { form.submit(); }
+                });
+                return;
+            }
+
+            // Tombol Save/Update dengan konfirmasi
+            const saveBtn = e.target.closest('.confirm-save');
+            if (saveBtn) {
+                e.preventDefault();
+                const form    = saveBtn.closest('form');
+                const title   = saveBtn.dataset.title   || 'Simpan Perubahan';
+                const message = saveBtn.dataset.message || 'Apakah Anda yakin ingin menyimpan perubahan data ini?';
+                showConfirm({
+                    type: 'info',
+                    title: title,
+                    message: message,
+                    confirmText: 'Ya, Simpan',
+                    callback: () => { form.submit(); }
+                });
+                return;
+            }
+        });
+        </script>
+
         @livewireScriptConfig
         @stack('scripts')
     </body>

@@ -59,6 +59,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
 
     // Profile Pegawai (role: pegawai)
     Route::get('/profile_saya', [ProfilePegawaiController::class, 'index'])->name('profile.pegawai');
+    Route::get('/profile_saya/edit', [ProfilePegawaiController::class, 'edit'])->name('profile.pegawai.edit');
+    Route::put('/profile_saya/update', [ProfilePegawaiController::class, 'update'])->name('profile.pegawai.update');
+    Route::post('/profile_saya/upload_foto', [ProfilePegawaiController::class, 'uploadFoto'])->name('profile.pegawai.upload_foto');
 
     Route::prefix('data_pegawai')->group(function() {
         Route::get('/pegawai', [PegawaiController::class, 'index']);
@@ -76,6 +79,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/instansi_lembaga/setup', [InstansiLembagaController::class, 'create']);
             Route::post('/instansi_lembaga/buat_data_instansi', [InstansiLembagaController::class, 'store']);
             Route::get('/setup_instansi_lembaga/{instansiLembaga}', [InstansiLembagaController::class, 'edit']);
+            Route::put('/setupInstansiLembaga/{instansiLembaga}', [InstansiLembagaController::class, 'update']);
 
 
             Route::get('/sekretariat', [SekretariatController::class, 'index']);
@@ -115,7 +119,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/suami_istri/view_form_tambah_suami_istri', [RiwayatKeluargaSuamiIstriController::class, 'create']);
         Route::post('/suami_istri/tambah_data_suami_istri', [RiwayatKeluargaSuamiIstriController::class, 'store']);
         Route::get('/suami_istri/view_edit_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'edit']);
-        Route::put('/suami_istri/edit_keluarga_istri', [RiwayatKeluargaSuamiIstriController::class, 'update']);
+        Route::put('/suami_istri/edit_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'update']);
+        Route::delete('/suami_istri/delete_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'destroy']);
 
         // URL Riwayat Keluarga Anak Pegawai
         Route::get('/anak', [RiwayatKeluargaAnakController::class, 'index']);
@@ -123,6 +128,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/anak/tambah_data_anak', [RiwayatKeluargaAnakController::class, 'store']);
         Route::get('/anak/view_edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'edit']);
         Route::put('/anak/edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'update']);
+        Route::delete('/anak/delete_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'destroy']);
 
         Route::get('/orang_tua', [RiwayatKeluargaOrangTuaController::class, 'index']);
         Route::get('/orang_tua/view_form_tambah_orang_tua', [RiwayatKeluargaOrangTuaController::class, 'create']);
@@ -245,7 +251,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/cuti/tambah_cuti', [CutiController::class, 'store']);
         Route::get('/cuti/view_form_edit_cuti/{cuti}', [CutiController::class, 'edit']);
         Route::put('/cuti/edit_riwayat_cuti/{cuti}', [CutiController::class, 'update']);
-        Route::delete('/cuti/delete_riwayat_cuti/{cuti}', [CutiController::class, 'destroy']);
+        Route::delete('/cuti/delete_cuti/{cuti}', [CutiController::class, 'destroy']);
         Route::get('/cuti/download_surat_cuti/{cuti}', [CutiController::class, 'downloadSuratCuti']);
 
 
@@ -276,6 +282,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/izin_kawin/view_form_tambah_izin_kawin', [IzinKawinController::class, 'create']);
         Route::post('/izin_kawin/tambah_izin_kawin', [IzinKawinController::class, 'store']);
         Route::get('/izin_kawin/view_form_edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'edit']);
+        Route::put('/izin_kawin/edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'update']);
+        Route::delete('/izin_kawin/delete_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'destroy']);
     });
 
     // SKP Prestasi Kerja

@@ -16,7 +16,17 @@ class MutasiController extends Controller
      */
     public function index()
     {
-        $mutasi = Mutasi::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $mutasi = Mutasi::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $mutasi = Mutasi::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.mutasi.indexMutasi", [
             'mutasi' => $mutasi
@@ -28,7 +38,13 @@ class MutasiController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.mutasi.tambahMutasi", [
             'pegawai' => $pegawai
@@ -70,7 +86,13 @@ class MutasiController extends Controller
      */
     public function edit(Mutasi $mutasi)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.mutasi.editMutasi", [
             'pegawai' => $pegawai,

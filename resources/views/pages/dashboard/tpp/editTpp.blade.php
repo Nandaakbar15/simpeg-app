@@ -177,8 +177,10 @@
 
                 {{-- Buttons --}}
                 <div class="flex items-center gap-3 mt-8 pt-5 border-t border-gray-200 dark:border-gray-700">
-                    <button type="submit"
-                        class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="button"
+                        class="confirm-save inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        data-title="Konfirmasi Simpan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data TPP ini?">
                         <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
                             <path d="M13.5 0H2.5A2.5 2.5 0 000 2.5v11A2.5 2.5 0 002.5 16h11a2.5 2.5 0 002.5-2.5v-11A2.5 2.5 0 0013.5 0zM8 12a3 3 0 110-6 3 3 0 010 6zm4-8H4V2h8v2z"/>
                         </svg>

@@ -17,6 +17,7 @@ class Penghargaan extends Model
         'tingkat_kegiatan',
         'tempat_penghargaan',
         'tgl_penghargaan',
+        'file_sertifikat_penghargaan',
         'tahun',
         'no_sertifikat'
     ];

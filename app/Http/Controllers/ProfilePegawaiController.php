@@ -22,7 +22,12 @@ use App\Models\Mutasi;
 use App\Models\IzinKawin;
 use App\Models\PrestasiKerja;
 use App\Models\Tpp;
+use App\Models\UnitKerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Exception;
 
 class ProfilePegawaiController extends Controller
 {
@@ -101,5 +106,148 @@ class ProfilePegawaiController extends Controller
             'latihanJab', 'cuti', 'tunjangan', 'mutasi', 'izinKawin',
             'skp', 'tpp', 'allPangkat'
         ));
+    }
+
+    /**
+     * Show the form for editing the profile.
+     */
+    public function edit()
+    {
+        $user    = auth()->user();
+        $pegawai = Pegawai::with(['unit_kerja'])
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$pegawai) {
+            return redirect('/profile_saya')->with('error', 'Data pegawai tidak ditemukan!');
+        }
+
+        $unitKerja = UnitKerja::all();
+
+        return view('pages.dashboard.profile_pegawai.editProfilePegawai', [
+            'pegawai'   => $pegawai,
+            'unitKerja' => $unitKerja,
+        ]);
+    }
+
+    /**
+     * Update the profile.
+     */
+    public function update(Request $request)
+    {
+        $user    = auth()->user();
+        $pegawai = Pegawai::where('user_id', $user->id)->first();
+
+        if (!$pegawai) {
+            return redirect('/profile_saya')->with('error', 'Data pegawai tidak ditemukan!');
+        }
+
+        $validateData = $request->validate([
+            'nip' => 'required|string',
+            'nama' => 'required|string',
+            'unit_kerja_id' => 'required|exists:tb_unit_kerja,id',
+            'gelar' => 'nullable|string',
+            'tmpt_lahir' => 'required|string',
+            'tgl_lahir' => 'required|date',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'golongan_darah' => 'required',
+            'status_pernikahan' => 'required',
+            'nik' => 'required|string',
+            'alamat' => 'required|string',
+            'no_hp' => 'required|string',
+            'email' => 'required|email',
+            'email_gov' => 'required|email',
+            'no_npwp' => 'required|string',
+            'no_bpjs' => 'required|string',
+            'status_kepegawaian' => 'required',
+            'karpeg' => 'required|string',
+            'no_sk_cpns' => 'nullable',
+            'tmt_cpns' => 'required|date',
+            'no_sk_pns' => 'nullable',
+            'tmt_pns' => 'required|date',
+            'gol_awal' => 'required|string',
+            'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nilai_tpp' => 'required'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Handle foto upload
+            if($request->hasFile('foto')) {
+                // Delete old photo if exists
+                if($pegawai->foto && $pegawai->foto !== '/storage/images/default.jpg') {
+                    $oldPath = str_replace('/storage/', '', $pegawai->foto);
+                    if(Storage::disk('public')->exists($oldPath)) {
+                        Storage::disk('public')->delete($oldPath);
+                    }
+                }
+
+                $file = $request->file('foto');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('images', $fileName, 'public');
+                $validateData['foto'] = '/storage/' . $path;
+            }
+
+            $pegawai->update($validateData);
+
+            DB::commit();
+
+            return redirect('/profile_saya')->with('success', 'Berhasil mengubah data profile!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal mengubah data profile : " . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan dengan sistem!');
+        }
+    }
+
+    /**
+     * Upload/Update foto profile.
+     */
+    public function uploadFoto(Request $request)
+    {
+        $user    = auth()->user();
+        $pegawai = Pegawai::where('user_id', $user->id)->first();
+
+        if (!$pegawai) {
+            return back()->with('error', 'Data pegawai tidak ditemukan!');
+        }
+
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            // Delete old photo if exists
+            if($pegawai->foto && $pegawai->foto !== '/storage/images/default.jpg') {
+                $oldPath = str_replace('/storage/', '', $pegawai->foto);
+                if(Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
+            }
+
+            $file = $request->file('foto');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('images', $fileName, 'public');
+            
+            $pegawai->update([
+                'foto' => '/storage/' . $path
+            ]);
+
+            DB::commit();
+
+            return back()->with('success', 'Berhasil mengupload foto!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error("Gagal mengupload foto : " . $e->getMessage());
+
+            return back()->with('error', 'Error, terjadi kesalahan dengan sistem!');
+        }
     }
 }

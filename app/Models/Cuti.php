@@ -21,6 +21,7 @@ class Cuti extends Model
         'ketentuan_a',
         'ketentuan_b',
         'ketentuan_c',
+        'file_surat_cuti',
         'tebusan'
     ];
 

@@ -81,6 +81,44 @@ class InstansiLembagaController extends Controller
      */
     public function update(Request $request, InstansiLembaga $instansiLembaga)
     {
-        //
+        $validateData = $request->validate([
+            'nama_instansi_lembaga' => 'required|string',
+            'kabupaten_kota' => 'required',
+            'nama_kota_kabupaten' => 'required|string',
+            'alamat' => 'required|string',
+            'no_telp' => 'required|string',
+            'email' => 'required|string',
+            'kepala_dinas' => 'required|string',
+            'nip' => 'required|string',
+            'gambar_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if($request->hasFile('foto')) {
+
+                if($request->gambarLama) {
+                    Storage::disk('public')->delete($request->gambarLama);
+                }
+
+                $file = $request->file('foto');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('images', $fileName, 'public');
+                $validateData['foto'] = '/storage/' . $path;
+            }
+
+            $instansiLembaga->update($validateData);
+
+            DB::commit();
+
+            return redirect('/manajemen_setup/instansi_lembaga')->with('success', 'Berhasil setup Instansi lembaga!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal melakukan setup instansi lembaga : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 }

@@ -34,7 +34,9 @@
                             class="border rounded px-3 py-2 w-full">
                     </div>
 
-                    <button type="submit" class="text-white bg-blue-500 hover:bg-blue-700 rounded-lg text-sm px-4 py-2">
+                    <button type="button" class="text-white bg-blue-500 hover:bg-blue-700 rounded-lg text-sm px-4 py-2 confirm-save"
+                        data-title="Simpan Perubahan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan master jabatan ini?">
                         Save Changes
                     </button>
                 </form>

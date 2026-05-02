@@ -16,7 +16,17 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function index()
     {
-        $riwayatKeluargaOrangTua = RiwayatKeluargaOrangtua::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $riwayatKeluargaOrangTua = RiwayatKeluargaOrangtua::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $riwayatKeluargaOrangTua = RiwayatKeluargaOrangtua::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.riwayat_keluarga.orang_tua.IndexKeluargaOrangtua", [
             'riwayatKeluargaOrangTua' => $riwayatKeluargaOrangTua
@@ -28,7 +38,13 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.orang_tua.tambahKeluargaOrangtua", [
             'pegawai' => $pegawai
@@ -74,7 +90,13 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function edit(RiwayatKeluargaOrangTua $riwayatKeluargaOrangTua)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.orang_tua.editKeluargaOrangtua", [
             "pegawai" => $pegawai,

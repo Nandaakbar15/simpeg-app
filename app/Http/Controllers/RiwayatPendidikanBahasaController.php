@@ -16,7 +16,17 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function index()
     {
-        $riwayatPendidikanBahasa = RiwayatPendidikanBahasa::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $riwayatPendidikanBahasa = RiwayatPendidikanBahasa::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $riwayatPendidikanBahasa = RiwayatPendidikanBahasa::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.riwayat_pendidikan.pendidikan_bahasa.indexPendidikanBahasa", [
             'riwayatPendidikanBahasa' => $riwayatPendidikanBahasa
@@ -28,7 +38,13 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_pendidikan.pendidikan_bahasa.tambahPendidikanBahasa", [
             'pegawai' => $pegawai
@@ -68,7 +84,13 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function edit(RiwayatPendidikanBahasa $riwayatPendidikanBahasa)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_pendidikan.pendidikan_bahasa.editPendidikanBahasa", [
             'pegawai' => $pegawai,

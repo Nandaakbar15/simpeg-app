@@ -9,6 +9,7 @@ use App\Models\Pegawai;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class PenugasanLuarNegeriController extends Controller
@@ -18,7 +19,17 @@ class PenugasanLuarNegeriController extends Controller
      */
     public function index()
     {
-        $penugasaLuarNegeri = PenugasanLuarNegeri::with('pegawai')->paginate(5);
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $penugasaLuarNegeri = PenugasanLuarNegeri::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $penugasaLuarNegeri = PenugasanLuarNegeri::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.penugasanln.indexPenugasan_luar_negri", [
             'penugasanLuarNegeri' => $penugasaLuarNegeri
@@ -30,7 +41,13 @@ class PenugasanLuarNegeriController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.penugasanln.tambahPenugasan_ln", [
             'pegawai' => $pegawai
@@ -83,7 +100,13 @@ class PenugasanLuarNegeriController extends Controller
      */
     public function edit(PenugasanLuarNegeri $penugasanLuarNegeri)
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.penugasanln.editPenugasan", [
             'pegawai' => $pegawai,

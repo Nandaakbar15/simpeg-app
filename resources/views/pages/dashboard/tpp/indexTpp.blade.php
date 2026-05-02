@@ -120,7 +120,9 @@
                                         <!-- Edit -->
                                         <a href="{{ route('tpp.edit', $data->id) }}"
                                             title="Edit"
-                                            class="inline-flex items-center justify-center w-8 h-8 rounded text-white bg-amber-500 hover:bg-amber-600 shadow-sm">
+                                            class="confirm-edit inline-flex items-center justify-center w-8 h-8 rounded text-white bg-amber-500 hover:bg-amber-600 shadow-sm"
+                                            data-title="Konfirmasi Edit"
+                                            data-message="Apakah Anda yakin ingin mengedit data TPP ini?">
                                             <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
                                                 <path d="M11.7.3c-.4-.4-1-.4-1.4 0l-10 10c-.2.2-.3.4-.3.7v4c0 .6.4 1 1 1h4c.3 0 .5-.1.7-.3l10-10c.4-.4.4-1 0-1.4l-4-4zM4.6 14H2v-2.6l6-6L10.6 8l-6 6zM12 6.6L9.4 4 11 2.4 13.6 5 12 6.6z"/>
                                             </svg>
@@ -133,12 +135,13 @@
                                             </svg>
                                         </a>
                                         <!-- Delete -->
-                                        <form action="{{ route('tpp.destroy', $data->id) }}" method="POST"
-                                            onsubmit="return confirm('Yakin ingin menghapus data TPP ini?')">
+                                        <form action="{{ route('tpp.destroy', $data->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" title="Hapus"
-                                                class="inline-flex items-center justify-center w-8 h-8 rounded text-white bg-red-500 hover:bg-red-600 shadow-sm">
+                                            <button type="button" title="Hapus"
+                                                class="confirm-delete inline-flex items-center justify-center w-8 h-8 rounded text-white bg-red-500 hover:bg-red-600 shadow-sm"
+                                                data-title="Konfirmasi Hapus"
+                                                data-message="Apakah Anda yakin ingin menghapus data TPP ini? Data yang dihapus tidak dapat dikembalikan.">
                                                 <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
                                                     <path d="M5 7h2v6H5V7zm4 0h2v6H9V7zM0 3h16v2H0V3zm3 0V1h10v2H3z"/>
                                                 </svg>

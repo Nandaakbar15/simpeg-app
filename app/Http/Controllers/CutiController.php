@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
@@ -18,7 +19,17 @@ class CutiController extends Controller
      */
     public function index()
     {
-        $cuti = Cuti::with('pegawai')->paginate(5);
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $cuti = Cuti::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $cuti = Cuti::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.cuti.indexCuti", [
             'cuti' => $cuti
@@ -30,7 +41,13 @@ class CutiController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.cuti.tambahCuti", [
             'pegawai' => $pegawai
@@ -53,6 +70,7 @@ class CutiController extends Controller
             'ketentuan_a' => 'required|string',
             'ketentuan_b' => 'required|string',
             'ketentuan_c' => 'required|string',
+            'file_surat_cuti' => 'required|file|mimes:pdf,docx,txt|max:10240',
             'tebusan' => 'required|string'
         ]);
 
@@ -60,6 +78,13 @@ class CutiController extends Controller
             DB::beginTransaction();
 
             Cuti::create($validateData);
+
+            if($request->hasFile('file_surat_cuti')) {
+                $file = $request->file('file_surat_cuti');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_surat_cuti'] = '/storage/' . $path;
+            }
 
             DB::commit();
 
@@ -80,7 +105,13 @@ class CutiController extends Controller
      */
     public function edit(Cuti $cuti)
     {
-        $pegawai = Pegawai::all();
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.cuti.editCuti", [
             'pegawai' => $pegawai,
@@ -104,11 +135,24 @@ class CutiController extends Controller
             'ketentuan_a' => 'required|string',
             'ketentuan_b' => 'required|string',
             'ketentuan_c' => 'required|string',
+            'file_surat_cuti' => 'file|mimes:pdf,docx,txt|max:10240',
             'tebusan' => 'required|string'
         ]);
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_surat_cuti')) {
+
+                if($request->fileLama) {
+                    Storage::disk('public')->delete($request->fileLama);
+                }
+
+                $file = $request->file('file_surat_cuti');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_surat_cuti'] = '/storage/' . $path;
+            }
 
             $cuti->update($validateData);
 
@@ -139,16 +183,12 @@ class CutiController extends Controller
      */
     public function downloadSuratCuti(Cuti $cuti)
     {
-        $cuti->load('pegawai.unit_kerja', 'pegawai.jabatan_aktif.master_jabatan');
+        $filePath = str_replace('/storage/', '', trim($cuti->file_surat_cuti));
 
-        $instansi = \App\Models\InstansiLembaga::first();
+        if (!Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
 
-        // Pangkat terakhir pegawai
-        $pangkat = \App\Models\Pangkat::with(['master_pangkat', 'master_golongan'])
-            ->where('pegawai_id', $cuti->pegawai_id)
-            ->latest('tmt_pangkat_mulai')
-            ->first();
-
-        return view('pages.dashboard.kepegawaian.cuti.suratCuti', compact('cuti', 'instansi', 'pangkat'));
+        return response()->download(storage_path('app/public/' . $filePath));
     }
 }

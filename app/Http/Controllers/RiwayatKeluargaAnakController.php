@@ -16,7 +16,17 @@ class RiwayatKeluargaAnakController extends Controller
      */
     public function index()
     {
-        $riwayatKeluargaAnak = RiwayatKeluargaAnak::with('pegawai')->get();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $riwayatKeluargaAnak = RiwayatKeluargaAnak::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->get();
+        } else {
+            $riwayatKeluargaAnak = RiwayatKeluargaAnak::with('pegawai')->get();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.anak.IndexRiwayatKeluargaAnak", [
             'riwayatKeluargaAnak' => $riwayatKeluargaAnak
@@ -28,7 +38,13 @@ class RiwayatKeluargaAnakController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.anak.tambahRiwayatKeluargaAnak", [
             'pegawai' => $pegawai
@@ -49,7 +65,7 @@ class RiwayatKeluargaAnakController extends Controller
             'jenis_kelamin' => 'required',
             'pendidikan' => 'required',
             'pekerjaan' => 'required',
-            'status' => 'required'
+            'status_hubungan' => 'required'
         ]);
 
         try {
@@ -74,7 +90,13 @@ class RiwayatKeluargaAnakController extends Controller
      */
     public function edit(RiwayatKeluargaAnak $riwayatKeluargaAnak)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.riwayat_keluarga.anak.EditRiwayatKeluargaAnak", [
             'pegawai' => $pegawai,
@@ -96,7 +118,7 @@ class RiwayatKeluargaAnakController extends Controller
             'jenis_kelamin' => 'required',
             'pendidikan' => 'required',
             'pekerjaan' => 'required',
-            'status' => 'required'
+            'status_hubungan' => 'required'
         ]);
 
         try {

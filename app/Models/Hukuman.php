@@ -18,6 +18,7 @@ class Hukuman extends Model
         'isi_teguran',
         'pejabat_pengesahan_sk_hukuman',
         'no_sk',
+        'file_sk_hukuman',
         'tgl_pengesahan_sk',
         'tmt_hukuman_mulai',
         'tmt_hukuman_pemulihan',

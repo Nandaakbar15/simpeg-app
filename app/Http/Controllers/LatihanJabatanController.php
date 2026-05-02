@@ -18,7 +18,17 @@ class LatihanJabatanController extends Controller
      */
     public function index()
     {
-        $latihaJabatan = LatihanJabatan::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $latihaJabatan = LatihanJabatan::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $latihaJabatan = LatihanJabatan::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.latihanJabatan.indexLatihanJabatan", [
             'latihanJabatan' => $latihaJabatan
@@ -30,7 +40,13 @@ class LatihanJabatanController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.latihanJabatan.tambahLatihanJabatan", [
             'pegawai' => $pegawai
@@ -83,7 +99,13 @@ class LatihanJabatanController extends Controller
      */
     public function edit(LatihanJabatan $latihanJabatan)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.latihanJabatan.editLatihanJabatan", [
             'pegawai' => $pegawai,

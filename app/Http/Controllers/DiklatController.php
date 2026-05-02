@@ -16,7 +16,17 @@ class DiklatController extends Controller
      */
     public function index()
     {
-        $diklat = Diklat::with('pegawai')->paginate(5);
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $diklat = Diklat::with('pegawai')
+                ->whereHas('pegawai', function($query) use ($user) {
+                    $query->where('unit_kerja_id', $user->unit_kerja_id);
+                })
+                ->paginate(5);
+        } else {
+            $diklat = Diklat::with('pegawai')->paginate(5);
+        }
 
         return view("pages.dashboard.kepegawaian.diklat.indexDiklat", [
             'diklat' => $diklat
@@ -28,7 +38,13 @@ class DiklatController extends Controller
      */
     public function create()
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.diklat.tambahDiklat", [
             'pegawai' => $pegawai
@@ -74,7 +90,13 @@ class DiklatController extends Controller
      */
     public function edit(Diklat $diklat)
     {
-        $pegawai = Pegawai::all();
+        $user = auth()->user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } else {
+            $pegawai = Pegawai::all();
+        }
 
         return view("pages.dashboard.kepegawaian.diklat.editDiklat", [
             'diklat' => $diklat,

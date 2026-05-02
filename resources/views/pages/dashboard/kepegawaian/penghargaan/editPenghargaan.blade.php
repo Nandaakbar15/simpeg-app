@@ -26,6 +26,8 @@
                 <form action="/kepegawaian/penghargaan/edit_penghargaan/{{ $penghargaan->id }}" method="POST">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="fileLama" id="fileLama"
+                        value="{{ $penghargaan->file_sertifikat_penghargaan }}">
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
@@ -99,8 +101,10 @@
                             placeholder="Masukan nomor sertifikat" required
                             value="{{ old('no_sertifikat', $penghargaan->no_sertifikat) }}" />
                     </div>
-                    <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                    <button type="button"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        data-title="Simpan Perubahan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data penghargaan ini?">Save</button>
                 </form>
             </div>
 

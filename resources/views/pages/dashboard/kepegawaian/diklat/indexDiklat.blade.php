@@ -102,7 +102,9 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/kepegawaian/diklat/view_form_edit_diklat/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
+                                            class="confirm-edit inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg"
+                                            data-title="Edit Diklat"
+                                            data-message="Apakah anda yakin mau edit data diklat ini?">
                                             Edit
                                         </a>
                                         <form action="/kepegawaian/diklat/delete_data_diklat/{{ $data->id }}"
@@ -110,8 +112,9 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
-                                                onclick="return confirm('Yakin ingin menghapus?')">
+                                                class="confirm-delete inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg"
+                                                data-title="Konfirmasi Hapus"
+                                                data-message="Apakah Anda yakin ingin menghapus data diklat ini? Data yang dihapus tidak dapat dikembalikan.">
                                                 Delete
                                             </button>
                                         </form>

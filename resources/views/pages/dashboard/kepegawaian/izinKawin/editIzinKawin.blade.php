@@ -131,11 +131,12 @@
                                 name="tempat_lahir_calon_suami_istri"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tempat lahir calon suami / istri" required
-                                value="{{ old('tempat_lahir_calon_suami_istri', $izinKawin->tempat_calon_suami_istri) }}" />
+                                value="{{ old('tempat_lahir_calon_suami_istri', $izinKawin->tempat_lahir_calon_suami_istri) }}" />
 
                             <input type="date" id="tgl_lahir_calon_suami_istri" name="tgl_lahir_calon_suami_istri"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                required placeholder="Masukan tanggal lahir calon suami / istri" />
+                                required placeholder="Masukan tanggal lahir calon suami / istri"
+                                value="{{ old('tgl_lahir_calon_suami_istri', $izinKawin->tgl_lahir_calon_suami_istri) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
@@ -151,7 +152,8 @@
                             class="block mb-2.5 text-sm font-medium text-heading">NIK / NIP</label>
                         <input type="text" id="nip_nik_calon_suami_istri" name="nip_nik_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan nip atau nik calon suami / istri" required />
+                            placeholder="Masukan nip atau nik calon suami / istri" required
+                            value="{{ old('nip_nik_calon_suami_istri', $izinKawin->nip_nik_calon_suami_istri) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="pangkat_golongan_calon_suami_istri"
@@ -184,7 +186,7 @@
                         <input type="text" id="kebangsaan_calon_suami_istri" name="kebangsaan_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan kebangsaan calon suami / istri" required
-                            value="{{ old('kebangsaan_calon_suami_istri') }}" />
+                            value="{{ old('kebangsaan_calon_suami_istri', $izinKawin->kebangsaan_calon_suami_istri) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="agama_calon_suami_istri"
@@ -279,8 +281,10 @@
                             placeholder="Masukan tanggal ditetapkan perkawinan" required
                             value="{{ old('tgl_ditetapkan_perkawinan', $izinKawin->tgl_ditetapkan_perkawinan) }}" />
                     </div>
-                    <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-lg text-sm px-4 py-2 focus:outline-none">Save</button>
+                    <button type="button"
+                        class="confirm-save text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-lg text-sm px-4 py-2 focus:outline-none"
+                        data-title="Konfirmasi Simpan"
+                        data-message="Apakah Anda yakin ingin menyimpan perubahan data izin kawin ini?">Save</button>
                 </form>
             </div>
 
