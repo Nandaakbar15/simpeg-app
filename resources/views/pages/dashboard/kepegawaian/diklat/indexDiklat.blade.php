@@ -94,7 +94,7 @@
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        <a href="/kepegawaian/diklat/{{ $data->id }}"
+                                        <a href="/kepegawaian/download_sertifikat_diklat/{{ $data->id }}"
                                             class="inline-block py-2 px-3 bg-blue-500 text-white hover:bg-blue-700 rounded-lg shadow-lg">Download
                                             Sertifikat</a>
                                     </div>

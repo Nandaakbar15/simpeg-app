@@ -8,6 +8,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MutasiController extends Controller
 {
@@ -16,7 +18,7 @@ class MutasiController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $mutasi = Mutasi::with('pegawai')
@@ -38,7 +40,7 @@ class MutasiController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -61,11 +63,19 @@ class MutasiController extends Controller
             'jenis_mutasi' => 'required',
             'instansi_tujuan' => 'required|string',
             'no_sk_mutasi' => 'required|string',
-            'tgl_sk_mutasi' => 'required|date'
+            'tgl_sk_mutasi' => 'required|date',
+            'file_sk_mutasi' => 'required|file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_sk_mutasi')) {
+                $file = $request->file('file_sk_mutasi');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sk_mutasi'] = '/storage/' . $path;
+            }
 
             Mutasi::create($validateData);
 
@@ -86,7 +96,7 @@ class MutasiController extends Controller
      */
     public function edit(Mutasi $mutasi)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -110,11 +120,29 @@ class MutasiController extends Controller
             'jenis_mutasi' => 'required',
             'instansi_tujuan' => 'required|string',
             'no_sk_mutasi' => 'required|string',
-            'tgl_sk_mutasi' => 'required|date'
+            'tgl_sk_mutasi' => 'required|date',
+            'file_sk_mutasi' => 'file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
             DB::beginTransaction();
+
+            $mutasi->update($validateData);
+
+            if ($request->hasFile('file_sk_mutasi')) {
+
+                if ($request->fileLama) {
+                    Storage::disk('public')->delete(
+                        str_replace('/storage/', '', $request->fileLama)
+                    );
+                }
+
+                $file = $request->file('file_sk_mutasi');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+
+                $validateData['file_sk_mutasi'] = '/storage/' . $path;
+            }
 
             $mutasi->update($validateData);
 
@@ -138,5 +166,16 @@ class MutasiController extends Controller
         $mutasi->delete();
 
         return redirect("/kepegawaian/mutasi")->with('success', 'Berhasil menghapus data!');
+    }
+
+    public function downloadSkMutasi(Mutasi $mutasi)
+    {
+        $filePath = str_replace('/storage/', '', trim($mutasi->file_sk_mutasi));
+
+        if (!Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        return response()->download(storage_path('app/public/' . $filePath));
     }
 }

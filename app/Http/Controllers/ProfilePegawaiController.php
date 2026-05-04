@@ -28,12 +28,13 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ProfilePegawaiController extends Controller
 {
     public function index()
     {
-        $user    = auth()->user();
+        $user    = Auth::user();
         $pegawai = Pegawai::with(['unit_kerja'])
             ->where('user_id', $user->id)
             ->first();
@@ -113,7 +114,7 @@ class ProfilePegawaiController extends Controller
      */
     public function edit()
     {
-        $user    = auth()->user();
+        $user    = Auth::user();
         $pegawai = Pegawai::with(['unit_kerja'])
             ->where('user_id', $user->id)
             ->first();
@@ -135,7 +136,7 @@ class ProfilePegawaiController extends Controller
      */
     public function update(Request $request)
     {
-        $user    = auth()->user();
+        $user    = Auth::user();
         $pegawai = Pegawai::where('user_id', $user->id)->first();
 
         if (!$pegawai) {
@@ -209,7 +210,7 @@ class ProfilePegawaiController extends Controller
      */
     public function uploadFoto(Request $request)
     {
-        $user    = auth()->user();
+        $user    = Auth::user();
         $pegawai = Pegawai::where('user_id', $user->id)->first();
 
         if (!$pegawai) {
@@ -234,7 +235,7 @@ class ProfilePegawaiController extends Controller
             $file = $request->file('foto');
             $fileName = time() . '_' . $file->getClientOriginalName();
             $path = $file->storeAs('images', $fileName, 'public');
-            
+
             $pegawai->update([
                 'foto' => '/storage/' . $path
             ]);

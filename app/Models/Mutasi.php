@@ -15,7 +15,8 @@ class Mutasi extends Model
         'jenis_mutasi',
         'instansi_tujuan',
         'no_sk_mutasi',
-        'tgl_sk_mutasi'
+        'tgl_sk_mutasi',
+        'file_sk_mutasi'
     ];
 
 

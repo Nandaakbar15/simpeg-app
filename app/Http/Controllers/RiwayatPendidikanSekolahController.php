@@ -8,6 +8,7 @@ use App\Models\Pegawai;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RiwayatPendidikanSekolahController extends Controller
 {
@@ -16,7 +17,7 @@ class RiwayatPendidikanSekolahController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $riwayanPendidikanSekolah = RiwayatPendidikanSekolah::with('pegawai')
@@ -38,7 +39,7 @@ class RiwayatPendidikanSekolahController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -88,7 +89,7 @@ class RiwayatPendidikanSekolahController extends Controller
      */
     public function edit(RiwayatPendidikanSekolah $riwayatPendidikanSekolah)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();

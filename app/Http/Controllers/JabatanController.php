@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class JabatanController extends Controller
 {
@@ -18,7 +19,7 @@ class JabatanController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $jabatan = Jabatan::with(['master_jabatan', 'master_eselon', 'pegawai'])
@@ -40,7 +41,7 @@ class JabatanController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -99,7 +100,7 @@ class JabatanController extends Controller
      */
     public function edit(Jabatan $jabatan)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -159,8 +160,14 @@ class JabatanController extends Controller
      */
     public function destroy(Jabatan $jabatan)
     {
-        $jabatan->delete();
+        try {
+            $jabatan->delete();
 
-        return redirect('/kepegawaian/jabatan');
+            return redirect('/kepegawaian/jabatan');
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 }

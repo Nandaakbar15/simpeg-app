@@ -274,7 +274,7 @@
             </div>
 
             <div class="mt-5">
-                <a href="/riwayat_pendidikan/sekolah_lanjut"
+                <a href="/kepegawaian/jabatan"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>
@@ -314,7 +314,8 @@
                     message: 'Data master jabatan yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
                     confirmText: 'Ya, Hapus',
                     callback: async () => {
-                        let res = await fetch(`/kepegawaian/master_jabatan/delete_master_jabatan/${id}`, {
+                        let res = await fetch(
+                        `/kepegawaian/master_jabatan/delete_master_jabatan/${id}`, {
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',

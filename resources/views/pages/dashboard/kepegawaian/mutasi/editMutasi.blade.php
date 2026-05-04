@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form tambah mutasi</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form edit mutasi</h1>
             </div>
 
         </div>
@@ -22,9 +22,11 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/mutasi/edit_mutasi/{{ $mutasi->id }}" method="POST">
+                <form action="/kepegawaian/mutasi/edit_mutasi/{{ $mutasi->id }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="fileLama" value="{{ $mutasi->file_sk_mutasi }}">
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
@@ -78,6 +80,13 @@
                                 required placeholder="Masukan tanggal SK mutasi"
                                 value="{{ old('tgl_sk_mutasi', $mutasi->tgl_sk_mutasi) }}" />
                         </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="file_sk_mutasi" class="block mb-2.5 text-sm font-medium text-heading">File SK
+                            Mutasi</label>
+                        <input type="file" id="file_sk_mutasi" name="file_sk_mutasi"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            placeholder="Masukan file surat keterangan mutasi" />
                     </div>
                     <button type="button"
                         class="confirm-save text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-lg text-sm px-4 py-2 focus:outline-none"

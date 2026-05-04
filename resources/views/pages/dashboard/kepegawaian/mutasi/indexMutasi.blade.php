@@ -47,7 +47,7 @@
                                 <div class="font-semibold text-left">No. SK</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">Surat</div>
+                                <div class="font-semibold text-left">Surat SK</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-center">Aksi</div>
@@ -86,9 +86,9 @@
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        <a href="/kepegawaian/mutasi/download_surat_sk/{{ $data->id }}"
+                                        <a href="/kepegawaian/mutasi/download_sk/{{ $data->id }}"
                                             class="inline-block py-2 px-3 bg-blue-500 text-white hover:bg-blue-700 rounded-lg shadow-lg">Download
-                                            Surat SK</a>
+                                            Surat SK Mutasi</a>
                                     </div>
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">

@@ -6,6 +6,7 @@ use App\Models\RiwayatKeluargaOrangTua;
 use Illuminate\Http\Request;
 use App\Models\Pegawai;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -16,7 +17,7 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $riwayatKeluargaOrangTua = RiwayatKeluargaOrangtua::with('pegawai')
@@ -38,7 +39,7 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -90,7 +91,7 @@ class RiwayatKeluargaOrangTuaController extends Controller
      */
     public function edit(RiwayatKeluargaOrangTua $riwayatKeluargaOrangTua)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();

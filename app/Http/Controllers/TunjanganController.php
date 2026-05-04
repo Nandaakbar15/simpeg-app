@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TunjanganController extends Controller
 {
@@ -16,7 +17,7 @@ class TunjanganController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $tunjangan = Tunjangan::with('pegawai')
@@ -38,7 +39,7 @@ class TunjanganController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -94,7 +95,7 @@ class TunjanganController extends Controller
      */
     public function edit(Tunjangan $tunjangan)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -113,7 +114,36 @@ class TunjanganController extends Controller
      */
     public function update(Request $request, Tunjangan $tunjangan)
     {
-        //
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'no_tunjangan' => 'required|string',
+            'jenis_tunjangan_anak' => 'required|string',
+            'tgl_tunjangan' => 'required|date',
+            'terhitung_mulai' => 'required|date',
+            'akta_perkawinan_dari' => 'required|string',
+            'no_akta_perkawinan' => 'required|string',
+            'tgl_akta_perkawinan' => 'required|date',
+            'akta_kelahiran_dari' => 'required|string',
+            'no_akta_kelahiran' => 'required|string',
+            'tgl_akta_kelahiran' => 'required|date',
+            'tebusan' => 'required|string'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $tunjangan->update($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/tunjangan')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal mengubah data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -121,6 +151,14 @@ class TunjanganController extends Controller
      */
     public function destroy(Tunjangan $tunjangan)
     {
-        //
+        try {
+            $tunjangan->delete();
+            return redirect('/kepegawaian/tunjangan')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan pada sistem, silakan coba lagi.');
+        }
     }
 }

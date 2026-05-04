@@ -38,7 +38,7 @@
                                 <div class="font-semibold text-left">No. Tunjangan</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                                <div class="font-semibold text-left">Jenis Mutasi</div>
+                                <div class="font-semibold text-left">Jenis</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-left">Tgl Terhitung</div>

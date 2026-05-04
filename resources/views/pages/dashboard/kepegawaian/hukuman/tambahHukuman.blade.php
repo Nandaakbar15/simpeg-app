@@ -26,7 +26,7 @@
                     @csrf
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -38,12 +38,12 @@
                             class="block mb-2.5 text-sm font-medium text-heading">Pelanggaran yang dilakukan</label>
 
                         <textarea id="pelanggaran_yg_dilakukan" name="pelanggaran_yg_dilakukan" rows="4" cols="50"
-                            placeholder="Masukan pelanggaran yang dilakukan"></textarea>
+                            placeholder="Masukan pelanggaran yang dilakukan" class="rounded-lg"></textarea>
                     </div>
                     <div class="mb-5">
                         <label for="tingkat_hukuman" class="block mb-2.5 text-sm font-medium text-heading">Tingkat
                             Hukuman</label>
-                        <select name="tingkat_hukuman" id="tingkat_hukuman">
+                        <select name="tingkat_hukuman" id="tingkat_hukuman" class="rounded-lg">
                             <option value="Ringan">Ringan</option>
                             <option value="Sedang">Sedang</option>
                             <option value="Berat">Berat</option>
@@ -52,7 +52,7 @@
                     <div class="mb-5">
                         <label for="jenis_hukuman" class="block mb-2.5 text-sm font-medium text-heading">Jenis
                             Hukuman</label>
-                        <select name="jenis_hukuman" id="jenis_hukuman">
+                        <select name="jenis_hukuman" id="jenis_hukuman" class="rounded-lg">
                             <option value="Teguran Lisan">Teguran Lisan</option>
                             <option value="Teguran Tertulis">Teguran Tertulis</option>
                             <option value="Tunda Kenaikan Berkala">Tunda Kenaikan Berkala</option>
@@ -64,13 +64,13 @@
                         <label for="isi_teguran" class="block mb-2.5 text-sm font-medium text-heading">Isi
                             teguran</label>
 
-                        <textarea id="isi_teguran" name="isi_teguran" rows="4" cols="50"></textarea>
+                        <textarea id="isi_teguran" name="isi_teguran" rows="4" cols="50" class="rounded-lg"></textarea>
                     </div>
                     <div class="mb-5">
                         <label for="pejabat_pengesahan_sk_hukuman"
                             class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pengesahan Hukuman</label>
                         <input type="text" id="pejabat_pengesahan_sk_hukuman" name="pejabat_pengesahan_sk_hukuman"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pejabat pengesahan hukuman" required />
                     </div>
                     <div class="flex items-center mb-5">
@@ -78,11 +78,11 @@
                             pengesahan SK</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor SK" required />
 
                             <input type="date" id="tgl_pengesahan_sk" name="tgl_pengesahan_sk"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal SK" />
                         </div>
                     </div>
@@ -91,11 +91,11 @@
                             Hukuman</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tmt_hukuman_mulai" name="tmt_hukuman_mulai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Dari" required />
 
                             <input type="date" id="tmt_hukuman_pemulihan" name="tmt_hukuman_pemulihan"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Sampai" />
                         </div>
                     </div>
@@ -103,7 +103,7 @@
                         <label for="pejabat_pemulihan_hukuman"
                             class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pemulihan Hukuman</label>
                         <input type="text" id="pejabat_pemulihan_hukuman" name="pejabat_pemulihan_hukuman"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pejabat pemulihan hukuman" required />
                     </div>
                     <div class="flex items-center mb-5">
@@ -111,11 +111,11 @@
                             pemulihan hukuman</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_pemulihan_hukuman" name="no_pemulihan_hukuman"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor pemulihan hukuman" required />
 
                             <input type="date" id="tgl_pemulihan_hukuman" name="tgl_pemulihan_hukuman"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal pemulihan hukuman" />
                         </div>
                     </div>
@@ -123,11 +123,11 @@
                         <label for="file_sk_hukuman" class="block mb-2.5 text-sm font-medium text-heading">File SK
                             Hukuman</label>
                         <input type="file" id="file_sk_hukuman" name="file_sk_hukuman"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file sk hukuman" required />
                     </div>
                     <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 text-sm px-4 py-2 focus:outline-none">Save</button>
                 </form>
             </div>
 

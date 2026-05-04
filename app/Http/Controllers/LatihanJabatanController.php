@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 
 class LatihanJabatanController extends Controller
@@ -18,7 +19,7 @@ class LatihanJabatanController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $latihaJabatan = LatihanJabatan::with('pegawai')
@@ -40,7 +41,7 @@ class LatihanJabatanController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -99,7 +100,7 @@ class LatihanJabatanController extends Controller
      */
     public function edit(LatihanJabatan $latihanJabatan)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -127,7 +128,7 @@ class LatihanJabatanController extends Controller
             'jumlah_jam' => 'required|string',
             'nomor_sertifikat' => 'required|string',
             'tgl_sertifikat' => 'required|date',
-            'file_sertifikat' => 'required|file|mimes:pdf,docx,txt|max:10240'
+            'file_sertifikat' => 'file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
@@ -141,7 +142,7 @@ class LatihanJabatanController extends Controller
 
                 $file = $request->file('file_sertifikat');
                 $fileName = time() . '_' . $file->getClientOriginalName();
-                $path = $file->storeAs('images', $fileName, 'public');
+                $path = $file->storeAs('document', $fileName, 'public');
                 $validateData['file_sertifikat'] = '/storage/' . $path;
             }
 

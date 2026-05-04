@@ -36,6 +36,7 @@ use App\Http\Controllers\RekapitulasiController;
 use App\Http\Controllers\TppController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfilePegawaiController;
+use App\Http\Controllers\BackupDatabaseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -215,9 +216,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/diklat', [DiklatController::class, 'index']);
         Route::get('/diklat/view_form_tambah_diklat', [DiklatController::class, 'create']);
         Route::post('/diklat/tambah_diklat', [DiklatController::class, 'store']);
-        Route::get('/diklat/view_form_edit_diklat', [DiklatController::class, 'edit']);
+        Route::get('/diklat/view_form_edit_diklat/{diklat}', [DiklatController::class, 'edit']);
         Route::put('/diklat/edit_diklat/{diklat}', [DiklatController::class, 'update']);
         Route::delete('/diklat/delete_data_diklat/{diklat}', [DiklatController::class, 'delete']);
+        Route::get('/diklat/download_sertifikat_diklat/{diklat}', [DiklatController::class, 'download']);
 
         // URL Kepegawaian penghargaan
         Route::get('/penghargaan', [PenghargaanController::class, 'index']);
@@ -260,7 +262,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/latihan_jabatan/view_form_tambah_latihan_jabatan', [LatihanJabatanController::class, 'create']);
         Route::post('/latihan_jabatan/tambah_latihan_jabatan', [LatihanJabatanController::class, 'store']);
         Route::get('/latihan_jabatan/view_form_edit_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'edit']);
+        Route::put('/latihan_jabatan/edit_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'update']);
         Route::get('/latihan_jabatan/download_sertifikat/{latihanJabatan}', [LatihanJabatanController::class, 'downloadSertifikat']);
+        Route::delete('/latihan_jabatan/delete_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'destroy']);
 
         // URL kepegawaian mutasi
         Route::get('/mutasi', [MutasiController::class, 'index']);
@@ -269,12 +273,15 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/mutasi/view_form_edit_mutasi/{mutasi}', [MutasiController::class, 'edit']);
         Route::put('/mutasi/edit_mutasi/{mutasi}', [MutasiController::class, 'update']);
         Route::delete('/mutasi/delete_mutasi/{mutasi}', [MutasiController::class, 'destroy']);
+        Route::get('/mutasi/download_sk/{mutasi}', [MutasiController::class, 'downloadSkMutasi']);
 
         // URL untuk kepegawaian tunjangan
         Route::get('/tunjangan', [TunjanganController::class, 'index']);
         Route::get('/tunjangan/view_form_tambah_tunjangan', [TunjanganController::class, 'create']);
         Route::post('/tunjangan/tambah_tunjangan', [TunjanganController::class, 'store']);
         Route::get('/tunjangan/view_form_edit_tunjangan/{tunjangan}', [TunjanganController::class, 'edit']);
+        Route::put('/tunjangan/edit_tunjangan/{tunjangan}', [TunjanganController::class, 'update']);
+        Route::delete('/tunjangan/delete_data_tunjangan/{tunjangan}', [TunjanganController::class, 'destroy']);
 
 
         // URL untuk kepegawaian izin kawin
@@ -333,5 +340,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/keadaan_pegawai/print', [ReportController::class, 'printKeadaanPegawai'])->name('report.keadaan_pegawai.print');
         Route::get('/pensiun', [ReportController::class, 'reportPensiun'])->name('report.pensiun');
     });
+
+    Route::get('/backup_data', [BackupDatabaseController::class, 'BackupDatabasePages']);
+    Route::get('/backup_data/download', [BackupDatabaseController::class, 'download'])->name('backup_data.download');
 
 });

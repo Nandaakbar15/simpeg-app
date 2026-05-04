@@ -25,6 +25,7 @@
                 <form action="/kepegawaian/diklat/edit_diklat/{{ $diklat->id }}" method="POST">
                     @csrf
                     @method('PUT')
+                    <input type="hidden" name="fileLama" value="{{ $diklat->file_sertifikat_diklat }}">
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
                         <select name="pegawai_id" id="pegawai_id">
@@ -76,7 +77,7 @@
                         <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
                         <input type="text" id="tahun" name="tahun"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan tahun diklat" required />
+                            placeholder="Masukan tahun diklat" required value="{{ old('tahun', $diklat->tahun) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sttpp" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
@@ -93,8 +94,17 @@
                                 value="{{ old('tgl_sttpp', $diklat->tgl_sttpp) }}" />
                         </div>
                     </div>
+                    <div class="mb-5">
+                        <label for="file_sertifikat_diklat" class="block mb-2.5 text-sm font-medium text-heading">File
+                            sertifikat diklat</label>
+                        <input type="file" id="file_sertifikat_diklat" name="file_sertifikat_diklat"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            placeholder="Masukan file sertifikat diklat" />
+                    </div>
                     <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                        class="confirm-save text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none"
+                        data-title="Konfirmasi perubahan"
+                        data-message="Apakah yakin dengan perubahan data diklat ini?">Save</button>
                 </form>
             </div>
 

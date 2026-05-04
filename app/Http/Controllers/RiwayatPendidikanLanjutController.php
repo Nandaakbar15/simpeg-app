@@ -9,6 +9,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use PhpParser\Node\Expr;
+use Illuminate\Support\Facades\Auth;
 
 class RiwayatPendidikanLanjutController extends Controller
 {
@@ -17,7 +18,7 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $riwayatPendidikanLanjut = RiwayatPendidikanLanjut::with('pegawai')
@@ -39,7 +40,7 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -89,7 +90,7 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function edit(RiwayatPendidikanLanjut $riwayatPendidikanLanjut)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();

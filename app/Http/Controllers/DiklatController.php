@@ -7,7 +7,9 @@ use App\Models\Pegawai;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Exception;
+use Illuminate\Support\Facades\Storage;
 
 class DiklatController extends Controller
 {
@@ -16,7 +18,7 @@ class DiklatController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $diklat = Diklat::with('pegawai')
@@ -38,7 +40,7 @@ class DiklatController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -65,11 +67,19 @@ class DiklatController extends Controller
             'angkatan' => 'required|string',
             'tahun' => 'required|string',
             'no_sttpp' => 'required|string',
-            'tgl_sttpp' => 'required|date'
+            'tgl_sttpp' => 'required|date',
+            'file_sertifikat_sertifikat' => 'required|file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
             DB::beginTransaction();
+
+            if($request->hasFile('file_sertifikat_diklat')) {
+                $file = $request->file('file_sertifikat_diklat');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sertifikat_diklat'] = '/storage/' . $path;
+            }
 
             Diklat::create($validateData);
 
@@ -90,7 +100,7 @@ class DiklatController extends Controller
      */
     public function edit(Diklat $diklat)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -109,7 +119,45 @@ class DiklatController extends Controller
      */
     public function update(Request $request, Diklat $diklat)
     {
-        //
+        $validateData = $request->validate([
+            'pegawai_id' => 'required|exists:tb_pegawai,id',
+            'nama_diklat' => 'required|string',
+            'jumlah_jam' => 'required|string',
+            'penyelenggara' => 'required|string',
+            'tempat' => 'required|string',
+            'angkatan' => 'required|string',
+            'tahun' => 'required|string',
+            'no_sttpp' => 'required|string',
+            'tgl_sttpp' => 'required|date'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            if($request->hasFile('file_sertifikat_sertifikat')) {
+
+                if($request->fileLama) {
+                    Storage::disk('public')->delete($request->fileLama);
+                }
+
+                $file = $request->file('file_sertifikat_sertifikat');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $path = $file->storeAs('document', $fileName, 'public');
+                $validateData['file_sertifikat_sertifikat'] = '/storage/' . $path;
+            }
+
+            $diklat->update($validateData);
+
+            DB::commit();
+
+            return redirect('/kepegawaian/diklat')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal mengubah data : ' . $e->getMessage());
+
+            return back()->withInput()->with('Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -117,6 +165,24 @@ class DiklatController extends Controller
      */
     public function destroy(Diklat $diklat)
     {
-        //
+        try {
+            $diklat->delete();
+            return redirect('/kepegawaian/diklat')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function downloadSertifikatDiklat(Diklat $diklat)
+    {
+        $filePath = str_replace('/storage/', '', trim($diklat->file_sertifikat_diklat));
+
+        if (!Storage::disk('public')->exists($filePath)) {
+            abort(404, 'File tidak ditemukan');
+        }
+
+        return response()->download(storage_path('app/public/' . $filePath));
     }
 }

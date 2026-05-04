@@ -28,7 +28,7 @@
                     <input type="hidden" name="fileLama" id="fileLama" value="{{ $hukuman->file_sk_hukuman }}">
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -43,7 +43,7 @@
                             class="block mb-2.5 text-sm font-medium text-heading">Pelanggaran yang dilakukan</label>
 
                         <textarea id="pelanggaran_yg_dilakukan" name="pelanggaran_yg_dilakukan" rows="4" cols="50"
-                            placeholder="Masukan pelanggaran yang dilakukan">{{ old('pelanggaran_yg_dilakukan', $hukuman->pelanggaran_yg_dilakukan) }}</textarea>
+                            placeholder="Masukan pelanggaran yang dilakukan" class="rounded-lg">{{ old('pelanggaran_yg_dilakukan', $hukuman->pelanggaran_yg_dilakukan) }}</textarea>
                     </div>
                     <div class="mb-5">
                         <label for="tingkat_hukuman" class="block mb-2.5 text-sm font-medium text-heading">Tingkat
@@ -60,7 +60,7 @@
                     <div class="mb-5">
                         <label for="jenis_hukuman" class="block mb-2.5 text-sm font-medium text-heading">Jenis
                             Hukuman</label>
-                        <select name="jenis_hukuman" id="jenis_hukuman">
+                        <select name="jenis_hukuman" id="jenis_hukuman" class="rounded-lg">
                             <option value="Teguran Lisan"
                                 {{ $hukuman->jenis_hukuman == 'Teguran Lisan' ? 'selected' : '' }}>Teguran Lisan
                             </option>
@@ -82,13 +82,13 @@
                         <label for="isi_teguran" class="block mb-2.5 text-sm font-medium text-heading">Isi
                             teguran</label>
 
-                        <textarea id="isi_teguran" name="isi_teguran" rows="4" cols="50">{{ old('isi_teguran', $hukuman->isi_teguran) }}</textarea>
+                        <textarea id="isi_teguran" name="isi_teguran" rows="4" cols="50" class="rounded-lg">{{ old('isi_teguran', $hukuman->isi_teguran) }}</textarea>
                     </div>
                     <div class="mb-5">
                         <label for="pejabat_pengesahan_sk_hukuman"
                             class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pengesahan Hukuman</label>
                         <input type="text" id="pejabat_pengesahan_sk_hukuman" name="pejabat_pengesahan_sk_hukuman"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pejabat pengesahan hukuman" required
                             value="{{ old('pejabat_pengesahan_sk_hukuman', $hukuman->pejabat_pengesahan_sk_hukuman) }}" />
                     </div>
@@ -97,11 +97,11 @@
                             pengesahan SK</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor SK" required value="{{ old('no_sk', $hukuman->no_sk) }}" />
 
                             <input type="date" id="tgl_pengesahan_sk" name="tgl_pengesahan_sk"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal SK"
                                 value="{{ old('tgl_pengesahan_sk', $hukuman->tgl_pengesahan_sk) }}" />
                         </div>
@@ -111,12 +111,12 @@
                             Hukuman</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tmt_hukuman_mulai" name="tmt_hukuman_mulai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Dari" required
                                 value="{{ old('tmt_hukuman_mulai', $hukuman->tmt_hukuman_mulai) }}" />
 
                             <input type="date" id="tmt_hukuman_pemulihan" name="tmt_hukuman_pemulihan"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Sampai"
                                 value="{{ old('tmt_hukuman_pemulihan', $hukuman->tmt_hukuman_pemulihan) }}" />
                         </div>
@@ -125,7 +125,7 @@
                         <label for="pejabat_pemulihan_hukuman"
                             class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pemulihan Hukuman</label>
                         <input type="text" id="pejabat_pemulihan_hukuman" name="pejabat_pemulihan_hukuman"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pejabat pemulihan hukuman" required
                             value="{{ old('pejabat_pemulihan_hukuman', $hukuman->pejabat_pemulihan_hukuman) }}" />
                     </div>
@@ -134,12 +134,12 @@
                             pemulihan hukuman</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_pemulihan_hukuman" name="no_pemulihan_hukuman"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor pemulihan hukuman" required
                                 value="{{ old('no_pemulihan_hukuman', $hukuman->no_pemulihan_hukuman) }}" />
 
                             <input type="date" id="tgl_pemulihan_hukuman" name="tgl_pemulihan_hukuman"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal pemulihan hukuman"
                                 value="{{ old('tgl_pemulihan_hukuman', $hukuman->tgl_pemulihan_hukuman) }}" />
                         </div>
@@ -148,11 +148,11 @@
                         <label for="file_sk_hukuman" class="block mb-2.5 text-sm font-medium text-heading">File SK
                             Hukuman</label>
                         <input type="file" id="file_sk_hukuman" name="file_sk_hukuman"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file sk hukuman" required />
                     </div>
                     <button type="button"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 text-sm px-4 py-2 focus:outline-none confirm-save"
                         data-title="Simpan Perubahan"
                         data-message="Apakah Anda yakin ingin menyimpan perubahan data hukuman ini?">Save</button>
                 </form>

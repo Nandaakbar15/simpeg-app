@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class RiwayatPendidikanBahasaController extends Controller
 {
@@ -16,7 +17,7 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $riwayatPendidikanBahasa = RiwayatPendidikanBahasa::with('pegawai')
@@ -38,7 +39,7 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -84,7 +85,7 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function edit(RiwayatPendidikanBahasa $riwayatPendidikanBahasa)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();

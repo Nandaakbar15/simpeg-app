@@ -26,7 +26,7 @@
                     @csrf
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_cuti" class="block mb-2.5 text-sm font-medium text-heading">Jenis Cuti</label>
-                        <select name="jenis_cuti" id="jenis_cuti">
+                        <select name="jenis_cuti" id="jenis_cuti" class="rounded-lg">
                             <option value="Tahunan">Tahunan</option>
                             <option value="Besar">Besar</option>
                             <option value="Sakit">Sakit</option>
@@ -51,11 +51,11 @@
                             Cuti</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_surat_cuti" name="no_surat_cuti"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor surat" required />
 
                             <input type="date" id="tgl_surat_cuti" name="tgl_surat_cuti"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal selesai pelaksanaan cuti" />
                         </div>
                     </div>
@@ -64,12 +64,12 @@
                             Cuti</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="pelaksanaan_cuti_mulai" name="pelaksanaan_cuti_mulai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tanggal mulai pelaksanaan cuti"
                                 alt="tanggal mulai pelaksanaan cuti" required />
 
                             <input type="date" id="pelaksanaan_cuti_selesai" name="pelaksanaan_cuti_selesai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal selesai pelaksanaan cuti"
                                 alt="tanggal selesai cuti" />
                         </div>
@@ -78,48 +78,41 @@
                         <label for="durasi_cuti" class="block mb-2.5 text-sm font-medium text-heading">Durasi
                             Cuti</label>
                         <input type="text" id="durasi_cuti" name="durasi_cuti"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan durasi cuti" required />
                     </div>
                     <div class="mb-5">
                         <label for="ketentuan_a" class="block mb-2.5 text-sm font-medium text-heading">Ketentuan
                             A</label>
                         <input type="text" id="ketentuan_a" name="ketentuan_a"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan ketentuan a" required />
                     </div>
                     <div class="mb-5">
                         <label for="ketentuan_b" class="block mb-2.5 text-sm font-medium text-heading">Ketentuan
                             B</label>
                         <input type="text" id="ketentuan_b" name="ketentuan_b"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan ketentuan b" required />
                     </div>
                     <div class="mb-5">
                         <label for="ketentuan_c" class="block mb-2.5 text-sm font-medium text-heading">Ketentuan
                             C</label>
                         <input type="text" id="ketentuan_c" name="ketentuan_c"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan ketentuan c" required />
                     </div>
                     <div class="mb-5">
                         <label for="tebusan" class="block mb-2.5 text-sm font-medium text-heading">Tebusan</label>
                         <input type="text" id="tebusan" name="tebusan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tebusan" required />
-                    </div>
-                    <div class="mb-5">
-                        <label for="file_surat_cuti" class="block mb-2.5 text-sm font-medium text-heading">Upload File
-                            Surat Cuti</label>
-                        <input type="file" id="file_surat_cuti" name="file_surat_cuti"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                            placeholder="Masukan file surat cuti" required />
                     </div>
                     <div class="mb-5">
                         <label for="file_surat_cuti" class="block mb-2.5 text-sm font-medium text-heading">File Surat
                             Cuti</label>
                         <input type="file" id="file_surat_cuti" name="file_surat_cuti"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file surat cuti" required />
                     </div>
                     <button type="submit"

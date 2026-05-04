@@ -19,7 +19,8 @@ class Diklat extends Model
         'angkatan',
         'tahun',
         'no_sttpp',
-        'tgl_sttpp'
+        'tgl_sttpp',
+        'file_sertifikat_diklat'
     ];
 
 

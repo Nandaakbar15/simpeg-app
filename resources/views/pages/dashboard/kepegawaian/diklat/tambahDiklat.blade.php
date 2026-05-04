@@ -37,38 +37,38 @@
                         <label for="nama_diklat" class="block mb-2.5 text-sm font-medium text-heading">Nama
                             Diklat</label>
                         <input type="text" id="nama_diklat" name="nama_diklat"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama diklat" required />
                     </div>
                     <div class="mb-5">
                         <label for="jumlah_jam" class="block mb-2.5 text-sm font-medium text-heading">Jumlah Jam</label>
                         <input type="text" id="jumlah_jam" name="jumlah_jam"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan jumlah jam diklat" required />
                     </div>
                     <div class="mb-5">
                         <label for="penyelenggara"
                             class="block mb-2.5 text-sm font-medium text-heading">Penyelanggara</label>
                         <input type="text" id="penyelenggara" name="penyelenggara"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan penyelenggara diklat" required />
                     </div>
                     <div class="mb-5">
                         <label for="tempat" class="block mb-2.5 text-sm font-medium text-heading">Tempat</label>
                         <input type="text" id="tempat" name="tempat"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tempat diklat" required />
                     </div>
                     <div class="mb-5">
                         <label for="angkatan" class="block mb-2.5 text-sm font-medium text-heading">Angkatan</label>
                         <input type="text" id="angkatan" name="angkatan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan angkatan diklat" required />
                     </div>
                     <div class="mb-5">
                         <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
                         <input type="text" id="tahun" name="tahun"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tahun diklat" required />
                     </div>
                     <div class="flex items-center mb-5">
@@ -76,13 +76,20 @@
                             sttpp</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sttpp" name="no_sttpp"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor STTPP" required />
 
                             <input type="date" id="tgl_sttpp" name="tgl_sttpp"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal STTPP" />
                         </div>
+                    </div>
+                    <div class="mb-5">
+                        <label for="file_sertifikat_diklat" class="block mb-2.5 text-sm font-medium text-heading">File
+                            sertifikat diklat</label>
+                        <input type="file" id="file_sertifikat_diklat" name="file_sertifikat_diklat"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            placeholder="Masukan file sertifikat diklat" required />
                     </div>
                     <button type="submit"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
