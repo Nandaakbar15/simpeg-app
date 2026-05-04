@@ -1,10 +1,49 @@
 <x-app-layout>
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <div class="sm:flex sm:justify-between sm:items-center mb-8">
-            <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
-                Rekapitulasi Data OPD / SKPD / Unit Kerja
-            </h1>
+        <div class="sm:flex sm:justify-between sm:items-center mb-4">
+            <div>
+                <nav class="text-sm text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
+                    <span class="font-semibold text-gray-700 dark:text-gray-200">Rekapitulasi</span>
+                    <span>/</span>
+                    <span>OPD / SKPD / Unit Kerja</span>
+                </nav>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">
+                    Rekapitulasi <span class="text-base font-normal text-gray-500 dark:text-gray-400">Pegawai Berdasarkan OPD / SKPD / Unit Kerja</span>
+                </h1>
+            </div>
+            <div class="mt-4 sm:mt-0">
+                <button onclick="window.print()"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded shadow-sm transition-colors duration-150">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11 0H5v4H1v8h4v4h6v-4h4V4h-4V0zm-1 1v3H6V1h4zm1 10H5v-1h6v1zm0-2H5v-1h6v1zm2-2H3V5h10v2z"/>
+                    </svg>
+                    Print
+                </button>
+            </div>
         </div>
+
+        {{-- Notifikasi pegawai tanpa data --}}
+        @if ($pegawaiTanpaData > 0)
+            <div id="alertBanner"
+                class="flex items-start justify-between gap-3 bg-green-50 border border-green-300 text-green-800 text-sm rounded px-4 py-3 mb-6">
+                <div class="flex items-start gap-2">
+                    <svg class="w-4 h-4 mt-0.5 shrink-0 fill-current text-green-600" viewBox="0 0 16 16">
+                        <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1-3H7V4h2v5z"/>
+                    </svg>
+                    <span>
+                        <strong>Perhatian.</strong>
+                        Terdapat <strong>{{ $pegawaiTanpaData }}</strong> data pegawai tidak dilengkapi dengan {{ $labelData }}.
+                        <a href="/data_pegawai/pegawai" class="underline font-medium hover:text-green-900">Lihat detail</a>
+                    </span>
+                </div>
+                <button onclick="document.getElementById('alertBanner').remove()"
+                    class="shrink-0 text-green-600 hover:text-green-800 transition-colors">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
+                        <path d="M12.7 4.7l-1.4-1.4L8 6.6 4.7 3.3 3.3 4.7 6.6 8l-3.3 3.3 1.4 1.4L8 9.4l3.3 3.3 1.4-1.4L9.4 8z"/>
+                    </svg>
+                </button>
+            </div>
+        @endif
 
         <div class="grid grid-cols-12 gap-6">
 
@@ -19,8 +58,8 @@
                             class="text-xs font-semibold uppercase text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50">
                             <tr>
                                 <th class="px-4 py-3 text-left">No</th>
-                                <th class="px-4 py-3 text-left">Unit Kerja</th>
-                                <th class="px-4 py-3 text-center">Jumlah</th>
+                                <th class="px-4 py-3 text-left">OPD / SKPD / Unit Kerja</th>
+                                <th class="px-4 py-3 text-center">Jml. Pegawai</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-700">
@@ -35,7 +74,7 @@
                         </tbody>
                         <tfoot class="bg-gray-50 dark:bg-gray-700">
                             <tr class="font-bold text-gray-800 dark:text-gray-100">
-                                <td colspan="2" class="px-4 py-3 text-right">TOTAL</td>
+                                <td colspan="2" class="px-4 py-3 text-right">Total</td>
                                 <td class="px-4 py-3 text-center">{{ $unitKerja->sum('pegawai_count') }}</td>
                             </tr>
                         </tfoot>
@@ -61,16 +100,11 @@
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 const canvasElement = document.getElementById('unitKerjaChart');
-
-                // Debugging: Cek apakah element & data ada di console browser (F12)
                 const labels = @json($chartCategories);
                 const dataValues = @json($chartData);
-                console.log("Labels:", labels);
-                console.log("Data:", dataValues);
 
                 if (canvasElement) {
                     const ctx = canvasElement.getContext('2d');
-
                     new Chart(ctx, {
                         type: 'bar',
                         data: {
@@ -79,13 +113,13 @@
                                 label: 'Jumlah Pegawai',
                                 data: dataValues,
                                 backgroundColor: [
-                                    'rgba(54, 162, 235, 0.6)',
-                                    'rgba(255, 99, 132, 0.6)',
-                                    'rgba(75, 192, 192, 0.6)',
-                                    'rgba(255, 206, 86, 0.6)',
-                                    'rgba(153, 102, 255, 0.6)'
+                                    'rgba(54, 162, 235, 0.6)','rgba(255, 99, 132, 0.6)',
+                                    'rgba(75, 192, 192, 0.6)','rgba(255, 206, 86, 0.6)',
+                                    'rgba(153, 102, 255, 0.6)','rgba(255, 159, 64, 0.6)',
+                                    'rgba(99, 255, 132, 0.6)','rgba(235, 54, 162, 0.6)',
+                                    'rgba(162, 235, 54, 0.6)','rgba(64, 159, 255, 0.6)',
+                                    'rgba(192, 75, 75, 0.6)','rgba(86, 255, 206, 0.6)',
                                 ],
-                                borderColor: 'rgba(54, 162, 235, 1)',
                                 borderWidth: 1
                             }]
                         },
@@ -93,35 +127,12 @@
                             responsive: true,
                             maintainAspectRatio: false,
                             scales: {
-                                y: {
-                                    beginAtZero: true,
-                                    ticks: {
-                                        stepSize: 1,
-                                        color: '#6B7280' // Warna abu-abu Tailwind
-                                    },
-                                    grid: {
-                                        display: true,
-                                        drawBorder: false
-                                    }
-                                },
-                                x: {
-                                    ticks: {
-                                        color: '#6B7280'
-                                    },
-                                    grid: {
-                                        display: false
-                                    }
-                                }
+                                y: { beginAtZero: true, ticks: { stepSize: 1, color: '#6B7280' }, grid: { display: true, drawBorder: false } },
+                                x: { ticks: { color: '#6B7280' }, grid: { display: false } }
                             },
-                            plugins: {
-                                legend: {
-                                    display: false
-                                }
-                            }
+                            plugins: { legend: { display: false } }
                         }
                     });
-                } else {
-                    console.error("Element canvas 'unitKerjaChart' tidak ditemukan!");
                 }
             });
         </script>

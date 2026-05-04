@@ -11,6 +11,8 @@ use App\Models\MasterJabatan;
 use App\Models\MasterEselon;
 use App\Models\RiwayatPendidikanSekolah;
 use App\Models\RiwayatPendidikanLanjut;
+use App\Models\Pangkat;
+use App\Models\Jabatan;
 
 class RekapitulasiController extends Controller
 {
@@ -21,10 +23,15 @@ class RekapitulasiController extends Controller
         $chartCategories = $unitKerja->pluck('nama_unit')->toArray();
         $chartData = $unitKerja->pluck('pegawai_count')->toArray();
 
+        // Pegawai yang belum memiliki unit kerja
+        $pegawaiTanpaData = Pegawai::whereNull('unit_kerja_id')->count();
+
         return view("pages.dashboard.rekapitulasi.rekapUnitKerja", [
-            'unitKerja' => $unitKerja,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'unitKerja'        => $unitKerja,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data opd / skpd / unit kerja',
         ]);
     }
 
@@ -35,10 +42,16 @@ class RekapitulasiController extends Controller
         $chartCategories = $golongan->pluck('nama_golongan')->toArray();
         $chartData = $golongan->pluck('pegawai_count')->toArray();
 
+        // Pegawai yang belum memiliki riwayat pangkat (golongan ada di pangkat)
+        $pegawaiDenganPangkat = Pangkat::distinct('pegawai_id')->pluck('pegawai_id');
+        $pegawaiTanpaData = Pegawai::whereNotIn('id', $pegawaiDenganPangkat)->count();
+
         return view("pages.dashboard.rekapitulasi.rekapGolongan", [
-            'golongan' => $golongan,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'golongan'         => $golongan,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data golongan',
         ]);
     }
 
@@ -49,10 +62,16 @@ class RekapitulasiController extends Controller
         $chartCategories = $pangkat->pluck('nama_pangkat')->toArray();
         $chartData = $pangkat->pluck('pegawai_count')->toArray();
 
+        // Pegawai yang belum memiliki riwayat pangkat
+        $pegawaiDenganPangkat = Pangkat::distinct('pegawai_id')->pluck('pegawai_id');
+        $pegawaiTanpaData = Pegawai::whereNotIn('id', $pegawaiDenganPangkat)->count();
+
         return view("pages.dashboard.rekapitulasi.rekapPangkat", [
-            'pangkat' => $pangkat,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'pangkat'          => $pangkat,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data pangkat',
         ]);
     }
 
@@ -63,10 +82,16 @@ class RekapitulasiController extends Controller
         $chartCategories = $jabatan->pluck('nama_jabatan')->toArray();
         $chartData = $jabatan->pluck('pegawai_count')->toArray();
 
+        // Pegawai yang belum memiliki riwayat jabatan
+        $pegawaiDenganJabatan = Jabatan::distinct('pegawai_id')->pluck('pegawai_id');
+        $pegawaiTanpaData = Pegawai::whereNotIn('id', $pegawaiDenganJabatan)->count();
+
         return view("pages.dashboard.rekapitulasi.rekapJabatan", [
-            'jabatan' => $jabatan,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'jabatan'          => $jabatan,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data jabatan',
         ]);
     }
 
@@ -77,10 +102,16 @@ class RekapitulasiController extends Controller
         $chartCategories = $eselon->pluck('nama_eselon')->toArray();
         $chartData = $eselon->pluck("pegawai_count")->toArray();
 
+        // Pegawai yang belum memiliki riwayat jabatan (eselon ada di jabatan)
+        $pegawaiDenganJabatan = Jabatan::distinct('pegawai_id')->pluck('pegawai_id');
+        $pegawaiTanpaData = Pegawai::whereNotIn('id', $pegawaiDenganJabatan)->count();
+
         return view("pages.dashboard.rekapitulasi.rekapEselon", [
-            'eselon' => $eselon,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'eselon'           => $eselon,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data eselon',
         ]);
     }
 
@@ -93,10 +124,17 @@ class RekapitulasiController extends Controller
         $chartCategories = $statusKepegawaian->pluck("status_kepegawaian")->toArray();
         $chartData = $statusKepegawaian->pluck('jumlah')->toArray();
 
+        // Pegawai yang belum memiliki status kepegawaian
+        $pegawaiTanpaData = Pegawai::where(function ($q) {
+            $q->whereNull('status_kepegawaian')->orWhere('status_kepegawaian', '');
+        })->count();
+
         return view("pages.dashboard.rekapitulasi.rekapStatusKepegawaian", [
             'statusKepegawaian' => $statusKepegawaian,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'chartCategories'   => $chartCategories,
+            'chartData'         => $chartData,
+            'pegawaiTanpaData'  => $pegawaiTanpaData,
+            'labelData'         => 'data status kepegawaian',
         ]);
     }
 
@@ -109,10 +147,17 @@ class RekapitulasiController extends Controller
         $chartCategories = $agama->pluck("agama")->toArray();
         $chartData = $agama->pluck("jumlah")->toArray();
 
+        // Pegawai yang belum mengisi agama
+        $pegawaiTanpaData = Pegawai::where(function ($q) {
+            $q->whereNull('agama')->orWhere('agama', '');
+        })->count();
+
         return view("pages.dashboard.rekapitulasi.rekapAgama", [
-            'agama' => $agama,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'agama'            => $agama,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data agama',
         ]);
     }
 
@@ -125,10 +170,17 @@ class RekapitulasiController extends Controller
         $chartCategories = $jenisKelamin->pluck("jenis_kelamin")->toArray();
         $chartData = $jenisKelamin->pluck("jumlah")->toArray();
 
+        // Pegawai yang belum mengisi jenis kelamin
+        $pegawaiTanpaData = Pegawai::where(function ($q) {
+            $q->whereNull('jenis_kelamin')->orWhere('jenis_kelamin', '');
+        })->count();
+
         return view("pages.dashboard.rekapitulasi.rekapJenisKelamin", [
-            'jenisKelamin' => $jenisKelamin,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'jenisKelamin'     => $jenisKelamin,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data jenis kelamin',
         ]);
     }
 
@@ -141,30 +193,28 @@ class RekapitulasiController extends Controller
         $chartCategories = $statusPernikahan->pluck("status_pernikahan")->toArray();
         $chartData = $statusPernikahan->pluck("jumlah")->toArray();
 
+        // Pegawai yang belum mengisi status pernikahan
+        $pegawaiTanpaData = Pegawai::where(function ($q) {
+            $q->whereNull('status_pernikahan')->orWhere('status_pernikahan', '');
+        })->count();
+
         return view("pages.dashboard.rekapitulasi.rekapStatusNikah", [
             'statusPernikahan' => $statusPernikahan,
-            'chartCategories' => $chartCategories,
-            'chartData' => $chartData
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data status pernikahan',
         ]);
     }
 
     public function rekapPendidikanAkhir()
     {
-        // Ambil pendidikan tertinggi per pegawai berdasarkan urutan jenjang,
-        // lalu group by jenjang_pendidikan untuk menghitung jumlah pegawai.
-        // Urutan jenjang: SD < SMP < SMA/SMK < D1 < D2 < D3 < D4 < S1 < S2 < S3
         $jenjangOrder = ['SD', 'SMP', 'SMA', 'SMK', 'D1', 'D2', 'D3', 'D4', 'S1', 'S2', 'S3'];
 
-        // Subquery: ambil jenjang_pendidikan terbaru (FIELD order) per pegawai_id
-        // Karena tidak ada kolom "level", kita ambil semua record lalu proses di PHP
         $semuaRiwayat = RiwayatPendidikanSekolah::select('pegawai_id', 'jenjang_pendidikan')->get();
-
-        // Juga gabungkan dari pendidikan lanjut (D1-S3)
-        $riwayatLanjut = \App\Models\RiwayatPendidikanLanjut::select('pegawai_id', 'jenjang_pendidikan')->get();
-
+        $riwayatLanjut = RiwayatPendidikanLanjut::select('pegawai_id', 'jenjang_pendidikan')->get();
         $semuaRiwayat = $semuaRiwayat->concat($riwayatLanjut);
 
-        // Untuk setiap pegawai, ambil jenjang tertinggi
         $pendidikanPerPegawai = $semuaRiwayat
             ->groupBy('pegawai_id')
             ->map(function ($records) use ($jenjangOrder) {
@@ -175,7 +225,6 @@ class RekapitulasiController extends Controller
                 return $tertinggi->jenjang_pendidikan;
             });
 
-        // Group by jenjang dan hitung
         $grouped = $pendidikanPerPegawai
             ->groupBy(fn($j) => $j)
             ->map(fn($items, $jenjang) => [
@@ -189,11 +238,16 @@ class RekapitulasiController extends Controller
         $chartCategories = $grouped->pluck('jenjang_pendidikan')->toArray();
         $chartData       = $grouped->pluck('jumlah')->toArray();
 
+        // Pegawai yang belum memiliki riwayat pendidikan sama sekali
+        $pegawaiDenganPendidikan = $semuaRiwayat->pluck('pegawai_id')->unique();
+        $pegawaiTanpaData = Pegawai::whereNotIn('id', $pegawaiDenganPendidikan)->count();
+
         return view("pages.dashboard.rekapitulasi.rekapPendidikanAkhir", [
-            'pendidikanAkhir' => $grouped,
-            'chartCategories' => $chartCategories,
-            'chartData'       => $chartData,
+            'pendidikanAkhir'  => $grouped,
+            'chartCategories'  => $chartCategories,
+            'chartData'        => $chartData,
+            'pegawaiTanpaData' => $pegawaiTanpaData,
+            'labelData'        => 'data pendidikan',
         ]);
     }
-
 }
