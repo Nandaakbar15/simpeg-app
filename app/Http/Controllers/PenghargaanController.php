@@ -182,4 +182,42 @@ class PenghargaanController extends Controller
 
         return response()->download(storage_path('app/public/' . $filePath));
     }
+
+    public function cariPenghargaan(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Penghargaan::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPenghargaan) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel izin kawin
+                $q->where('nama_penghargaan', 'like', '%' . $request->cariPenghargaan . '%');
+
+                $q->orWhere('tingkat_kegiatan', 'like', '%' . $request->cariPenghargaan . '%');
+
+                $q->orWhere('tahun', 'like', '%' . $request->cariPenghargaan . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPenghargaan . '%');
+                });
+
+            });
+        }
+
+        $penghargaan = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.penghargaan.indexPenghargaan", [
+            'penghargaan' => $penghargaan
+        ]);
+    }
 }

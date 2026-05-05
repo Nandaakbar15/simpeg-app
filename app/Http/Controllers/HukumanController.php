@@ -174,9 +174,15 @@ class HukumanController extends Controller
      */
     public function destroy(Hukuman $hukuman)
     {
-        $hukuman->delete();
+        try {
+            $hukuman->delete();
 
-        return redirect('/kepegawaian/hukuman')->with('success', 'Berhasil menghapus data!');
+            return redirect('/kepegawaian/hukuman')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -191,5 +197,42 @@ class HukumanController extends Controller
         }
 
         return response()->download(storage_path('app/public/' . $filePath));
+    }
+
+    public function cariHukuman(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Hukuman::with("pegawai");
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariHukuman) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel izin kawin
+                $q->where('jenis_hukuman', 'like', '%' . $request->cariHukuman . '%');
+
+                $q->orWhere('tingkat_hukuman', 'like', '%' . $request->cariHukuman . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariHukuman . '%');
+                });
+
+            });
+        }
+
+
+        $hukuman = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.hukuman.indexHukuman", [
+            'hukuman' => $hukuman
+        ]);
     }
 }

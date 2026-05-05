@@ -280,4 +280,34 @@ class TppController extends Controller
             'data'          => $data,
         ]);
     }
+
+    public function cariTpp(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Tpp::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if ($request->cariTpp) {
+            $query->where(function($q) use ($request) {
+                $q->where('periode', 'like', '%' . $request->cariTpp . '%')
+                  ->orWhere('tahun', 'like', '%' . $request->cariTpp . '%')
+                  ->orWhereHas('pegawai', function($q2) use ($request) {
+                      $q2->where('nama', 'like', '%' . $request->cariTpp . '%');
+                  });
+            });
+        }
+
+        $tpp = $query->orderBy('created_at', 'desc')->paginate(10);
+
+        return view('pages.dashboard.tpp.indexTpp', [
+            'tpp' => $tpp,
+        ]);
+    }
 }

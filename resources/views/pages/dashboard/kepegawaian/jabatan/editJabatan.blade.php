@@ -105,7 +105,7 @@
                                                                 </td>
                                                                 <td class="border p-2" x-text="item.nama_jabatan"></td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a href="/kepegawaian/master_jabatan/editjabatan/(item.id)"
+                                                                    <a :href="`/kepegawaian/master_jabatan/view_form_edit_master_jabatan/${item.id}`"
                                                                         class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
                                                                     <button @click="deleteJabatan(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
@@ -190,7 +190,7 @@
                                                                 <td class="border p-2" x-text="item.nama_eselon">
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a href="/kepegawaian/master_eselon/edit_eselon/(item.id)"
+                                                                    <a :href="`/kepegawaian/master_eselon/view_form_edit_master_eselon/${item.id}`"
                                                                         class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500">Edit</a>
                                                                     <button @click="deleteEselon(item.id)"
                                                                         class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">

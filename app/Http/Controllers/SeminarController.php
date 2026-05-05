@@ -167,9 +167,16 @@ class SeminarController extends Controller
      */
     public function destroy(Seminar $seminar)
     {
-        $seminar->delete();
+        try {
+            $seminar->delete();
 
-        return redirect("success", 'Berhasil menghapus data!');
+            return redirect("success", 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     public function downloadPiagam(Seminar $seminar)
@@ -181,5 +188,45 @@ class SeminarController extends Controller
         }
 
         return response()->download(storage_path('app/public/' . $filePath));
+    }
+
+    public function cariSeminar(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Seminar::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariSeminar) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel seminar
+                $q->where('nama_seminar', 'like', '%' . $request->cariSeminar . '%');
+
+                $q->orWhere('penyelenggara', 'like', '%' . $request->cariSeminar . '%');
+
+                $q->orWhere('tingkat_kegiatan', 'like', '%' . $request->cariSeminar . '%');
+
+                $q->orWhere('penyelenggara', 'like', '%' . $request->cariSeminar . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariSeminar . '%');
+                });
+
+            });
+        }
+
+        $seminar = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.seminar.indexSeminar", [
+            'seminar' => $seminar
+        ]);
     }
 }

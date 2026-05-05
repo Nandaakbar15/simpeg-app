@@ -191,4 +191,29 @@ class CutiController extends Controller
 
         return response()->download(storage_path('app/public/' . $filePath));
     }
+
+    public function cariCuti(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Cuti::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariCuti) {
+            $query->where('jenis_cuti', 'like', '%' . $request->cariCuti . '%')
+                  ->orWhere('durasi_cuti', 'like', '%' . $request->cariCuti . '%');
+        }
+
+        $cuti = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.cuti.indexCuti", [
+            'cuti' => $cuti
+        ]);
+    }
 }

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\UnitKerja;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class UnitKerjaController extends Controller
 {
@@ -37,9 +41,21 @@ class UnitKerjaController extends Controller
             'alamat' => 'required|string'
         ]);
 
-        UnitKerja::create($validateData);
+        try {
+            DB::beginTransaction();
 
-        return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil menambahkan data!');
+            UnitKerja::create($validateData);
+
+            DB::commit();
+
+            return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil menambahkan data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
     /**
      * Show the form for editing the specified resource.
@@ -61,9 +77,21 @@ class UnitKerjaController extends Controller
             'alamat' => 'required|string'
         ]);
 
-        $unitKerja->update($validateData);
+        try {
+            DB::beginTransaction();
 
-        return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil mengubah data!');
+            $unitKerja->update($validateData);
+
+            DB::commit();
+
+            return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil mengubah data!');
+        } catch(Exception $e) {
+           DB::rollBack();
+
+           Log::error('Gagal mengubah data : ' . $e->getMessage());
+
+           return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -71,8 +99,29 @@ class UnitKerjaController extends Controller
      */
     public function destroy(UnitKerja $unitKerja)
     {
-        $unitKerja->delete();
+        try {
+            $unitKerja->delete();
 
-        return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil menghapus data!');
+            return redirect('/manajemen_setup/opd_skpd_unitkerja')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function cariUnitKerja(Request $request)
+    {
+        $cariPegawai = $request->input('cariUnitKerja');
+        $unitkerja = UnitKerja::query()
+                   ->where('nama_unit', 'like', '%' . $cariPegawai . '%')
+                   ->orWhere('alamat', 'like', '%' . $cariPegawai . '%')
+                   ->paginate(5);
+
+        return view("pages.dashboard.manajemen_setup.OPD_SKD_UnitKerja.opd_skpd_unitkerja", [
+            'unitkerja' => $unitkerja
+        ]);
     }
 }

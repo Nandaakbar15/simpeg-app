@@ -22,7 +22,7 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/hukuman/tambah_data_hukuman" method="POST">
+                <form action="/kepegawaian/hukuman/tambah_data_hukuman" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>

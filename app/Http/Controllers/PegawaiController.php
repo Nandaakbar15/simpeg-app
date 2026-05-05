@@ -224,4 +224,27 @@ class PegawaiController extends Controller
 
         return redirect('/data_pegawai/pegawai')->with('success', 'Berhasil menghapus data!');
     }
+
+    public function cariPegawai(Request $request)
+    {
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            $pegawai = Pegawai::with('unit_kerja')
+                ->where('unit_kerja_id', $user->unit_kerja_id)
+                ->paginate(5);
+        } else {
+            // super admin / lainnya bisa lihat semua
+            $pegawai = Pegawai::with('unit_kerja')->paginate(5);
+        }
+
+        $cariPegawai = $request->input('cariPegawai');
+        $pegawai = Pegawai::query()
+                   ->where('nama', 'like', '%' . $cariPegawai . '%')
+                   ->paginate(5);
+
+        return view("pages.dashboard.data_pegawai.indexPegawai", [
+            'pegawai' => $pegawai
+        ]);
+    }
 }

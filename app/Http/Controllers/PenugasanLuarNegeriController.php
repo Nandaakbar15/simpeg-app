@@ -181,4 +181,40 @@ class PenugasanLuarNegeriController extends Controller
 
         return response()->download(storage_path('app/public/' . $filePath));
     }
+
+    public function cariPenugasanLn(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = PenugasanLuarNegeri::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPenugasanLn) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel penugasan luar negeri
+                $q->where('negara_tujuan', 'like', '%' . $request->cariPenugasanLn . '%');
+
+                $q->orWhere('tahun', 'like', '%' . $request->cariPenugasanLn . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPenugasanLn . '%');
+                });
+
+            });
+        }
+
+        $penugasanLuarNegeri = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.penugasanln.indexPenugasan_luar_negri", [
+            'penugasanLuarNegeri' => $penugasanLuarNegeri
+        ]);
+    }
 }

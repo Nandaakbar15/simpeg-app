@@ -12,15 +12,29 @@
 
         </div>
 
-        <div class="mb-6">
-            <a href="/manajemen_setup/view_form_tambah_unitkerja"
-                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path
-                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Tambah Unit Kerja</span>
-            </a>
+
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <div class="mb-6">
+                <a href="/manajemen_setup/view_form_tambah_unitkerja"
+                    class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                        <path
+                            d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                    </svg>
+                    <span class="hidden xs:block ml-2">Tambah Unit Kerja</span>
+                </a>
+            </div>
+
+            <form action="/manajemen_setup/opd_skpd_unit_kerja/cariUnitKerja" method="POST"
+                enctype="multipart/form-data">
+                @csrf
+                <input type="text" name="cariUnitKerja" id="cariUnitKerja" aria-label="Cari Unit Kerja"
+                    placeholder="Cari Unit Kerja..." value="{{ request('cariUnitKerja') }}" class="rounded-lg">
+                <button type="submit"
+                    class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">
+                    Cari
+                </button>
+            </form>
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
@@ -66,11 +80,15 @@
                                             data-message="Anda akan membuka form edit data ini. Lanjutkan?">
                                             Edit
                                         </a>
-                                        <form action="/admin/delete-buku/{{ $data->id }}" method="POST" class="confirm-delete-form">
+                                        <form
+                                            action="/manajemen_setup/opd_skpd_unit_kerja/delete_unitkerja/{{ $data->id }}"
+                                            method="POST" class="confirm-delete-form">
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
-                                                class="inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg confirm-delete">
+                                                class="confirm-delete inline-block py-2 px-3 text-white bg-red-500 hover:bg-red-700 rounded-lg shadow-lg confirm-delete"
+                                                data-title="Konfirmasi hapus"
+                                                data-message="Apakah Anda yakin ingin menghapus data unit kerja ini? Data yang dihapus tidak dapat dikembalikan.">
                                                 Delete
                                             </button>
                                         </form>
@@ -80,6 +98,9 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="flex justify-center">
+                    {{ $unitkerja->links() }}
+                </div>
             </div>
         </div>
     </div>

@@ -22,11 +22,11 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/diklat/tambah_diklat" method="POST">
+                <form action="/kepegawaian/diklat/tambah_diklat" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>

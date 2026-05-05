@@ -11,15 +11,25 @@
 
         </div>
 
-        <div class="mb-6">
-            <a href="/kepegawaian/hukuman/view_form_tambah_hukuman"
-                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path
-                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Tambah Hukuman</span>
-            </a>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <div class="mb-6">
+                <a href="/kepegawaian/hukuman/view_form_tambah_hukuman"
+                    class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                        <path
+                            d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                    </svg>
+                    <span class="hidden xs:block ml-2">Tambah Hukuman</span>
+                </a>
+            </div>
+
+            <form action="/kepegawaian/hukuman/cariHukuman" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="text" name="cariHukuman" id="cariHukuman" value="{{ request('cariHukuman') }}"
+                    aria-label="Cari Hukuman" placeholder="Cari Jenis atau tingkat hukuman..." class="rounded-lg">
+                <button type="submit"
+                    class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">Cari</button>
+            </form>
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
@@ -45,6 +55,9 @@
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-left">No. SK</div>
+                            </th>
+                            <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                <div class="font-semibold text-left">SK Hukuman</div>
                             </th>
                             <th class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                 <div class="font-semibold text-center">Aksi</div>
@@ -81,6 +94,18 @@
                                         {{ $data->no_sk }}
                                     </div>
                                 </td>
+                                <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
+                                    <div class="font-medium text-gray-800 dark:text-gray-100">
+                                        <a href="/kepegawaian/hukuman/download_sk/{{ $data->id }}"
+                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
                                     <div class="flex items-center justify-center space-x-2">
                                         <a href="/kepegawaian/hukuman/view_form_edit_hukuman/{{ $data->id }}"
@@ -100,10 +125,6 @@
                                                 Delete
                                             </button>
                                         </form>
-                                        <a href="/kepegawaian/hukuman/download_sk/{{ $data->id }}"
-                                            class="inline-block py-2 px-3 text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-lg">
-                                            Download SK
-                                        </a>
                                     </div>
                                 </td>
                             </tr>

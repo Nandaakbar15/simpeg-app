@@ -178,4 +178,40 @@ class MutasiController extends Controller
 
         return response()->download(storage_path('app/public/' . $filePath));
     }
+
+    public function cariMutasi(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Mutasi::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariMutasi) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('jenis_mutasi', 'like', '%' . $request->cariMutasi . '%');
+
+                $q->orWhere('instansi_tujuan', 'like', '%' . $request->cariMutasi . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariMutasi . '%');
+                });
+
+            });
+        }
+
+        $mutasi = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.mutasi.indexMutasi", [
+            'mutasi' => $mutasi
+        ]);
+    }
 }

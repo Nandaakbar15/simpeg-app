@@ -9,17 +9,32 @@
                 <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Data Pegawai</h1>
             </div>
 
+
         </div>
 
-        <div class="mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+
+            <!-- Kiri: Tombol -->
             <a href="/data_pegawai/view_form_tambah_data_pegawai"
-                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                class="btn bg-indigo-500 hover:bg-indigo-600 text-white inline-flex items-center">
                 <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                     <path
                         d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                 </svg>
-                <span class="hidden xs:block ml-2">Tambah Data Pegawai</span>
+                <span class="ml-2">Tambah Data Pegawai</span>
             </a>
+
+            <!-- Kanan: Search -->
+            <form action="/data_pegawai/cariPegawai" method="POST" class="flex gap-2">
+                @csrf
+                <input type="text" name="cariPegawai" placeholder="cari pegawai..."
+                    value="{{ request('cariPegawai') }}" class="rounded-lg border px-3 py-2">
+
+                <button type="submit" class="rounded-lg shadow-lg text-white px-3 py-2 bg-blue-500 hover:bg-blue-700">
+                    Cari
+                </button>
+            </form>
+
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
@@ -106,13 +121,12 @@
                                 </td>
                             </tr>
                         @endforeach
-                        <div class="flex justify-center mt-6">
-                            {{ $pegawai->links() }}
-                        </div>
                     </tbody>
                 </table>
             </div>
+            <div class="flex justify-center mt-6">
+                {{ $pegawai->links() }}
+            </div>
         </div>
-
     </div>
 </x-app-layout>

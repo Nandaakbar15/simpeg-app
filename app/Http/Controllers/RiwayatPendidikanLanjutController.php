@@ -144,4 +144,46 @@ class RiwayatPendidikanLanjutController extends Controller
 
         return redirect('/riwayat_pendidikan/pendidikan_lanjut')->with('success', 'Berhasil menghapus data!');
     }
+
+    public function cariPendidikanLanjut(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = RiwayatPendidikanLanjut::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPendidikanLanjut) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama_sekolah_universitas', 'like', '%' . $request->cariPendidikanLanjut . '%');
+
+                $q->orWhere('jenjang_pendidikan', 'like', '%' . $request->cariPendidikanLanjut . '%');
+
+                $q->orWhere('thn_mulai', 'like', '%' . $request->cariPendidikanLanjut . '%');
+
+                $q->orWhere('thn_selesai', 'like', '%' . $request->cariPendidikanLanjut . '%');
+
+                $q->orWhere('status', 'like', '%' . $request->cariPendidikanLanjut . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPendidikanLanjut . '%');
+                });
+
+            });
+        }
+
+        $riwayatPendidikanLanjut = $query->paginate(5);
+
+        return view("pages.dashboard.riwayat_pendidikan.pendidikan_lanjut.indexPendidikanLanjut", [
+            'riwayatPendidikanLanjut' => $riwayatPendidikanLanjut
+        ]);
+    }
 }

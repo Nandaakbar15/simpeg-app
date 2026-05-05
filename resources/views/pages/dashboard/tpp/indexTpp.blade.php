@@ -42,7 +42,17 @@
                     </div>
                     <div class="flex items-center gap-2 text-sm">
                         <label class="text-gray-500 dark:text-gray-400">Search:</label>
-                        <input type="text" class="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200" />
+                        <form action="/tpp/cariTpp" method="POST" class="flex items-center gap-2">
+                            @csrf
+                            <input type="text" name="cariTpp" id="cariTpp"
+                                value="{{ request('cariTpp') }}"
+                                placeholder="Cari nama pegawai atau periode..."
+                                class="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200" />
+                            <button type="submit"
+                                class="px-3 py-1 bg-indigo-500 hover:bg-indigo-600 text-white text-sm rounded">
+                                Cari
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>

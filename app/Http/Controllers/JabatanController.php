@@ -170,4 +170,44 @@ class JabatanController extends Controller
             return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
         }
     }
+
+    public function cariJabatan(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Jabatan::with(['pegawai', 'master_jabatan', 'master_eselon']);
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if ($request->cariJabatan) {
+            $query->where(function($q) use ($request) {
+
+                // cari dari nama jabatan (master)
+                $q->whereHas('master_jabatan', function($q2) use ($request) {
+                    $q2->where('nama_jabatan', 'like', '%' . $request->cariJabatan . '%');
+                });
+
+                $q->orWhereHas('master_eselon', function($q2) use ($request) {
+                    $q2->where('nama_eselon', 'like', '%' . $request->cariJabatan . '%');
+                });
+
+                // atau dari nama pegawai
+                $q->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariJabatan . '%');
+                });
+
+            });
+        }
+
+        $jabatan = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.jabatan.indexJabatan", [
+            'jabatan' => $jabatan
+        ]);
+    }
 }

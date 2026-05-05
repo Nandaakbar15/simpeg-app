@@ -64,19 +64,13 @@ class UserPegawaiController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
     {
-        //
+        return view("pages.dashboard.manajemen_setup.edit_user_pegawai", [
+            'user' => $user
+        ]);
     }
 
     /**
@@ -84,7 +78,28 @@ class UserPegawaiController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $validateData = $request->validate([
+            'username' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email',
+            'unit_kerja_id' => 'required|exists:tb_unit_kerja,id'
+        ]);
+
+        try {
+            DB::beginTransaction();
+
+            $user->update($validateData);
+
+            DB::commit();
+
+            return redirect('/manajemen_setup/data_user_pegawai')->with('success', 'Berhasil mengubah data atau akun!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal mengubah data user pegawai!');
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
     }
 
     /**
@@ -92,6 +107,30 @@ class UserPegawaiController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        try {
+            $user->delete();
+
+            return redirect('/manajemen_setup/data_user_pegawai')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function cariUserPegawai(Request $request)
+    {
+        $cariUserPegawai = $request->input('cariUserPegawai');
+        $user = User::query()
+                   ->where('username', 'like', '%' . $cariUserPegawai . '%')
+                   ->orWhere('name', 'like', '%' . $cariUserPegawai . '%')
+                   ->orWhere('role', 'pegawai')
+                   ->paginate(5);
+
+        return view("pages.dashboard.manajemen_setup.userPegawai.data_user_pegawai", [
+            'user' => $user
+        ]);
     }
 }

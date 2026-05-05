@@ -55,6 +55,18 @@ Setelah itu, masukan perintah `php artisan migrate`
 
 Dengan begitu, database akan dibuatkan secara otomatis.
 
+### Konfigurasi Storage (Penting)
+
+Aplikasi ini memiliki fitur unggah file. Agar file atau gambar yang diunggah dapat tersimpan dan diakses dengan benar, Anda wajib menghubungkan folder storage ke folder public.
+
+**Langkah-langkah:**
+
+1. Cek folder `public`. Jika sudah ada folder bernama `storage` (berupa shortcut/symlink), hapus folder tersebut terlebih dahulu.
+2. Jalankan perintah berikut di terminal/command prompt:
+    ```bash
+    php artisan storage:link
+    ```
+
 ### Menjalankan project
 
 Untuk menjalankan projectnya masukan perintah composer run dev
@@ -113,3 +125,8 @@ Untuk menjalankan projectnya masukan perintah composer run dev
 
 - Halaman Report Nominatif
   ![Halaman Report Nominatif](./public/images/Screenshot/Halaman%20Report%20Nominatif.png)
+
+<br>
+
+- Halaman Backup Database
+  ![Halaman Backup Database](./public/images/Screenshot/Halaman%20Backup%20Database.png)

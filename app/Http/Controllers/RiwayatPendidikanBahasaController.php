@@ -133,8 +133,54 @@ class RiwayatPendidikanBahasaController extends Controller
      */
     public function destroy(RiwayatPendidikanBahasa $riwayatPendidikanBahasa)
     {
-        $riwayatPendidikanBahasa->delete();
+        try {
+            $riwayatPendidikanBahasa->delete();
 
-        return redirect('/riwayat_pendidikan/pendidikan_bahasa')->with('success', 'Berhasil menghapus data!');
+            return redirect('/riwayat_pendidikan/pendidikan_bahasa')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            DB::rollBack();
+
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function cariPendidikanBahasa(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = RiwayatPendidikanBahasa::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPendidikanBahasa) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('jenis_bahasa', 'like', '%' . $request->cariPendidikanBahasa . '%');
+
+                $q->orWhere('kemampuan_bicara', 'like', '%' . $request->cariPendidikanBahasa . '%');
+
+                $q->orWhere('bahasa', 'like', '%' . $request->cariPendidikanBahasa . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPendidikanBahasa . '%');
+                });
+
+            });
+        }
+
+        $riwayatPendidikanBahasa = $query->paginate(5);
+
+        return view("pages.dashboard.riwayat_pendidikan.pendidikan_bahasa.indexPendidikanBahasa", [
+            'riwayatPendidikanBahasa' => $riwayatPendidikanBahasa
+        ]);
     }
 }

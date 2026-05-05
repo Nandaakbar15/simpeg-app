@@ -12,15 +12,26 @@
 
         </div>
 
-        <div class="mb-6">
-            <a href="/riwayat_keluarga/suami_istri/view_form_tambah_suami_istri"
-                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path
-                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Tambah Suami / Istri</span>
-            </a>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <div class="mb-6">
+                <a href="/riwayat_keluarga/suami_istri/view_form_tambah_suami_istri"
+                    class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                        <path
+                            d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                    </svg>
+                    <span class="hidden xs:block ml-2">Tambah Suami / Istri</span>
+                </a>
+            </div>
+
+            <form action="/riwayat_keluarga/suami_istri/cariPegawaiSuamiIstri" enctype="multipart/form-data"
+                method="POST">
+                @csrf
+                <input type="text" placeholder="Cari Pegawai Suami Istri..." aria-label="Cari Pegawai Suami Istri"
+                    value="{{ request('cariPegawaiSuamiIstri') }}" class="rounded-lg" name="cariPegawaiSuamiIstri">
+                <button type="submit"
+                    class="inline-block rounded-lg shadow-lg text-white bg-blue-500 hover:bg-blue-700 px-3 py-2">Cari</button>
+            </form>
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
@@ -106,6 +117,9 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="flex justify-center">
+                {{ $riwayatkeluargaSuamiIstri->links() }}
             </div>
         </div>
     </div>

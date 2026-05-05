@@ -161,4 +161,36 @@ class TunjanganController extends Controller
             return back()->with('error', 'Terjadi kesalahan pada sistem, silakan coba lagi.');
         }
     }
+
+    public function cariTunjangan(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Tunjangan::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        $query->where(function($q) use ($request) {
+
+            // dari tabel tunjangan
+            $q->where('jenis_tunjangan_anak', 'like', '%' . $request->cariTunjangan . '%')
+
+            // dari relasi pegawai
+            ->orWhereHas('pegawai', function($q2) use ($request) {
+                $q2->where('nama', 'like', '%' . $request->cariTunjangan . '%');
+            });
+
+        });
+
+        $tunjangan = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.tunjangan.indexTunjangan", [
+            'tunjangan' => $tunjangan
+        ]);
+    }
 }

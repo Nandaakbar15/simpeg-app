@@ -141,8 +141,52 @@ class RiwayatPendidikanSekolahController extends Controller
      */
     public function destroy(RiwayatPendidikanSekolah $riwayatPendidikanSekolah)
     {
-        $riwayatPendidikanSekolah->delete();
+        try {
+            $riwayatPendidikanSekolah->delete();
 
-        return redirect('/riwayat_pendidikan/sekolah')->with('success', 'Berhasil menghapus data!');
+            return redirect('/riwayat_pendidikan/sekolah')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function cariPendidikanSekolah(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = RiwayatPendidikanSekolah::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPendidikanSekolah) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama_sekolah_universitas', 'like', '%' . $request->cariPendidikanSekolah . '%');
+
+                $q->orWhere('jenjang_pendidikan', 'like', '%' . $request->cariPendidikanSekolah . '%');
+
+                $q->orWhere('lokasi', 'like', '%' . $request->cariPendidikanSekolah . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPendidikanSekolah . '%');
+                });
+
+            });
+        }
+
+        $riwayanPendidikanSekolah = $query->paginate(5);
+
+        return view("pages.dashboard.riwayat_pendidikan.pendidikan_sekolah.indexPendidikanSekolah", [
+            'riwayatPendidikanSekolah' => $riwayanPendidikanSekolah
+        ]);
     }
 }

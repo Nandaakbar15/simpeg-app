@@ -26,7 +26,7 @@ class RiwayatKeluargaAnakController extends Controller
                 })
                 ->get();
         } else {
-            $riwayatKeluargaAnak = RiwayatKeluargaAnak::with('pegawai')->get();
+            $riwayatKeluargaAnak = RiwayatKeluargaAnak::with('pegawai')->paginate(5);
         }
 
         return view("pages.dashboard.riwayat_keluarga.anak.IndexRiwayatKeluargaAnak", [
@@ -147,5 +147,46 @@ class RiwayatKeluargaAnakController extends Controller
         $riwayatKeluargaAnak->delete();
 
         return redirect('/riwayat_keluarga/anak')->with('success', 'Berhasil menghapus data!');
+    }
+
+    public function cariPegawaiAnak(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = RiwayatKeluargaAnak::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPegawaiAnak) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama', 'like', '%' . $request->cariPegawaiAnak . '%');
+
+                $q->orWhere('pendidikan', 'like', '%' . $request->cariPegawaiAnak . '%');
+
+                $q->orWhere('pekerjaan', 'like', '%' . $request->cariPegawaiAnak . '%');
+
+                 $q->orWhere('status_hubungan', 'like', '%' . $request->cariPegawaiAnak . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPegawaiAnak . '%');
+                });
+
+            });
+        }
+
+        $riwayatKeluargaAnak = $query->paginate(5);
+
+        return view("pages.dashboard.riwayat_keluarga.anak.indexKeluargaAnak", [
+            'riwayatKeluargaAnak' => $riwayatKeluargaAnak
+        ]);
+
     }
 }

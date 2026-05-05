@@ -148,4 +148,42 @@ class RiwayatKeluargaOrangTuaController extends Controller
 
         return redirect('/riwayat_keluarga/orang_tua')->with('success', 'Berhasil menghapus data!');
     }
+
+    public function cariPegawaiOrangTua(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = RiwayatKeluargaOrangTua::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPegawaiOrangTua) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama', 'like', '%' . $request->cariPegawaiOrangTua . '%');
+
+                $q->orWhere('pendidikan', 'like', '%' . $request->cariPegawaiOrangTua . '%');
+
+                $q->orWhere('pekerjaan', 'like', '%' . $request->cariPegawaiOrangTua . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPegawaiOrangTua . '%');
+                });
+
+            });
+        }
+
+        $riwayatKeluargaOrangTua = $query->paginate(5);
+
+        return view("pages.dashboard.riwayat_keluarga.orang_tua.IndexKeluargaOrangtua", [
+            'riwayatKeluargaOrangTua' => $riwayatKeluargaOrangTua
+        ]);
+    }
 }

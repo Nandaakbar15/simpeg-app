@@ -8,6 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PrestasiKerjaController extends Controller
 {
@@ -16,7 +17,7 @@ class PrestasiKerjaController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $prestasiKerja = PrestasiKerja::with('pegawai')
@@ -38,7 +39,7 @@ class PrestasiKerjaController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -120,7 +121,7 @@ class PrestasiKerjaController extends Controller
      */
     public function edit(PrestasiKerja $prestasiKerja)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -206,5 +207,43 @@ class PrestasiKerjaController extends Controller
         $prestasiKerja->delete();
 
         return redirect('/skp_prestasi_kerja/data_prestasi_kerja')->with('success', 'Berhasil menghapus data!');
+    }
+
+    public function cariPrestasiKerja(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = PrestasiKerja::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariPrestasiKerja) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel izin kawin
+                $q->where('periode_nilai_dari', 'like', '%' . $request->cariPrestasiKerja . '%');
+
+                $q->orWhere('periode_nilai_sampai', 'like', '%' . $request->cariPrestasiKerja . '%');
+
+                $q->orWhere('tahun_periode', 'like', '%' . $request->cariPrestasiKerja . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPrestasiKerja . '%');
+                });
+
+            });
+        }
+
+        $prestasiKerja = $query->paginate(5);
+
+        return view("pages.dashboard.skp_prestasi_kerja.indexPrestasiKerja", [
+            'prestasiKerja' => $prestasiKerja
+        ]);
     }
 }

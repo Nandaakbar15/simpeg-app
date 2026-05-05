@@ -71,6 +71,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/view_form_edit_data_pegawai/{pegawai}', [PegawaiController::class, 'edit']);
         Route::put('/ubah_data_pegawai/{pegawai}', [PegawaiController::class, 'update']);
         Route::delete('/delete_data_pegawai/{pegawai}', [PegawaiController::class, 'destroy']);
+        Route::post('/cariPegawai', [PegawaiController::class, 'cariPegawai']);
     });
 
     Route::prefix('manajemen_setup')->group(function() {
@@ -94,6 +95,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::post('/opd_skd_unitkerja/tambah_unit_kerja', [UnitKerjaController::class, 'store']);
             Route::get('/view_form_edit_unitkerja/{unitKerja}', [UnitKerjaController::class, 'edit']);
             Route::put("/opd_skd_unitkerja/edit_unit_kerja/{unitKerja}", [UnitKerjaController::class, 'update']);
+            Route::delete('/opd_skpd_unit_kerja/delete_unitkerja/{unitKerja}', [UnitKerjaController::class, 'destroy']);
+            Route::post('/opd_skpd_unit_kerja/cariUnitKerja', [UnitKerjaController::class, 'cariUnitKerja']);
 
              // URL buat data user admin
             Route::get('/data_user_admin', [UserAdminController::class, 'index']);
@@ -103,6 +106,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/view_form_edit_user_admin/{user}', [UserAdminController::class, 'edit']);
             Route::put('/edit_data_user_admin/{user}', [UserAdminController::class, 'update']);
             Route::delete('/delete_user_admin/{user}', [UserAdminController::class, 'destroy']);
+            Route::post('/data_user_admin/cariUserAdmin', [UserAdminController::class, 'cariUserAdmin']);
         });
 
         // URL buat data user pegawai
@@ -112,6 +116,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/tambah_user_pegawai', [UserPegawaiController::class, 'store']);
         Route::put('/edit_data_user_pegawai', [UserPegawaiController::class, 'update']);
         Route::delete('/delete_user_pegawai/{user}', [UserPegawaiController::class, 'destroy']);
+        Route::post('/data_user_pegawai/cariUserPegawai', [UserPegawaiController::class, 'cariUserPegawai']);
     });
 
     Route::prefix('riwayat_keluarga')->group(function() {
@@ -122,6 +127,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/suami_istri/view_edit_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'edit']);
         Route::put('/suami_istri/edit_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'update']);
         Route::delete('/suami_istri/delete_data_suami_istri/{riwayatKeluargaSuamiIstri}', [RiwayatKeluargaSuamiIstriController::class, 'destroy']);
+        Route::post('/suami_istri/cariPegawaiSuamiIstri', [RiwayatKeluargaSuamiIstriController::class, 'cariPegawaiSuamiIstri']);
 
         // URL Riwayat Keluarga Anak Pegawai
         Route::get('/anak', [RiwayatKeluargaAnakController::class, 'index']);
@@ -130,6 +136,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/anak/view_edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'edit']);
         Route::put('/anak/edit_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'update']);
         Route::delete('/anak/delete_data_anak/{riwayatKeluargaAnak}', [RiwayatKeluargaAnakController::class, 'destroy']);
+        Route::post("/anak/cariPegawaiAnak", [RiwayatKeluargaAnakController::class, 'cariPegawaiAnak']);
 
         Route::get('/orang_tua', [RiwayatKeluargaOrangTuaController::class, 'index']);
         Route::get('/orang_tua/view_form_tambah_orang_tua', [RiwayatKeluargaOrangTuaController::class, 'create']);
@@ -137,6 +144,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/orang_tua/view_form_edit_orang_tua/{riwayatKeluargaOrangTua}', [RiwayatKeluargaOrangTuaController::class, 'edit']);
         Route::put('/orang_tua/edit_data_orang_tua/{riwayatKeluargaOrangTua}', [RiwayatKeluargaOrangTuaController::class, 'update']);
         Route::delete('/orang_tua/delete_data_orang_tua/{riwayatKeluargaOrangTua}', [RiwayatKeluargaOrangTuaController::class, 'destroy']);
+        Route::post('/orang_tua/cariPegawaiOrangTua', [RiwayatKeluargaOrangTuaController::class, 'cariPegawaiOrangTua']);
     });
 
     Route::prefix('riwayat_pendidikan')->group(function() {
@@ -147,6 +155,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/sekolah/view_form_edit_pendidikan_sekolah/{riwayatPendidikanSekolah}', [RiwayatPendidikanSekolahController::class, 'edit']);
         Route::put('/sekolah/edit_pendidikan_sekolah/{riwayatPendidikanSekolah}', [RiwayatPendidikanSekolahController::class, 'update']);
         Route::delete('/sekolah/delete_pendidikan_sekolah/{riwayatPendidikanSekolah}', [RiwayatPendidikanSekolahController::class, 'destroy']);
+        Route::post('/sekolah/cariPendidikanSekolah', [RiwayatPendidikanSekolahController::class, 'cariPendidikanSekolah']);
 
         // URL Riwayat Pendidikan lanjut
         Route::get('/sekolah_lanjut', [RiwayatPendidikanLanjutController::class, 'index']);
@@ -154,6 +163,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/sekolah_lanjut/tambah_pendidikan_lanjut', [RiwayatPendidikanLanjutController::class, 'store']);
         Route::get('/sekolah_lanjut/view_form_edit_pendidikan_lanjut/{riwayatPendidikanLanjut}', [RiwayatPendidikanLanjutController::class, 'edit']);
         Route::put('/sekolah_lanjut/edit_pendidikan_lanjut/{riwayatPendidikanLanjut}', [RiwayatPendidikanLanjutController::class, 'update']);
+        Route::delete('/sekolah_lanjut/delete_pendidikan_lanjut/{riwayatPendidikanLanjut}', [RiwayatPendidikanLanjutController::class, 'destroy']);
+        Route::post("/sekolah_lanjut/cariPendidikanLanjut", [RiwayatPendidikanLanjutController::class, 'cariPendidikanLanjut']);
 
 
         // URL Riwayat Pendidikan Bahasa
@@ -162,6 +173,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/pendidikan_bahasa/tambah_data_bahasa', [RiwayatPendidikanBahasaController::class, 'store']);
         Route::get('/pendidikan_bahasa/view_form_edit_pendidikan_bahasa/{riwayatPendidikanBahasa}', [RiwayatPendidikanBahasaController::class, 'edit']);
         Route::put('/pendidikan_bahasa/edit_data_bahasa/{riwayatPendidikanBahasa}', [RiwayatPendidikanBahasaController::class, 'update']);
+        Route::delete('/pendidikan_bahasa/delete_data_bahasa/{riwayatPendidikanBahasa}', [RiwayatPendidikanBahasaController::class, 'destroy']);
+        Route::post('/pendidikan_bahasa/cariPendidikanBahasa', [RiwayatPendidikanBahasaController::class, 'cariPendidikanBahasa']);
     });
 
     Route::prefix('kepegawaian')->group(function() {
@@ -172,6 +185,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/jabatan/view_form_edit_jabatan/{jabatan}', [JabatanController::class, 'edit']);
         Route::put('/jabatan/edit_data_jabatan/{jabatan}', [JabatanController::class, 'update']);
         Route::delete('/jabatan/delete_data_jabatan/{jabatan}', [JabatanController::class, 'destroy']);
+        Route::post('/jabatan/cariJabatan', [JabatanController::class, 'cariJabatan']);
 
         // URL untuk master data jabatan
         // Route::get('/jabatan/master_data_jabatan', [MasterJabatanController::class, 'index']);
@@ -193,6 +207,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/pangkat/tambah_data_pangkat', [PangkatController::class, 'store']);
         Route::get('/pangkat/view_form_edit_data_pangkat/{pangkat}', [PangkatController::class, 'edit']);
         Route::put('/pangkat/edit_data_pangkat/{pangkat}', [PangkatController::class, 'update']);
+        Route::delete('/pangkat/delete_data_pangkat/{pangkat}', [PangkatController::class, 'destroy']);
+        Route::post('/pangkat/cariPangkat', [PangkatController::class, 'cariPangkat']);
 
         // URL master pangkat dan master golongan dengan ajax
         Route::post('/master_pangkat/store', [MasterPangkatController::class, 'store']);
@@ -211,6 +227,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/hukuman/edit_data_hukuman/{hukuman}', [HukumanController::class, 'update']);
         Route::delete('/hukuman/delete_data_hukuman/{hukuman}', [HukumanController::class, 'destroy']);
         Route::get('/hukuman/download_sk/{hukuman}', [HukumanController::class, 'downloadSK']);
+        Route::post('/hukuman/cariHukuman', [HukumanController::class, 'cariHukuman']);
 
         // URL Kepegawaian Diklat
         Route::get('/diklat', [DiklatController::class, 'index']);
@@ -219,7 +236,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/diklat/view_form_edit_diklat/{diklat}', [DiklatController::class, 'edit']);
         Route::put('/diklat/edit_diklat/{diklat}', [DiklatController::class, 'update']);
         Route::delete('/diklat/delete_data_diklat/{diklat}', [DiklatController::class, 'delete']);
-        Route::get('/diklat/download_sertifikat_diklat/{diklat}', [DiklatController::class, 'download']);
+        Route::get('/diklat/download_sertifikat_diklat/{diklat}', [DiklatController::class, 'downloadSertifikatDiklat']);
+        Route::post('/diklat/cariDiklat', [DiklatController::class, 'cariDiklat']);
 
         // URL Kepegawaian penghargaan
         Route::get('/penghargaan', [PenghargaanController::class, 'index']);
@@ -229,6 +247,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/penghargaan/edit_penghargaan/{penghargaan}', [PenghargaanController::class, 'update']);
         Route::delete('/penghargaan/delete_data_penghargaan/{penghargaan}', [PenghargaanController::class, 'destroy']);
         Route::get('/penghargaan/download_sertifikat/{penghargaan}', [PenghargaanController::class, 'downloadSertifikat']);
+        Route::post('/penghargaan/cariPenghargaan', [PenghargaanController::class, 'cariPenghargaan']);
 
         // URL Kepegawaian Penugasan Luar Negeri
         Route::get('/penugasan_ln', [PenugasanLuarNegeriController::class, 'index']);
@@ -237,6 +256,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/penugasan_ln/view_form_edit_penugasan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'edit']);
         Route::put('/penugasan_ln/edit_penugasan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'update']);
         Route::get('/penugasan_ln/download_surat_tugas/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'download']);
+        Route::post('/penugasan_ln/cariPenugasanLn', [PenugasanLuarNegeriController::class, 'cariPenugasanLn']);
 
         // URL Kepegawaian Seminar
         Route::get('/seminar', [SeminarController::class, 'index']);
@@ -245,6 +265,8 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/seminar/view_form_edit_seminar/{seminar}', [SeminarController::class, 'edit']);
         Route::put('/seminar/edit_seminar/{seminar}', [SeminarController::class, 'update']);
         Route::get('/seminar/download_piagam/{seminar}', [SeminarController::class, 'downloadPiagam']);
+        Route::delete('/seminar/delete_seminar/{seminar}', [SeminarController::class, 'destroy']);
+        Route::post('/seminar/cariSeminar', [SeminarController::class, 'cariSeminar']);
 
 
         // URL Kepegawaian Cuti
@@ -255,6 +277,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/cuti/edit_riwayat_cuti/{cuti}', [CutiController::class, 'update']);
         Route::delete('/cuti/delete_cuti/{cuti}', [CutiController::class, 'destroy']);
         Route::get('/cuti/download_surat_cuti/{cuti}', [CutiController::class, 'downloadSuratCuti']);
+        Route::post('/cuti/cariCuti', [CutiController::class, 'cariCuti']);
 
 
         // URL Kepegawaian Latihan jabatan
@@ -265,6 +288,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/latihan_jabatan/edit_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'update']);
         Route::get('/latihan_jabatan/download_sertifikat/{latihanJabatan}', [LatihanJabatanController::class, 'downloadSertifikat']);
         Route::delete('/latihan_jabatan/delete_latihan_jabatan/{latihanJabatan}', [LatihanJabatanController::class, 'destroy']);
+        Route::post('/latihan_jabatan/cariLatihanJabatan', [LatihanJabatanController::class, 'cariLatihanJabatan']);
 
         // URL kepegawaian mutasi
         Route::get('/mutasi', [MutasiController::class, 'index']);
@@ -274,6 +298,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/mutasi/edit_mutasi/{mutasi}', [MutasiController::class, 'update']);
         Route::delete('/mutasi/delete_mutasi/{mutasi}', [MutasiController::class, 'destroy']);
         Route::get('/mutasi/download_sk/{mutasi}', [MutasiController::class, 'downloadSkMutasi']);
+        Route::post('/mutasi/cariMutasi', [MutasiController::class, 'cariMutasi']);
 
         // URL untuk kepegawaian tunjangan
         Route::get('/tunjangan', [TunjanganController::class, 'index']);
@@ -282,6 +307,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/tunjangan/view_form_edit_tunjangan/{tunjangan}', [TunjanganController::class, 'edit']);
         Route::put('/tunjangan/edit_tunjangan/{tunjangan}', [TunjanganController::class, 'update']);
         Route::delete('/tunjangan/delete_data_tunjangan/{tunjangan}', [TunjanganController::class, 'destroy']);
+        Route::post('/tunjangan/cariTunjangan', [TunjanganController::class, 'cariTunjangan']);
 
 
         // URL untuk kepegawaian izin kawin
@@ -291,6 +317,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/izin_kawin/view_form_edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'edit']);
         Route::put('/izin_kawin/edit_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'update']);
         Route::delete('/izin_kawin/delete_izin_kawin/{izin_kawin}', [IzinKawinController::class, 'destroy']);
+        Route::post('/izin_kawin/cariIzinKawin', [IzinKawinController::class, 'cariIzinKawin']);
     });
 
     // SKP Prestasi Kerja
@@ -301,6 +328,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/view_form_edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'edit']);
         Route::put('/edit_prestasi_kerja/{prestasiKerja}', [PrestasiKerjaController::class, 'update']);
         Route::delete("/delete_data_prestasi_kerja/{prestasiKerja}", [PrestasiKerjaController::class, 'destroy']);
+        Route::post('/cariPrestasiKerja', [PrestasiKerjaController::class, 'cariPrestasiKerja']);
     });
 
     // TPP
@@ -312,6 +340,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::put('/update_tpp/{tpp}', [TppController::class, 'update'])->name('tpp.update');
         Route::delete('/hapus_tpp/{tpp}', [TppController::class, 'destroy'])->name('tpp.destroy');
         Route::get('/laporan_bulanan', [TppController::class, 'laporanBulanan'])->name('tpp.laporan_bulanan');
+        Route::post('/cariTpp', [TppController::class, 'cariTpp'])->name('tpp.cari');
     });
 
     // Rekapitulasi

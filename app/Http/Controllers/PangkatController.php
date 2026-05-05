@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Pegawai;
 use App\Models\MasterPangkat;
 use App\Models\MasterGolongan;
+use Illuminate\Support\Facades\Auth;
 
 class PangkatController extends Controller
 {
@@ -18,7 +19,7 @@ class PangkatController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pangkat = Pangkat::with(['master_pangkat', 'master_golongan', 'pegawai'])
@@ -40,7 +41,7 @@ class PangkatController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -97,7 +98,7 @@ class PangkatController extends Controller
      */
     public function edit(Pangkat $pangkat)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -155,8 +156,54 @@ class PangkatController extends Controller
      */
     public function destroy(Pangkat $pangkat)
     {
-        $pangkat->delete();
+        try {
+            $pangkat->delete();
 
-        return redirect('/kepegawaian/pangkat')->with('success', 'Berhasil menghapus data!');
+            return redirect('/kepegawaian/pangkat')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function cariPangkat(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = Pangkat::with(['master_pangkat', 'master_golongan', 'pegawai']);
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if ($request->cariPangkat) {
+            $query->where(function($q) use ($request) {
+
+                // cari dari nama jabatan (master)
+                $q->whereHas('master_pangkat', function($q2) use ($request) {
+                    $q2->where('nama_pangkat', 'like', '%' . $request->cariPangkat . '%');
+                });
+
+                $q->orWhereHas('master_golongan', function($q2) use ($request) {
+                    $q2->where('nama_golongan', 'like', '%' . $request->cariPangkat . '%');
+                });
+
+                // atau dari nama pegawai
+                $q->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPangkat . '%');
+                });
+
+            });
+        }
+
+        $pangkat = $query->paginate(5);
+
+        return view('pages.dashboard.kepegawaian.pangkat.indexPangkat', [
+            'pangkat' => $pangkat
+        ]);
     }
 }

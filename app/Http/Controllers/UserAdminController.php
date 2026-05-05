@@ -119,8 +119,28 @@ class UserAdminController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
+        try {
+            $user->delete();
 
-        return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menghapus data!');
+            return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil menghapus data!');
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+
+            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+        }
+    }
+
+    public function cariUserAdmin(Request $request)
+    {
+        $cariUserAdmin = $request->input('cariUserAdmin');
+        $user = User::query()
+                   ->where('username', 'like', '%' . $cariUserAdmin . '%')
+                   ->orWhere('name', 'like', '%' . $cariUserAdmin . '%')
+                   ->orWhere('role', 'admin')
+                   ->paginate(5);
+
+        return view("pages.dashboard.manajemen_setup.userAdmin.data_user_admin", [
+            'user' => $user
+        ]);
     }
 }

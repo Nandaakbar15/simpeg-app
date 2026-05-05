@@ -3,23 +3,33 @@
 
         <!-- Dashboard actions -->
         <div class="sm:flex sm:justify-between sm:items-center mb-8">
-
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
                 <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Data Seminar</h1>
             </div>
-
         </div>
 
-        <div class="mb-6">
-            <a href="/kepegawaian/seminar/view_form_tambah_seminar"
-                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path
-                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Tambah Seminar</span>
-            </a>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <div class="mb-6">
+                <a href="/kepegawaian/seminar/view_form_tambah_seminar"
+                    class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                        <path
+                            d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                    </svg>
+                    <span class="hidden xs:block ml-2">Tambah Seminar</span>
+                </a>
+            </div>
+
+            <form action="/kepegawaian/seminar/cariSeminar" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="text" name="cariSeminar" id="cariSeminar" aria-label="Cari Seminar"
+                    placeholder="Cari seminar..." value="{{ request('cariSeminar') }}" class="rounded-lg">
+                <button type="submit"
+                    class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">
+                    Save
+                </button>
+            </form>
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
@@ -91,8 +101,13 @@
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
                                         <a href="/kepegawaian/seminar/download_piagam/{{ $data->id }}"
-                                            class="text-blue-500 hover:text-blue-700 text-lg" title="Download ST">
-                                            <i class="fas fa-download"></i>
+                                            class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition"
+                                            title="Download ST">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5 5-5M12 15V3" />
+                                            </svg>
                                         </a>
                                     </div>
                                 </td>
@@ -104,7 +119,7 @@
                                             data-message="Apakah Anda yakin ingin mengedit data seminar ini?">
                                             Edit
                                         </a>
-                                        <form action="/kepegawaian/seminar/delete_data_seminar/{{ $data->id }}"
+                                        <form action="/kepegawaian/seminar/delete_seminar/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -121,6 +136,9 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="flex justify-center">
+                {{ $seminar->links() }}
             </div>
         </div>
     </div>

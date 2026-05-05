@@ -24,9 +24,9 @@ class RiwayatKeluargaSuamiIstriController extends Controller
                 ->whereHas('pegawai', function($query) use ($user) {
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
-                ->get();
+                ->paginate(5);
         } else {
-            $riwayatkeluargaSuamiIstri = RiwayatKeluargaSuamiIstri::with('pegawai')->get();
+            $riwayatkeluargaSuamiIstri = RiwayatKeluargaSuamiIstri::with('pegawai')->paginate(5);
         }
 
         return view('pages.dashboard.riwayat_keluarga.suami_istri.indexKeluargaSuami_Istri', [
@@ -148,5 +148,44 @@ class RiwayatKeluargaSuamiIstriController extends Controller
         $riwayatKeluargaSuamiIstri->delete();
 
         return redirect('/riwayat_keluarga/suami_istri')->with('success', 'Berhasil menghapus data');
+    }
+
+    public function cariPegawaiSuamiIstri(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = RiwayatKeluargaSuamiIstri::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        // Filter search
+        if($request->cariPegawaiSuamiIstri) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama', 'like', '%' . $request->cariPegawaiSuamiIstri . '%');
+
+                $q->orWhere('pendidikan', 'like', '%' . $request->cariPegawaiSuamiIstri . '%');
+
+                $q->orWhere('pekerjaan', 'like', '%' . $request->cariPegawaiSuamiIstri . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariPegawaiSuamiIstri . '%');
+                });
+
+            });
+        }
+
+        $riwayatkeluargaSuamiIstri = $query->paginate(5);
+
+        return view("pages.dashboard.riwayat_keluarga.suami_istri.indexKeluargaSuami_Istri", [
+            'riwayatkeluargaSuamiIstri' => $riwayatkeluargaSuamiIstri
+        ]);
     }
 }

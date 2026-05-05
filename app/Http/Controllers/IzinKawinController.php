@@ -7,6 +7,7 @@ use App\Models\Pegawai;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class IzinKawinController extends Controller
@@ -16,7 +17,7 @@ class IzinKawinController extends Controller
      */
     public function index()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $izinKawin = IzinKawin::with('pegawai')
@@ -38,7 +39,7 @@ class IzinKawinController extends Controller
      */
     public function create()
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -111,7 +112,7 @@ class IzinKawinController extends Controller
      */
     public function edit(IzinKawin $izinKawin)
     {
-        $user = auth()->user();
+        $user = Auth::user();
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
@@ -188,5 +189,41 @@ class IzinKawinController extends Controller
         $izinKawin->delete();
 
         return redirect('/kepegawaian/izin_kawin')->with('success', 'Berhasil menghapus data!');
+    }
+
+    public function cariIzinKawin(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = IzinKawin::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariIzinKawin) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama_calon_suami_istri', 'like', '%' . $request->cariIzinKawin . '%');
+
+                $q->orWhere('tempat_perkawinan', 'like', '%' . $request->cariIzinKawin . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariIzinKawin . '%');
+                });
+
+            });
+        }
+
+        $izinKawin = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.izinKawin.indexIzinKawin", [
+            'izinKawin' => $izinKawin
+        ]);
     }
 }

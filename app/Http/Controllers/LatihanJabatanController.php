@@ -180,4 +180,40 @@ class LatihanJabatanController extends Controller
 
         return response()->download(storage_path('app/public/' . $filePath));
     }
+
+    public function cariLatihanJabatan(Request $request)
+    {
+        $user = Auth::user();
+
+        $query = LatihanJabatan::with('pegawai');
+
+        // Filter berdasarkan role admin
+        if ($user->role === 'admin') {
+            $query->whereHas('pegawai', function($q) use ($user) {
+                $q->where('unit_kerja_id', $user->unit_kerja_id);
+            });
+        }
+
+        if($request->cariLatihanJabatan) {
+            $query->where(function($q) use ($request) {
+
+                // dari tabel latihan jabatan
+                $q->where('nama_pelatih', 'like', '%' . $request->cariLatihanJabatan . '%');
+
+                $q->orWhere('tempat_latihan', 'like', '%' . $request->cariLatihanJabatan . '%')
+
+                // dari relasi pegawai
+                ->orWhereHas('pegawai', function($q2) use ($request) {
+                    $q2->where('nama', 'like', '%' . $request->cariLatihanJabatan . '%');
+                });
+
+            });
+        }
+
+        $latihanJabatan = $query->paginate(5);
+
+        return view("pages.dashboard.kepegawaian.latihaJabatan.indexLatihanJabatan", [
+            'latihanJabatan' => $latihanJabatan
+        ]);
+    }
 }

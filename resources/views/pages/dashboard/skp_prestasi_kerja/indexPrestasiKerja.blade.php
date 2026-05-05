@@ -11,15 +11,27 @@
 
         </div>
 
-        <div class="mb-6">
-            <a href="/skp_prestasi_kerja/view_form_tambah_prestasi_kerja"
-                class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
-                <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
-                    <path
-                        d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
-                </svg>
-                <span class="hidden xs:block ml-2">Tambah Data Prestasi Kerja</span>
-            </a>
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+            <div class="mb-6">
+                <a href="/skp_prestasi_kerja/view_form_tambah_prestasi_kerja"
+                    class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                    <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
+                        <path
+                            d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
+                    </svg>
+                    <span class="hidden xs:block ml-2">Tambah Data Prestasi Kerja</span>
+                </a>
+            </div>
+
+            <form action="/skp_prestasi_kerja/cariPrestasiKerja" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="text" name="cariPrestasiKerja" id="cariPrestasiKerja" aria-label="Cari Prestasi Kerja"
+                    placeholder="Cari prestasi kerja..." value="{{ request('cariPrestasiKerja') }}" class="rounded-lg">
+                <button type="submit"
+                    class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">
+                    Cari
+                </button>
+            </form>
         </div>
 
         <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
@@ -84,7 +96,8 @@
                                             data-message="Apakah Anda yakin ingin mengedit data prestasi kerja ini?">
                                             Edit
                                         </a>
-                                        <form action="/skp_prestasi_kerja/delete_data_prestasi_kerja/{{ $data->id }}"
+                                        <form
+                                            action="/skp_prestasi_kerja/delete_data_prestasi_kerja/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -101,6 +114,9 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="flex justify-center">
+                {{ $prestasiKerja->links() }}
             </div>
         </div>
     </div>
