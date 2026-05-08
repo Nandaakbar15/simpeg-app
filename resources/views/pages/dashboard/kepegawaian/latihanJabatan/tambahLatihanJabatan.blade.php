@@ -27,7 +27,8 @@
                     enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
                         <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
@@ -37,14 +38,14 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_pelatih" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Pelatih</label>
+                            Pelatih <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_pelatih" name="nama_pelatih"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama pelatih" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tempat_latihan" class="w-1/4 text-sm font-medium text-heading">Tempat dan Waktu
-                            Latihan Jabatan</label>
+                            Latihan Jabatan <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_latihan" name="tempat_latihan"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -57,20 +58,21 @@
                     </div>
                     <div class="mb-5">
                         <label for="tahun_latihan" class="block mb-2.5 text-sm font-medium text-heading">Tahun
-                            Latihan</label>
+                            Latihan <span class="text-red-500">*</span></label>
                         <input type="text" id="tahun_latihan" name="tahun_latihan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tahun latihan" required />
                     </div>
                     <div class="mb-5">
-                        <label for="jumlah_jam" class="block mb-2.5 text-sm font-medium text-heading">Jumlah Jam</label>
+                        <label for="jumlah_jam" class="block mb-2.5 text-sm font-medium text-heading">Jumlah Jam <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="jumlah_jam" name="jumlah_jam"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan jumlah jam" required />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="nomor_sertifikat" class="w-1/4 text-sm font-medium text-heading">Nomor dan Tanggal
-                            Sertifikat</label>
+                        <label for="nomor_sertifikat" class="w-1/4 text-sm font-medium text-heading">Nomor dan Tgl
+                            Sertifikat <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="nomor_sertifikat" name="nomor_sertifikat"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -83,7 +85,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="file_sertifikat" class="block mb-2.5 text-sm font-medium text-heading">File
-                            Piagam</label>
+                            Piagam <span class="text-red-500">*</span></label>
                         <input type="file" id="file_sertifikat" name="file_sertifikat"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file sertifikat" required />

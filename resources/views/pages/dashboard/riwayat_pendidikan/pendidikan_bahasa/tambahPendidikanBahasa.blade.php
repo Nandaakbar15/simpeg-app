@@ -26,8 +26,9 @@
                 <form action="/riwayat_pendidikan/pendidikan_bahasa/tambah_data_bahasa" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -36,27 +37,28 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_bahasa" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Bahasa</label>
+                            Bahasa <span class="text-red-500">*</span></label>
                         <input type="text" id="jenis_bahasa" name="jenis_bahasa"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan jenis Bahasa" required />
                     </div>
                     <div class="mb-5">
-                        <label for="bahasa" class="block mb-2.5 text-sm font-medium text-heading">Bahasa</label>
+                        <label for="bahasa" class="block mb-2.5 text-sm font-medium text-heading">Bahasa <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="bahasa" name="bahasa"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Bahasa" required />
                     </div>
                     <div class="mb-5">
                         <label for="kemampuan_bicara" class="block mb-2.5 text-sm font-medium text-heading">Kemampuan
-                            Bahasa</label>
-                        <select name="kemampuan_bicara" id="kemampuan_bicara">
+                            Bahasa <span class="text-red-500">*</span></label>
+                        <select name="kemampuan_bicara" id="kemampuan_bicara" class="rounded-lg">
                             <option value="Aktif">Aktif</option>
                             <option value="Pasif">Pasif</option>
                         </select>
                     </div>
                     <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 text-sm px-4 py-2 focus:outline-none">Save</button>
                 </form>
             </div>
             <div class="mt-5">

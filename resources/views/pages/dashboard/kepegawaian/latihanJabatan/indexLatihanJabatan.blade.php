@@ -28,7 +28,7 @@
                 @csrf
                 <input type="text" name="cariLatihanJabatan" id="cariLatihanJabatan"
                     aria-label="Cari Latihan Jabatan" value="{{ request('cariLatihanJabatan') }}"
-                    placeholder="Search...">
+                    placeholder="Search..." class="rounded-lg">
                 <button type="submit"
                     class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">
                     Cari
@@ -126,7 +126,8 @@
                                             data-message="Apakah Anda yakin ingin mengedit data latihan jabatan ini?">
                                             Edit
                                         </a>
-                                        <form action="/kepegawaian/latihan/delete_latihan_jabatan/{{ $data->id }}"
+                                        <form
+                                            action="/kepegawaian/latihan_jabatan/delete_latihan_jabatan/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

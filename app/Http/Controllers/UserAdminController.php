@@ -103,7 +103,7 @@ class UserAdminController extends Controller
 
             DB::commit();
 
-            return redirect('/manajamen_setup/data_user_admin')->with('success', 'Berhasil mengubah data user admin!');
+            return redirect('/manajemen_setup/data_user_admin')->with('success', 'Berhasil mengubah data user admin!');
 
         } catch(Exception $e) {
             DB::rollBack();
@@ -133,10 +133,12 @@ class UserAdminController extends Controller
     public function cariUserAdmin(Request $request)
     {
         $cariUserAdmin = $request->input('cariUserAdmin');
-        $user = User::query()
-                   ->where('username', 'like', '%' . $cariUserAdmin . '%')
-                   ->orWhere('name', 'like', '%' . $cariUserAdmin . '%')
-                   ->orWhere('role', 'admin')
+        $user = User::where('role', 'admin')
+                   ->where(function($q) use ($cariUserAdmin) {
+                       $q->where('username', 'like', '%' . $cariUserAdmin . '%')
+                         ->orWhere('name', 'like', '%' . $cariUserAdmin . '%');
+                   })
+                   ->with('unit_kerja')
                    ->paginate(5);
 
         return view("pages.dashboard.manajemen_setup.userAdmin.data_user_admin", [

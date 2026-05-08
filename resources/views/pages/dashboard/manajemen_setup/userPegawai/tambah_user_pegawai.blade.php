@@ -26,27 +26,31 @@
                 <form action="/manajemen_setup/tambah_user_pegawai" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label for="username" class="block mb-2.5 text-sm font-medium text-heading">Username</label>
+                        <label for="username" class="block mb-2.5 text-sm font-medium text-heading">Username <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="username" name="username"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan username" required />
                     </div>
                     <div class="mb-5">
-                        <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama User</label>
+                        <label for="name" class="block mb-2.5 text-sm font-medium text-heading">Nama User <span
+                                class="text-red-500">*</span> </label>
                         <input type="text" id="name" name="name"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Nama User" required />
                     </div>
                     <div class="mb-5">
-                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
+                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email <span
+                                class="text-red-500">*</span> </label>
                         <input type="text" id="email" name="email"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Email User" required />
                     </div>
                     <div class="mb-5">
-                        <label for="password" class="block mb-2.5 text-sm font-medium text-heading">Password</label>
+                        <label for="password" class="block mb-2.5 text-sm font-medium text-heading">Password <span
+                                class="text-red-500">*</span></label>
                         <input type="password" id="password" name="password"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Password" required />
                     </div>
                     <button type="submit"

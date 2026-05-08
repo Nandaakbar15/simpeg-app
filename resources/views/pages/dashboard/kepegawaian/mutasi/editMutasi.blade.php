@@ -28,8 +28,9 @@
                     @method('PUT')
                     <input type="hidden" name="fileLama" value="{{ $mutasi->file_sk_mutasi }}">
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -41,7 +42,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_mutasi" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Mutasi</label>
+                            Mutasi <span class="text-red-500">*</span></label>
                         <select name="jenis_mutasi" id="jenis_mutasi" class="rounded-lg">
                             <option value="Masuk" {{ $mutasi->jenis_mutasi == 'Masuk' ? 'selected' : '' }}>Masuk
                             </option>
@@ -60,15 +61,15 @@
                     </div>
                     <div class="mb-5">
                         <label for="instansi_tujuan" class="block mb-2.5 text-sm font-medium text-heading">Instansi
-                            Tujuan</label>
+                            Tujuan <span class="text-red-500">*</span></label>
                         <input type="text" id="instansi_tujuan" name="instansi_tujuan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan instansi tujuan" required
                             value="{{ old('instansi_tujuan', $mutasi->instansi_tujuan) }}" />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="no_sk_mutasi" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
-                            SK mutasi</label>
+                        <label for="no_sk_mutasi" class="w-1/4 text-sm font-medium text-heading">Nomor dan tgl
+                            SK mutasi <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk_mutasi" name="no_sk_mutasi"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -83,13 +84,13 @@
                     </div>
                     <div class="mb-5">
                         <label for="file_sk_mutasi" class="block mb-2.5 text-sm font-medium text-heading">File SK
-                            Mutasi</label>
+                            Mutasi <span class="text-red-500">*</span></label>
                         <input type="file" id="file_sk_mutasi" name="file_sk_mutasi"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file surat keterangan mutasi" />
                     </div>
                     <button type="button"
-                        class="confirm-save text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-lg text-sm px-4 py-2 focus:outline-none"
+                        class="confirm-save text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 text-sm px-4 py-2 focus:outline-none"
                         data-title="Konfirmasi Simpan"
                         data-message="Apakah Anda yakin ingin menyimpan perubahan data mutasi ini?">Save</button>
                 </form>

@@ -11,6 +11,9 @@ use App\Models\Penghargaan;
 use App\Models\Jabatan;
 use App\Models\Eselon;
 use App\Models\UnitKerja;
+use App\Models\Pangkat;
+use App\Models\MasterGolongan;
+use App\Models\MasterEselon;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -60,67 +63,98 @@ class DashboardController extends Controller
             ];
         }
 
-        // Berkala Gaji 1 Bulan Kedepan (Data dummy)
-        $gajiMendatang = [
-            ['nip' => '196101091982031012', 'nama' => 'Nia Ramdani, S.H', 'ttl' => 'Banjarnegara, 1961-09-17', 'periode' => '2026-05-25'],
-            ['nip' => '197803152003121005', 'nama' => 'Ahmad Fauzi, S.Kom', 'ttl' => 'Purwokerto, 1978-03-15', 'periode' => '2026-05-28'],
-            ['nip' => '198507222010012018', 'nama' => 'Siti Nurhaliza, S.Pd', 'ttl' => 'Cilacap, 1985-07-22', 'periode' => '2026-06-01'],
-            ['nip' => '199001102015031002', 'nama' => 'Budi Santoso, S.E', 'ttl' => 'Kebumen, 1990-01-10', 'periode' => '2026-06-03'],
-        ];
+        // Berkala Gaji 1 Bulan Kedepan - dari data pegawai berdasarkan tmt_pns
+        $now = now();
+        $oneMonthLater = now()->addMonth();
+        $gajiMendatangDb = Pegawai::whereNotNull('tmt_pns')
+            ->whereRaw("DATE_FORMAT(tmt_pns, '%m-%d') BETWEEN DATE_FORMAT(?, '%m-%d') AND DATE_FORMAT(?, '%m-%d')", [$now, $oneMonthLater])
+            ->get(['nip', 'nama', 'tmpt_lahir', 'tgl_lahir', 'tmt_pns']);
 
-        // Berkala Pangkat 1 Bulan Kedepan (Data dummy)
-        $pangkatMendatang = [
-            ['nip' => '197205141998031007', 'nama' => 'Dewi Lestari, S.Sos', 'ttl' => 'Yogyakarta, 1972-05-14', 'periode' => '2026-05-30'],
-            ['nip' => '198812202012121003', 'nama' => 'Hendra Wijaya, S.T', 'ttl' => 'Semarang, 1988-12-20', 'periode' => '2026-06-02'],
-            ['nip' => '197609081999032011', 'nama' => 'Ratna Dewi, M.Si', 'ttl' => 'Bandung, 1976-09-08', 'periode' => '2026-06-05'],
-        ];
+        $gajiMendatang = $gajiMendatangDb->map(function($p) {
+            return [
+                'nip'     => $p->nip,
+                'nama'    => $p->nama,
+                'ttl'     => ($p->tmpt_lahir ?? '-') . ', ' . ($p->tgl_lahir ?? '-'),
+                'periode' => $p->tmt_pns,
+            ];
+        })->values()->toArray();
 
-        // Statistik Golongan (Data dummy)
-        $statistikGolongan = [
-            ['golongan' => 'I/a', 'jumlah' => 3],
-            ['golongan' => 'I/b', 'jumlah' => 5],
-            ['golongan' => 'I/c', 'jumlah' => 7],
-            ['golongan' => 'I/d', 'jumlah' => 4],
-            ['golongan' => 'II/a', 'jumlah' => 12],
-            ['golongan' => 'II/b', 'jumlah' => 18],
-            ['golongan' => 'II/c', 'jumlah' => 15],
-            ['golongan' => 'II/d', 'jumlah' => 10],
-            ['golongan' => 'III/a', 'jumlah' => 22],
-            ['golongan' => 'III/b', 'jumlah' => 28],
-            ['golongan' => 'III/c', 'jumlah' => 25],
-            ['golongan' => 'III/d', 'jumlah' => 20],
-            ['golongan' => 'IV/a', 'jumlah' => 16],
-            ['golongan' => 'IV/b', 'jumlah' => 11],
-            ['golongan' => 'IV/c', 'jumlah' => 7],
-            ['golongan' => 'IV/d', 'jumlah' => 4],
-            ['golongan' => 'IV/e', 'jumlah' => 2],
-        ];
+        // Berkala Pangkat 1 Bulan Kedepan - dari data pangkat berdasarkan tmt_pangkat_selesai
+        $pangkatMendatangDb = Pangkat::with(['pegawai', 'master_golongan'])
+            ->whereBetween('tmt_pangkat_selesai', [$now->toDateString(), $oneMonthLater->toDateString()])
+            ->get();
 
-        // Statistik Eselon (Data dummy)
-        $statistikEselon = [
-            ['eselon' => 'Eselon I/a', 'jumlah' => 2],
-            ['eselon' => 'Eselon I/b', 'jumlah' => 4],
-            ['eselon' => 'Eselon II/a', 'jumlah' => 7],
-            ['eselon' => 'Eselon II/b', 'jumlah' => 10],
-            ['eselon' => 'Eselon III/a', 'jumlah' => 14],
-            ['eselon' => 'Eselon III/b', 'jumlah' => 18],
-            ['eselon' => 'Eselon IV/a', 'jumlah' => 22],
-            ['eselon' => 'Eselon IV/b', 'jumlah' => 19],
-            ['eselon' => 'Eselon V/a', 'jumlah' => 12],
-        ];
+        $pangkatMendatang = $pangkatMendatangDb->map(function($p) {
+            return [
+                'nip'     => $p->pegawai->nip ?? '-',
+                'nama'    => $p->pegawai->nama ?? '-',
+                'ttl'     => ($p->pegawai->tmpt_lahir ?? '-') . ', ' . ($p->pegawai->tgl_lahir ?? '-'),
+                'periode' => $p->tmt_pangkat_selesai,
+            ];
+        })->values()->toArray();
 
-        // Statistik Jenis Kelamin (Data dummy)
-        $statistikJenisKelamin = [
-            ['jenis' => 'Laki-laki', 'jumlah' => 32],
-            ['jenis' => 'Perempuan', 'jumlah' => 23],
-        ];
+        // Statistik Golongan - dari data pangkat aktif (tmt_pangkat_selesai terbaru per pegawai)
+        $statistikGolonganDb = Pangkat::select('master_golongan_id', DB::raw('count(*) as jumlah'))
+            ->whereIn('id', function($query) {
+                $query->select(DB::raw('MAX(id)'))
+                    ->from('tb_pangkat')
+                    ->groupBy('pegawai_id');
+            })
+            ->with('master_golongan')
+            ->groupBy('master_golongan_id')
+            ->get();
 
-        // Statistik Status Kepegawaian (Data dummy)
-        $statistikStatus = [
-            ['status' => 'PNS', 'jumlah' => 48],
-            ['status' => 'CPNS', 'jumlah' => 5],
-            ['status' => 'PPPK', 'jumlah' => 2],
-        ];
+        $statistikGolongan = $statistikGolonganDb->map(function($item) {
+            return [
+                'golongan' => $item->master_golongan->nama_golongan ?? 'Tidak Diketahui',
+                'jumlah'   => $item->jumlah,
+            ];
+        })->values()->toArray();
+
+        // Statistik Eselon - dari data jabatan aktif (jabatan terbaru per pegawai)
+        $statistikEselonDb = Jabatan::select('master_eselon_id', DB::raw('count(*) as jumlah'))
+            ->whereNotNull('master_eselon_id')
+            ->whereIn('id', function($query) {
+                $query->select(DB::raw('MAX(id)'))
+                    ->from('tb_jabatan')
+                    ->groupBy('pegawai_id');
+            })
+            ->with('master_eselon')
+            ->groupBy('master_eselon_id')
+            ->get();
+
+        $statistikEselon = $statistikEselonDb->map(function($item) {
+            return [
+                'eselon' => $item->master_eselon->nama_eselon ?? 'Tidak Diketahui',
+                'jumlah' => $item->jumlah,
+            ];
+        })->values()->toArray();
+
+        // Statistik Jenis Kelamin - dari field jenis_kelamin di tb_pegawai
+        $statistikJenisKelaminDb = Pegawai::select('jenis_kelamin', DB::raw('count(*) as jumlah'))
+            ->whereNotNull('jenis_kelamin')
+            ->groupBy('jenis_kelamin')
+            ->get();
+
+        $statistikJenisKelamin = $statistikJenisKelaminDb->map(function($item) {
+            return [
+                'jenis'  => $item->jenis_kelamin,
+                'jumlah' => $item->jumlah,
+            ];
+        })->values()->toArray();
+
+        // Statistik Status Kepegawaian - dari field status_kepegawaian di tb_pegawai
+        $statistikStatusDb = Pegawai::select('status_kepegawaian', DB::raw('count(*) as jumlah'))
+            ->whereNotNull('status_kepegawaian')
+            ->groupBy('status_kepegawaian')
+            ->get();
+
+        $statistikStatus = $statistikStatusDb->map(function($item) {
+            return [
+                'status' => $item->status_kepegawaian,
+                'jumlah' => $item->jumlah,
+            ];
+        })->values()->toArray();
 
         return view('pages/dashboard/dashboard', compact(
             'totalPegawai',

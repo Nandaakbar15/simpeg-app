@@ -25,7 +25,8 @@
                 <form action="/kepegawaian/cuti/tambah_cuti" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
                         <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
@@ -34,7 +35,8 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="jenis_cuti" class="block mb-2.5 text-sm font-medium text-heading">Jenis Cuti</label>
+                        <label for="jenis_cuti" class="block mb-2.5 text-sm font-medium text-heading">Jenis Cuti <span
+                                class="text-red-500">*</span></label>
                         <select name="jenis_cuti" id="jenis_cuti" class="rounded-lg">
                             <option value="Tahunan">Tahunan</option>
                             <option value="Besar">Besar</option>
@@ -48,7 +50,7 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_surat_cuti" class="w-1/4 text-sm font-medium text-heading">Nomor dan Surat
-                            Cuti</label>
+                            Cuti <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_surat_cuti" name="no_surat_cuti"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -61,7 +63,7 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="pelaksanaan_cuti_mulai" class="w-1/4 text-sm font-medium text-heading">Pelaksanaan
-                            Cuti</label>
+                            Cuti <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="pelaksanaan_cuti_mulai" name="pelaksanaan_cuti_mulai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -76,41 +78,42 @@
                     </div>
                     <div class="mb-5">
                         <label for="durasi_cuti" class="block mb-2.5 text-sm font-medium text-heading">Durasi
-                            Cuti</label>
+                            Cuti <span class="text-red-500">*</span></label>
                         <input type="text" id="durasi_cuti" name="durasi_cuti"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan durasi cuti" required />
                     </div>
                     <div class="mb-5">
                         <label for="ketentuan_a" class="block mb-2.5 text-sm font-medium text-heading">Ketentuan
-                            A</label>
+                            A <span class="text-red-500">*</span></label>
                         <input type="text" id="ketentuan_a" name="ketentuan_a"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan ketentuan a" required />
                     </div>
                     <div class="mb-5">
                         <label for="ketentuan_b" class="block mb-2.5 text-sm font-medium text-heading">Ketentuan
-                            B</label>
+                            B <span class="text-red-500">*</span></label>
                         <input type="text" id="ketentuan_b" name="ketentuan_b"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan ketentuan b" required />
                     </div>
                     <div class="mb-5">
                         <label for="ketentuan_c" class="block mb-2.5 text-sm font-medium text-heading">Ketentuan
-                            C</label>
+                            C <span class="text-red-500">*</span></label>
                         <input type="text" id="ketentuan_c" name="ketentuan_c"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan ketentuan c" required />
                     </div>
                     <div class="mb-5">
-                        <label for="tebusan" class="block mb-2.5 text-sm font-medium text-heading">Tebusan</label>
+                        <label for="tebusan" class="block mb-2.5 text-sm font-medium text-heading">Tebusan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="tebusan" name="tebusan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tebusan" required />
                     </div>
                     <div class="mb-5">
                         <label for="file_surat_cuti" class="block mb-2.5 text-sm font-medium text-heading">File Surat
-                            Cuti</label>
+                            Cuti <span class="text-red-500">*</span></label>
                         <input type="file" id="file_surat_cuti" name="file_surat_cuti"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file surat cuti" required />

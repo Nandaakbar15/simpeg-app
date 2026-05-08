@@ -26,10 +26,10 @@
                     @csrf
                     <div class="mb-5">
                         <label for="user_id" class="block mb-2.5 text-sm font-medium text-heading">
-                            Hubungkan ke Akun User Pegawai
+                            Hubungkan ke Akun User Pegawai <span class="text-red-500">*</span>
                         </label>
                         <select name="user_id" id="user_id"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                             required>
                             <option value="">-- Pilih Akun User Pegawai --</option>
                             @foreach ($userPegawai as $u)
@@ -42,54 +42,57 @@
                             terhubung.</p>
                     </div>
                     <div class="mb-5">
-                        <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP</label>
+                        <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nip" name="nip"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan NIP" required />
                     </div>
                     <div class="mb-5">
                         <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Pegawai</label>
+                            Pegawai <span class="text-red-500">*</span></label>
                         <input type="text" id="nama" name="nama"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama pegawai" required />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar</label>
+                        <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar <span
+                                class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="gelar_depan" name="gelar_depan"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan Gelar depan" required />
 
                             <input type="text" id="gelar" name="gelar"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 placeholder="Masukan Gelar Belakang" required />
                         </div>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmpt_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
-                            Lahir</label>
+                            Lahir <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tmpt_lahir" name="tmpt_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tempat lahir" required />
 
                             <input type="date" id="tgl_lahir" name="tgl_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="jenis_kelamin" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            kelamin</label>
+                            kelamin <span class="text-red-500">*</span></label>
                         <select name="jenis_kelamin" id="jenis_kelamin">
                             <option value="laki-laki">Laki-laki</option>
                             <option value="perempuan">Perempuan</option>
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="agama" class="block mb-2.5 text-sm font-medium text-heading">Agama</label>
-                        <select name="agama" id="agama">
+                        <label for="agama" class="block mb-2.5 text-sm font-medium text-heading">Agama <span
+                                class="text-red-500">*</span></label>
+                        <select name="agama" id="agama" class="rounded-lg">
                             <option value="Islam">Islam</option>
                             <option value="Protestan">Protestan</option>
                             <option value="Katolik">Katolik</option>
@@ -100,8 +103,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="golongan_darah" class="block mb-2.5 text-sm font-medium text-heading">Golongan
-                            Darah</label>
-                        <select name="golongan_darah" id="golongan_darah">
+                            Darah <span class="text-red-500">*</span></label>
+                        <select name="golongan_darah" id="golongan_darah" class="rounded-lg">
                             <option value="A">A</option>
                             <option value="AB">AB</option>
                             <option value="B">B</option>
@@ -111,8 +114,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="status_pernikahan" class="block mb-2.5 text-sm font-medium text-heading">Status
-                            Pernikahan</label>
-                        <select name="status_pernikahan" id="status_pernikahan">
+                            Pernikahan <span class="text-red-500">*</span></label>
+                        <select name="status_pernikahan" id="status_pernikahan" class="rounded-lg">
                             <option value="Nikah">Nikah</option>
                             <option value="Belum Nikah">Belum Nikah</option>
                             <option value="Cerai Mati">Cerai Mati</option>
@@ -120,55 +123,58 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">NIK</label>
+                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">NIK <span
+                                class="text-red-500">*</span> </label>
                         <input type="text" id="nik" name="nik"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan NIK Pegawai" required />
                     </div>
                     <div class="mb-5">
                         <label for="no_hp" class="block mb-2.5 text-sm font-medium text-heading">Nomor
-                            Telepon</label>
+                            Telepon <span class="text-red-500">*</span></label>
                         <input type="text" id="no_hp" name="no_hp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Nomor Telepon" required />
                     </div>
                     <div class="mb-5">
-                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
+                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="email" name="email"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Email" required />
                     </div>
                     <div class="mb-5">
                         <label for="email_gov" class="block mb-2.5 text-sm font-medium text-heading">Email
                             Gov</label>
                         <input type="text" id="email_gov" name="email_gov"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Email gov" required />
                     </div>
                     <div class="mb-5">
-                        <label for="alamat" class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                        <label for="alamat" class="block mb-2.5 text-sm font-medium text-heading">Alamat <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="alamat" name="alamat"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Alamat" required />
                     </div>
                     <div class="mb-5">
                         <label for="no_npwp" class="block mb-2.5 text-sm font-medium text-heading">No.
-                            NPWP</label>
+                            NPWP <span class="text-red-500">*</span></label>
                         <input type="text" id="no_npwp" name="no_npwp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan No. NPWP" required />
                     </div>
                     <div class="mb-5">
                         <label for="no_bpjs" class="block mb-2.5 text-sm font-medium text-heading">No.
-                            BPJS</label>
+                            BPJS <span class="text-red-500">*</span></label>
                         <input type="text" id="no_bpjs" name="no_bpjs"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan No. BPJS" required />
                     </div>
                     <div class="mb-5">
                         <label for="status_kepegawaian" class="block mb-2.5 text-sm font-medium text-heading">Status
-                            Kepegawaian</label>
-                        <select name="status_kepegawaian" id="status_kepegawaian">
+                            Kepegawaian <span class="text-red-500">*</span></label>
+                        <select name="status_kepegawaian" id="status_kepegawaian" class="rounded-lg">
                             <option value="PNS">PNS</option>
                             <option value="PPPK">PPPK</option>
                             <option value="TKK">TKK</option>
@@ -177,55 +183,56 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="karpeg" class="block mb-2.5 text-sm font-medium text-heading">Karpeg</label>
+                        <label for="karpeg" class="block mb-2.5 text-sm font-medium text-heading">Karpeg <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="karpeg" name="karpeg"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan karpeg" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk_cpns" class="w-1/4 text-sm font-medium text-heading">No. SK & TMT
-                            CPNS</label>
+                            CPNS <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk_cpns" name="no_sk_cpns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 placeholder="No. SK CPNS" required />
 
                             <input type="date" id="tmt_cpns" name="tmt_cpns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required />
                         </div>
                     </div>
 
                     <div class="flex items-center mb-5">
                         <label for="no_sk_pns" class="w-1/4 text-sm font-medium text-heading">No. SK & TMT
-                            PNS</label>
+                            PNS <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk_pns" name="no_sk_pns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 placeholder="No. SK PNS" required />
 
                             <input type="date" id="tmt_pns" name="tmt_pns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="gol_awal" class="block mb-2.5 text-sm font-medium text-heading">Gol
-                            Awal</label>
+                            Awal <span class="text-red-500">*</span> </label>
                         <input type="text" id="gol_awal" name="gol_awal"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Gol Awal" required />
                     </div>
                     <div class="mb-5">
                         <label class="block mb-2.5 text-sm font-medium text-heading">
-                            OPD / SKPD / Unit Kerja
+                            OPD / SKPD / Unit Kerja <span class="text-red-500">*</span>
                         </label>
 
                         @if (auth()->user()->role === 'admin')
                             <!-- Admin: dikunci -->
                             <input type="hidden" name="unit_kerja_id" value="{{ auth()->user()->unit_kerja_id }}">
 
-                            <select disabled class="bg-gray-100 cursor-not-allowed">
+                            <select disabled class="bg-gray-100 cursor-not-allowed rounded-lg">
                                 @foreach ($unitKerja as $item)
                                     <option value="{{ $item->id }}"
                                         {{ $item->id == auth()->user()->unit_kerja_id ? 'selected' : '' }}>
@@ -235,7 +242,7 @@
                             </select>
                         @else
                             <!-- Superadmin: bebas pilih -->
-                            <select name="unit_kerja_id" id="unit_kerja_id">
+                            <select name="unit_kerja_id" id="unit_kerja_id" class="rounded-lg">
                                 <option value="">--Pilih Unit Kerja --</option>
                                 @foreach ($unitKerja as $item)
                                     <option value="{{ $item->id }}">{{ $item->nama_unit }}</option>
@@ -245,9 +252,9 @@
                     </div>
                     <div class="mb-5">
                         <label for="foto" class="block mb-2.5 text-sm font-medium text-heading">Foto
-                            Pegawai</label>
+                            Pegawai <span class="text-red-500">*</span></label>
                         <input type="file" id="foto" name="foto"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Foto pegawai" required />
                     </div>
                     <div class="mt-5">
@@ -255,9 +262,9 @@
                     </div>
                     <div class="mb-5">
                         <label for="nilai_tpp" class="block mb-2.5 text-sm font-medium text-heading">Nilai
-                            Tpp</label>
+                            Tpp <span class="text-red-500">*</span></label>
                         <input type="number" id="nilai_tpp" name="nilai_tpp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Nilai awai TPP" required />
                     </div>
                     <button type="submit"

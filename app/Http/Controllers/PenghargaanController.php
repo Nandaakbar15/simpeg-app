@@ -127,7 +127,7 @@ class PenghargaanController extends Controller
             'tgl_penghargaan' => 'required|date',
             'tahun' => 'required|string',
             'no_sertifikat' => 'required',
-            'file_sertifikat_penghargaan' => 'file|mimes:pdf,docx,txt|max:10240'
+            'file_sertifikat_penghargaan' => 'nullable|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
@@ -135,8 +135,9 @@ class PenghargaanController extends Controller
 
             if($request->hasFile('file_sertifikat_penghargaan')) {
 
-                if($request->fileLama) {
-                    Storage::disk('public')->delete($request->fileLama);
+                if($hukuman->file_sertifikat_penghargaan) {
+                    $oldPath = str_replace('/storage/', '', $hukuman->file_sertifikat_penghargaan);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
                 $file = $request->file('file_sertifikat_penghargaan');

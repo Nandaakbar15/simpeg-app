@@ -26,8 +26,9 @@
                 <form action="/riwayat_keluarga/orang_tua/tambah_data_orang_tua" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -35,42 +36,45 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK
+                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">No KTP / NIK <span
+                                class="text-red-500">*</span>
                         </label>
                         <input type="text" id="nik" name="nik"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nik Orang Tua" required />
                     </div>
                     <div class="mb-5">
-                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama</label>
+                        <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nama" name="nama"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama orang tua" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tempat_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
-                            Lahir</label>
+                            Lahir <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_lahir" name="tempat_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tempat lahir" required />
 
                             <input type="date" id="tgl_lahir" name="tgl_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="jenis_kelamin" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin">
+                            kelamin <span class="text-red-500">*</span></label>
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="rounded-lg">
                             <option value="laki-laki">Laki-laki</option>
                             <option value="perempuan">Perempuan</option>
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Pendidikan</label>
-                        <select name="pendidikan" id="pendidikan">
+                        <label for="pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Pendidikan <span
+                                class="text-red-500">*</span></label>
+                        <select name="pendidikan" id="pendidikan" class="rounded-lg">
                             <option value="SD">SD</option>
                             <option value="SLTP">SLTP</option>
                             <option value="SLTA">SLTA</option>
@@ -81,15 +85,16 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="pekerjaan" class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
+                        <label for="pekerjaan" class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pekerjaan" name="pekerjaan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Pekerjaan Orang Tua" required />
                     </div>
                     <div class="mb-5">
                         <label for="status_hubungan" class="block mb-2.5 text-sm font-medium text-heading">Status
-                            Hubungan</label>
-                        <select name="status_hubungan" id="status_hubungan">
+                            Hubungan <span class="text-red-500">*</span></label>
+                        <select name="status_hubungan" id="status_hubungan" class="rounded-lg">
                             <option value="Ayah Kandung">Ayah Kandung</option>
                             <option value="Ibu Kandung">Ibu Kandung</option>
                         </select>

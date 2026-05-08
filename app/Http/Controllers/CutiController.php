@@ -77,14 +77,14 @@ class CutiController extends Controller
         try {
             DB::beginTransaction();
 
-            Cuti::create($validateData);
-
             if($request->hasFile('file_surat_cuti')) {
                 $file = $request->file('file_surat_cuti');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('document', $fileName, 'public');
                 $validateData['file_surat_cuti'] = '/storage/' . $path;
             }
+
+            Cuti::create($validateData);
 
             DB::commit();
 
@@ -135,7 +135,7 @@ class CutiController extends Controller
             'ketentuan_a' => 'required|string',
             'ketentuan_b' => 'required|string',
             'ketentuan_c' => 'required|string',
-            'file_surat_cuti' => 'file|mimes:pdf,docx,txt|max:10240',
+            'file_surat_cuti' => 'nullable|file|mimes:pdf,docx,txt|max:10240',
             'tebusan' => 'required|string'
         ]);
 
@@ -144,14 +144,17 @@ class CutiController extends Controller
 
             if($request->hasFile('file_surat_cuti')) {
 
-                if($request->fileLama) {
-                    Storage::disk('public')->delete($request->fileLama);
+                if($cuti->file_surat_cuti) {
+                    $oldPath = str_replace('/storage/', '', $cuti->file_surat_cuti);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
                 $file = $request->file('file_surat_cuti');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('document', $fileName, 'public');
                 $validateData['file_surat_cuti'] = '/storage/' . $path;
+            } else {
+                unset($validateData['file_surat_cuti']);
             }
 
             $cuti->update($validateData);

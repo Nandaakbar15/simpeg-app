@@ -58,17 +58,17 @@ class MasterEselonController extends Controller
         try {
             DB::beginTransaction();
 
-            $eselon = MasterEselon::create($validateData);
+            $masterEselon->update($validateData);
 
             DB::commit();
 
-            return redirect("/kepegawaian/jabatan")->with('success', 'Berhasil mengubah data master eselon!');
+            return response()->json($masterEselon);
         } catch(Exception $e) {
             DB::rollBack();
 
-            Log::error('Gagal menambahkan data : ' . $e->getMessage());
+            Log::error('Gagal mengubah data : ' . $e->getMessage());
 
-            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+            return response()->json(['error' => 'Gagal mengubah data'], 500);
         }
     }
 
@@ -77,8 +77,12 @@ class MasterEselonController extends Controller
      */
     public function destroy(MasterEselon $masterEselon)
     {
-        $masterEselon->delete();
-
-        return response()->json($masterEselon);
+        try {
+            $masterEselon->delete();
+            return response()->json(['message' => 'Berhasil menghapus data']);
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menghapus data'], 500);
+        }
     }
 }

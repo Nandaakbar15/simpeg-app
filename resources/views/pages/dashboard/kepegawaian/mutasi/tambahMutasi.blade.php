@@ -25,7 +25,8 @@
                 <form action="/kepegawaian/mutasi/tambah_mutasi" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
                         <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
@@ -35,7 +36,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_mutasi" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Mutasi</label>
+                            Mutasi <span class="text-red-500">*</span></label>
                         <select name="jenis_mutasi" id="jenis_mutasi" class="rounded-lg">
                             <option value="Masuk">Masuk</option>
                             <option value="Keluar">Keluar</option>
@@ -47,14 +48,14 @@
                     </div>
                     <div class="mb-5">
                         <label for="instansi_tujuan" class="block mb-2.5 text-sm font-medium text-heading">Instansi
-                            Tujuan</label>
+                            Tujuan <span class="text-red-500">*</span></label>
                         <input type="text" id="instansi_tujuan" name="instansi_tujuan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan instansi tujuan" required />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="no_sk_mutasi" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
-                            SK mutasi</label>
+                        <label for="no_sk_mutasi" class="w-1/4 text-sm font-medium text-heading">Nomor dan tgl
+                            SK mutasi <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk_mutasi" name="no_sk_mutasi"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -67,13 +68,13 @@
                     </div>
                     <div class="mb-5">
                         <label for="file_sk_mutasi" class="block mb-2.5 text-sm font-medium text-heading">File SK
-                            Mutasi</label>
+                            Mutasi <span class="text-red-500">*</span></label>
                         <input type="file" id="file_sk_mutasi" name="file_sk_mutasi"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file surat keterangan mutasi" required />
                     </div>
                     <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-lg text-sm px-4 py-2 focus:outline-none">Save</button>
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 text-sm px-4 py-2 focus:outline-none">Save</button>
                 </form>
             </div>
 

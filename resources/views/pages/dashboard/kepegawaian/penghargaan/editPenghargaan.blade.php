@@ -23,14 +23,16 @@
                         </ul>
                     </div>
                 @endif
-                <form action="/kepegawaian/penghargaan/edit_penghargaan/{{ $penghargaan->id }}" method="POST">
+                <form action="/kepegawaian/penghargaan/edit_penghargaan/{{ $penghargaan->id }}" method="POST"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <input type="hidden" name="fileLama" id="fileLama"
                         value="{{ $penghargaan->file_sertifikat_penghargaan }}">
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -42,24 +44,24 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_penghargaan" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Penghargaan</label>
+                            Penghargaan <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_penghargaan" name="nama_penghargaan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama penghargaan" required
                             value="{{ old('nama_penghargaan', $penghargaan->nama_penghargaan) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="instansi_pemberi" class="block mb-2.5 text-sm font-medium text-heading">Instansi
-                            Pemberi</label>
+                            Pemberi <span class="text-red-500">*</span></label>
                         <input type="text" id="instansi_pemberi" name="instansi_pemberi"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan instansi pemberi" required
                             value="{{ old('instansi_pemberi', $penghargaan->instansi_pemberi) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="tingkat_kegiatan" class="block mb-2.5 text-sm font-medium text-heading">Tingkat
-                            Kegiatan</label>
-                        <select name="tingkat_kegiatan" id="tingkat_kegiatan">
+                            Kegiatan <span class="text-red-500">*</span></label>
+                        <select name="tingkat_kegiatan" id="tingkat_kegiatan" class="rounded-lg">
                             <option value="Lokal" {{ $penghargaan->tingkat_kegiatan == 'Lokal' ? 'selected' : '' }}>
                                 Lokal</option>
                             <option value="Regional"
@@ -73,33 +75,42 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tempat_penghargaan" class="w-1/4 text-sm font-medium text-heading">Tempat dan
-                            Tanggal</label>
+                            Tanggal <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_penghargaan" name="tempat_penghargaan"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tempat penghargaan" required
                                 value="{{ old('tempat_penghargaan', $penghargaan->tempat_penghargaan) }}" />
 
                             <input type="date" id="tgl_penghargaan" name="tgl_penghargaan"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal penghargaan"
                                 value="{{ old('tgl_penghargaan', $penghargaan->tgl_penghargaan) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
+                        <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="tahun" name="tahun"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tahun penghargaan" required
                             value="{{ old('tahun', $penghargaan->tahun) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="no_sertifikat" class="block mb-2.5 text-sm font-medium text-heading">Nomor
-                            Sertifikat</label>
+                            Sertifikat <span class="text-red-500">*</span></label>
                         <input type="text" id="no_sertifikat" name="no_sertifikat"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nomor sertifikat" required
                             value="{{ old('no_sertifikat', $penghargaan->no_sertifikat) }}" />
+                    </div>
+                    <div class="mb-5">
+                        <label for="file_sertifikat_penghargaan"
+                            class="block mb-2.5 text-sm font-medium text-heading">Sertifikat Penghargaan <span
+                                class="text-red-500">*</span></label>
+                        <input type="file" id="file_sertifikat_penghargaan" name="file_sertifikat_penghargaan"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            placeholder="Masukan file sertifikat penghargaan" required />
                     </div>
                     <button type="button"
                         class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"

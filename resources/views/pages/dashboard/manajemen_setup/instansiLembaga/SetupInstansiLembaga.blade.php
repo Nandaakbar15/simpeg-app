@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form edit hukuman</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Setup Instansi Lembaga</h1>
             </div>
 
         </div>
@@ -31,7 +31,7 @@
                         <label for="nama_instansi_lembaga" class="block mb-2.5 text-sm font-medium text-heading">Nama
                             Instansi Lembaga</label>
                         <input type="text" id="nama_instansi_lembaga" name="nama_instansi_lembaga"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama instansi lembaga" required
                             value="{{ old('nama_instansi_lembaga', $instansiLembaga->nama_instansi_lembaga) }}" />
                     </div>
@@ -56,25 +56,25 @@
                     </div>
                     <div class="mb-5">
                         <label for="no_telp" class="block mb-2.5 text-sm font-medium text-heading">Nomor
-                            Telepon</label>
+                            Telepon <span class="text-red-500">*</span></label>
                         <input type="text" id="no_telp" name="no_telp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nomor telepon" required
                             value="{{ old('no_telp', $instansiLembaga->no_telp) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pemulihan
-                            Hukuman</label>
+                            Hukuman <span class="text-red-500">*</span> </label>
                         <input type="text" id="email" name="email"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan email instansi lembaga" required
                             value="{{ old('email', $instansiLembaga->email) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="kepala_dinas" class="block mb-2.5 text-sm font-medium text-heading">Kepala
-                            Dinas</label>
+                            Dinas <span class="text-red-500">*</span> </label>
                         <input type="text" id="kepala_dinas" name="kepala_dinas"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan kepala dinas" required
                             value="{{ old('kepala_dinas', $instansiLembaga->kepala_dinas) }}" />
                     </div>
@@ -87,9 +87,9 @@
                         @endif
                         <div class="img-preview">
                             <label for="gambar_logo" class="block mb-2.5 text-sm font-medium text-heading">Logo
-                                Instansi</label>
+                                Instansi <span class="text-red-500">*</span> </label>
                             <input type="file" id="gambar_logo" name="gambar_logo"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan logo instansi" />
                         </div>
                     </div>

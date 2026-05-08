@@ -27,8 +27,9 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -39,9 +40,9 @@
                         </select>
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="no_surat_izin_perkawinan" class="w-1/4 text-sm font-medium text-heading">Nomor dan
-                            tanggal
-                            izin perkawinan</label>
+                        <label for="no_surat_izin_perkawinan" class="w-1/4 text-sm font-medium text-heading">Nomor &
+                            tgl
+                            izin perkawinan <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_surat_izin_perkawinan" name="no_surat_izin_perkawinan"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -57,7 +58,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="kebangsaan_pegawai" class="block mb-2.5 text-sm font-medium text-heading">Kebangsaan
-                            Pegawai</label>
+                            Pegawai <span class="text-red-500">*</span></label>
                         <input type="text" id="kebangsaan_pegawai" name="kebangsaan_pegawai"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan kebangsaan pegawai" required
@@ -65,7 +66,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_wali_bapak_pegawai" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Wali (Bapak) Pegawai</label>
+                            Wali (Bapak) Pegawai <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_wali_bapak_pegawai" name="nama_wali_bapak_pegawai"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama wali (bapak) pegawai" required
@@ -73,15 +74,16 @@
                     </div>
                     <div class="mb-5">
                         <label for="pekerjaan_wali_bapak_pegawai"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pekerjaan_wali_bapak_pegawai" name="pekerjaan_wali_bapak_pegawai"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pekerjaan wali (bapak) pegawai" required
                             value="{{ old('pekerjaan_wali_bapak_pegawai', $izinKawin->pekerjaan_wali_bapak_pegawai) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="alamat_wali_bapak"
-                            class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                        <label for="alamat_wali_bapak" class="block mb-2.5 text-sm font-medium text-heading">Alamat
+                            <span class="text-red-500">*</span></label>
                         <input type="text" id="alamat_wali_bapak" name="alamat_wali_bapak"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan alamat wali (bapak) pegawai" required
@@ -89,7 +91,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_wali_ibu_pegawai" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Wali (Ibu) Pegawai</label>
+                            Wali (Ibu) Pegawai <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_wali_ibu_pegawai" name="nama_wali_ibu_pegawai"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama wali (ibu) pegawai" required
@@ -97,7 +99,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="pekerjaan_wali_ibu_pegawai"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pekerjaan_wali_ibu_pegawai" name="pekerjaan_wali_ibu_pegawai"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pekerjaan wali (ibu) pegawai" required
@@ -105,7 +108,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="alamat_wali_ibu_pegawai"
-                            class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Alamat <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="alamat_wali_ibu_pegawai" name="alamat_wali_ibu_pegawai"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan alamat wali (ibu) pegawai" required
@@ -115,8 +119,8 @@
                         <h2 class="text-center font-bold">UNTUK MELAKSANAKAN PERKAWINAN DENGAN</h2>
                     </div>
                     <div class="mb-5">
-                        <label for="nama_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Nama</label>
+                        <label for="nama_calon_suami_istri" class="block mb-2.5 text-sm font-medium text-heading">Nama
+                            <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_calon_suami_istri" name="nama_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama calon suami / istri" required
@@ -124,8 +128,8 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tempat_lahir_calon_suami_istri"
-                            class="w-1/4 text-sm font-medium text-heading">Tempat dan tanggal
-                            lahir</label>
+                            class="w-1/4 text-sm font-medium text-heading">Tempat & Tgl
+                            lahir <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_lahir_calon_suami_istri"
                                 name="tempat_lahir_calon_suami_istri"
@@ -141,7 +145,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="pekerjaan_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pekerjaan_calon_suami_istri" name="pekerjaan_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pekerjaan calon suami / istri" required
@@ -149,7 +154,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="nip_nik_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">NIK / NIP</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">NIK / NIP <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nip_nik_calon_suami_istri" name="nip_nik_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nip atau nik calon suami / istri" required
@@ -157,7 +163,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="pangkat_golongan_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pangkat / Golongan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pangkat / Golongan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pangkat_golongan_calon_suami_istri"
                             name="pangkat_golongan_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -166,7 +173,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="jabatan_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Jabatan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Jabatan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="jabatan_calon_suami_istri" name="jabatan_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan jabatan calon suami / istri" required
@@ -174,7 +182,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="instansi_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Instansi</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Instansi <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="instansi_calon_suami_istri" name="instansi_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan instansi calon suami / istri" required
@@ -182,7 +191,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="kebangsaan_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Kebangsaan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Kebangsaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="kebangsaan_calon_suami_istri" name="kebangsaan_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan kebangsaan calon suami / istri" required
@@ -190,7 +200,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="agama_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Agama</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Agama <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="agama_calon_suami_istri" name="agama_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nip atau nik calon suami / istri" required
@@ -198,7 +209,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="alamat_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Alamat <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="alamat_calon_suami_istri" name="alamat_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan alamat calon suami / istri" required
@@ -206,7 +218,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_wali_bapak_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Nama Wali (Bapak)</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Nama Wali (Bapak) <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nama_wali_bapak_calon_suami_istri"
                             name="nama_wali_bapak_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -215,7 +228,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="pekerjaan_wali_bapak_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pekerjaan_wali_bapak_calon_suami_istri"
                             name="pekerjaan_wali_bapak_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -224,7 +238,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="alamat_wali_bapak_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Alamat <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="alamat_wali_bapak_calon_suami_istri"
                             name="alamat_wali_bapak_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -233,7 +248,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_wali_ibu_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Nama Wali (Ibu)</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Nama Wali (Ibu) <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nama_wali_ibu_calon_suami_istri"
                             name="nama_wali_ibu_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -242,7 +258,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="pekerjaan_wali_ibu_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pekerjaan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pekerjaan_wali_ibu_calon_suami_istri"
                             name="pekerjaan_wali_ibu_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -251,7 +268,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="alamat_wali_ibu_calon_suami_istri"
-                            class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Alamat <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="alamat_wali_ibu_calon_suami_istri"
                             name="alamat_wali_ibu_calon_suami_istri"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -259,8 +277,8 @@
                             value="{{ old('alamat_wali_ibu_calon_suami_istri', $izinKawin->alamat_wali_ibu_calon_suami_istri) }}" />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="tempat_perkawinan" class="w-1/4 text-sm font-medium text-heading">Tempat dan
-                            tanggal perkawinan</label>
+                        <label for="tempat_perkawinan" class="w-1/4 text-sm font-medium text-heading">Tempat &
+                            Tgl perkawinan <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tempat_perkawinan" name="tempat_perkawinan"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -275,7 +293,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="tgl_ditetapkan_perkawinan"
-                            class="block mb-2.5 text-sm font-medium text-heading">Tanggal Ditetapkan perkawinan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Tgl Ditetapkan perkawinan <span
+                                class="text-red-500">*</span></label>
                         <input type="date" id="tgl_ditetapkan_perkawinan" name="tgl_ditetapkan_perkawinan"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tanggal ditetapkan perkawinan" required

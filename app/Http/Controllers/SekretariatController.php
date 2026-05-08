@@ -91,36 +91,36 @@ class SekretariatController extends Controller
         $validateData = $request->validate([
             'nama_sekretariat' => 'required|string',
             'kabupaten_kota' => 'required',
-            'nama_kabupaten_kota' => 'required|string',
             'alamat' => 'required|string',
             'no_telp' => 'required|string',
             'email' => 'required|string',
             'sekretaris' => 'required|string',
-            'nip' => 'required|string',
-            'gambar_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'gambar_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         try {
             DB::beginTransaction();
 
-
             if($request->hasFile('gambar_logo')) {
 
-                if($request->gambarLama) {
-                    Storage::disk('public')->delete($request->gambarLama);
+                if($sekretariat->gambar_logo) {
+                    $oldPath = str_replace('/storage/', '', $sekretariat->gambar_logo);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
                 $file = $request->file('gambar_logo');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('images', $fileName, 'public');
                 $validateData['gambar_logo'] = '/storage/' . $path;
+            } else {
+                unset($validateData['gambar_logo']);
             }
 
             $sekretariat->update($validateData);
 
             DB::commit();
 
-            return redirect('/kepegawaian/manajemen_setup')->with('success', 'Berhasil setup sekretariat!');
+            return redirect('/manajemen_setup/sekretariat')->with('success', 'Berhasil setup sekretariat!');
         } catch(Exception $e) {
             DB::rollBack();
 

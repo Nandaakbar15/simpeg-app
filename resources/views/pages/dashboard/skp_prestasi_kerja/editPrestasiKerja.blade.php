@@ -29,7 +29,7 @@
                     @method('PUT')
                     <div class="mb-5">
                         <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -41,37 +41,38 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="periode_nilai_dari" class="w-1/4 text-sm font-medium text-heading">Periode
-                            Penilaian</label>
+                            Penilaian <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="periode_nilai_dari" name="periode_nilai_dari"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Dari" required
                                 value="{{ old('periode_nilai_dari', $prestasiKerja->periode_nilai_dari) }}" />
 
                             <input type="date" id="periode_nilai_sampai" name="periode_nilai_sampai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required value="{{ old('periode_nilai_sampai', $prestasiKerja->periode_nilai_sampai) }}"
                                 placeholder="Sampai" />
 
                             <input type="text" id="tahun_periode" name="tahun_periode"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required value="{{ old('tahun_periode', $prestasiKerja->tahun_periode) }}"
                                 placeholder="Tahun" />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="nama_pejabat_nilai" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Pejabat penilai</label>
+                            Pejabat penilai <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_pejabat_nilai" name="nama_pejabat_nilai"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama pejabat penilai" required
                             value="{{ old('nama_pejabat_nilai', $prestasiKerja->nama_pejabat_nilai) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="nama_atasan_pejabat_penilai"
-                            class="block mb-2.5 text-sm font-medium text-heading">Nama Atasan Pejabat penilai</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Nama Atasan Pejabat penilai <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nama_atasan_pejabat_penilai" name="nama_atasan_pejabat_penilai"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama atasan pejabat penilai" required
                             value="{{ old('nama_atasan_pejabat_penilai', $prestasiKerja->nama_atasan_pejabat_penilai) }}" />
                     </div>
@@ -79,10 +80,11 @@
                         <h3 class="text-lg font-bold text-heading mb-4 underline">UNSUR YANG DINILAI</h3>
 
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center mb-6">
-                            <label for="skp" class="text-sm font-bold text-heading">A. SKP</label>
+                            <label for="skp" class="text-sm font-bold text-heading">A. SKP <span
+                                    class="text-red-500">*</span></label>
                             <div class="md:col-span-1">
                                 <input type="number" id="skp" name="skp"
-                                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                     placeholder="Nilai SKP" required value="{{ old('skp', $prestasiKerja->skp) }}" />
                             </div>
                         </div>
@@ -94,51 +96,55 @@
 
                                 <div class="flex flex-col gap-2">
                                     <label for="orientasi_pelayanan" class="text-xs font-medium text-body">1. Orientasi
-                                        Pelayanan</label>
+                                        Pelayanan <span class="text-red-500">*</span></label>
                                     <input type="number" id="orientasi_pelayanan" name="orientasi_pelayanan"
-                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                         required
                                         value="{{ old('orientasi_pelayanan', $prestasiKerja->orientasi_pelayanan) }}"
                                         placeholder="0" />
                                 </div>
 
                                 <div class="flex flex-col gap-2">
-                                    <label for="integritas" class="text-xs font-medium text-body">2. Integritas</label>
+                                    <label for="integritas" class="text-xs font-medium text-body">2. Integritas <span
+                                            class="text-red-500">*</span></label>
                                     <input type="number" id="integritas" name="integritas"
-                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                         required value="{{ old('integritas', $prestasiKerja->integritas) }}"
                                         placeholder="0" />
                                 </div>
 
                                 <div class="flex flex-col gap-2">
-                                    <label for="komitmen" class="text-xs font-medium text-body">3. Komitmen</label>
+                                    <label for="komitmen" class="text-xs font-medium text-body">3. Komitmen <span
+                                            class="text-red-500">*</span></label>
                                     <input type="number" id="komitmen" name="komitmen"
-                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                         required value="{{ old('komitmen', $prestasiKerja->komitmen) }}"
                                         placeholder="0" />
                                 </div>
 
                                 <div class="flex flex-col gap-2">
-                                    <label for="disiplin" class="text-xs font-medium text-body">4. Disiplin</label>
+                                    <label for="disiplin" class="text-xs font-medium text-body">4. Disiplin <span
+                                            class="text-red-500">*</span></label>
                                     <input type="number" id="disiplin" name="disiplin"
-                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                         required value="{{ old('disiplin', $prestasiKerja->disiplin) }}"
                                         placeholder="0" />
                                 </div>
 
                                 <div class="flex flex-col gap-2">
-                                    <label for="kerjasama" class="text-xs font-medium text-body">5. Kerjasama</label>
+                                    <label for="kerjasama" class="text-xs font-medium text-body">5. Kerjasama <span
+                                            class="text-red-500">*</span></label>
                                     <input type="number" id="kerjasama" name="kerjasama"
-                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                         required value="{{ old('kerjasama', $prestasiKerja->kerjasama) }}"
                                         placeholder="0" />
                                 </div>
 
                                 <div class="flex flex-col gap-2">
                                     <label for="kepemimpinan" class="text-xs font-medium text-body">6.
-                                        Kepemimpinan</label>
+                                        Kepemimpinan <span class="text-red-500">*</span></label>
                                     <input type="number" id="kepemimpinan" name="kepemimpinan"
-                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                        class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                         required value="{{ old('kepemimpinan', $prestasiKerja->kepemimpinan) }}"
                                         placeholder="0" />
                                 </div>
@@ -147,62 +153,66 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tgl_keberatan_pegawai" class="w-1/4 text-sm font-medium text-heading">Keberatan
-                            Pegawai</label>
+                            Pegawai <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tgl_keberatan_pegawai" name="tgl_keberatan_pegawai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tanggal keberatan pegawai" required
                                 value="{{ old('tgl_keberatan_pegawai', $prestasiKerja->tgl_keberatan_pegawai) }}" />
 
-                            <textarea id="isi_keberatan" name="isi_keberatan" rows="4" cols="50" placeholder="Isi keberatan">{{ old('isi_keberatan', $prestasiKerja->isi_keberatan) }}</textarea>
+                            <textarea id="isi_keberatan" name="isi_keberatan" rows="4" cols="50" placeholder="Isi keberatan"
+                                class="rounded-lg">{{ old('isi_keberatan', $prestasiKerja->isi_keberatan) }}</textarea>
                         </div>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tgl_pejabat_penilai" class="w-1/4 text-sm font-medium text-heading">Tanggapan
-                            pejabat penilai</label>
+                            pejabat penilai <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tgl_pejabat_penilai" name="tgl_pejabat_penilai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tanggal tanggapan pejabat penilai" required
                                 value="{{ old('tgl_pejabat_penilai', $prestasiKerja->tgl_pejabat_penilai) }}" />
 
-                            <textarea id="isi_tanggapan" name="isi_tanggapan" rows="4" cols="50" placeholder="Isi tanggapan">{{ old('isi_tanggapan', $prestasiKerja->isi_tanggapan) }}</textarea>
+                            <textarea id="isi_tanggapan" name="isi_tanggapan" rows="4" cols="50" placeholder="Isi tanggapan"
+                                class="rounded-lg">{{ old('isi_tanggapan', $prestasiKerja->isi_tanggapan) }}</textarea>
                         </div>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tgl_keputusan_atasan_pejabat_penilai"
-                            class="w-1/4 text-sm font-medium text-heading">Tanggapan atasan pejabat penilai</label>
+                            class="w-1/4 text-sm font-medium text-heading">Tanggapan atasan pejabat penilai <span
+                                class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tgl_keputusan_atasan_pejabat_penilai"
                                 name="tgl_keputusan_atasan_pejabat_penilai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tanggal keputusan atasan pejabat penilai" required
                                 value="{{ old('tgl_keputusan_atasan_pejabat_penilai', $prestasiKerja->tgl_keputusan_atasan_pejabat_penilai) }}" />
 
-                            <textarea id="isi_keputusan" name="isi_keputusan" rows="4" cols="50" placeholder="Isi keputusan">{{ old('isi_keputusan', $prestasiKerja->isi_keputusan) }}</textarea>
+                            <textarea id="isi_keputusan" name="isi_keputusan" rows="4" cols="50" placeholder="Isi keputusan"
+                                class="rounded-lg">{{ old('isi_keputusan', $prestasiKerja->isi_keputusan) }}</textarea>
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="rekomendasi"
-                            class="block mb-2.5 text-sm font-medium text-heading">Rekomendasi</label>
+                        <label for="rekomendasi" class="block mb-2.5 text-sm font-medium text-heading">Rekomendasi
+                            <span class="text-red-500">*</span></label>
                         <input type="text" id="rekomendasi" name="rekomendasi"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan rekomendasi" required
                             value="{{ old('rekomendasi', $prestasiKerja->rekomendasi) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="tgl_diterima_pegawai"
-                            class="block mb-2.5 text-sm font-medium text-heading">Tanggal diterima pegawai</label>
+                        <label for="tgl_diterima_pegawai" class="block mb-2.5 text-sm font-medium text-heading">Tgl
+                            diterima pegawai <span class="text-red-500">*</span></label>
                         <input type="date" id="tgl_diterima_pegawai" name="tgl_diterima_pegawai"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tanggal diterima pegawai" required
                             value="{{ old('tgl_diterima_pegawai', $prestasiKerja->tgl_diterima_pegawai) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="tgl_diterima_atasan" class="block mb-2.5 text-sm font-medium text-heading">Tanggal
-                            diterima atasan</label>
+                        <label for="tgl_diterima_atasan" class="block mb-2.5 text-sm font-medium text-heading">Tgl
+                            diterima atasan <span class="text-red-500">*</span></label>
                         <input type="date" id="tgl_diterima_atasan" name="tgl_diterima_atasan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tanggal diterima pegawai" required
                             value="{{ old('tgl_diterima_atasan', $prestasiKerja->tgl_diterima_atasan) }}" />
                     </div>

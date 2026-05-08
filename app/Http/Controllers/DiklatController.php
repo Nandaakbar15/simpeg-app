@@ -129,22 +129,25 @@ class DiklatController extends Controller
             'tahun' => 'required|string',
             'no_sttpp' => 'required|string',
             'tgl_sttpp' => 'required|date',
-            'file_sertifikat_diklat' => 'file|mimes:pdf,docx,txt|max:10240'
+            'file_sertifikat_diklat' => 'nullable|file|mimes:pdf,docx,txt|max:10240'
         ]);
 
         try {
             DB::beginTransaction();
 
-            if($request->hasFile('ffile_sertifikat_diklat')) {
+            if($request->hasFile('file_sertifikat_diklat')) {
 
-                if($request->fileLama) {
-                    Storage::disk('public')->delete($request->fileLama);
+                if($diklat->file_sertifikat_diklat) {
+                    $oldPath = str_replace('/storage/', '', $diklat->file_sertifikat_diklat);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
                 $file = $request->file('file_sertifikat_diklat');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('document', $fileName, 'public');
                 $validateData['file_sertifikat_diklat'] = '/storage/' . $path;
+            } else {
+                unset($validateData['file_sertifikat_diklat']);
             }
 
             $diklat->update($validateData);

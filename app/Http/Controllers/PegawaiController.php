@@ -228,20 +228,16 @@ class PegawaiController extends Controller
     public function cariPegawai(Request $request)
     {
         $user = Auth::user();
+        $cariPegawai = $request->input('cariPegawai');
+
+        $query = Pegawai::with('unit_kerja')
+                    ->where('nama', 'like', '%' . $cariPegawai . '%');
 
         if ($user->role === 'admin') {
-            $pegawai = Pegawai::with('unit_kerja')
-                ->where('unit_kerja_id', $user->unit_kerja_id)
-                ->paginate(5);
-        } else {
-            // super admin / lainnya bisa lihat semua
-            $pegawai = Pegawai::with('unit_kerja')->paginate(5);
+            $query->where('unit_kerja_id', $user->unit_kerja_id);
         }
 
-        $cariPegawai = $request->input('cariPegawai');
-        $pegawai = Pegawai::query()
-                   ->where('nama', 'like', '%' . $cariPegawai . '%')
-                   ->paginate(5);
+        $pegawai = $query->paginate(5);
 
         return view("pages.dashboard.data_pegawai.indexPegawai", [
             'pegawai' => $pegawai

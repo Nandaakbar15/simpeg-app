@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Models\UnitKerja;
 
 class UserPegawaiController extends Controller
 {
@@ -68,7 +69,9 @@ class UserPegawaiController extends Controller
      */
     public function edit(User $user)
     {
-        return view("pages.dashboard.manajemen_setup.edit_user_pegawai", [
+        $unitKerja = UnitKerja::all();
+        return view("pages.dashboard.manajemen_setup.userPegawai.edit_user_pegawai", [
+            'unitKerja' => $unitKerja,
             'user' => $user
         ]);
     }
@@ -81,7 +84,7 @@ class UserPegawaiController extends Controller
         $validateData = $request->validate([
             'username' => 'required|string',
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users,email',
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'unit_kerja_id' => 'required|exists:tb_unit_kerja,id'
         ]);
 
@@ -123,10 +126,11 @@ class UserPegawaiController extends Controller
     public function cariUserPegawai(Request $request)
     {
         $cariUserPegawai = $request->input('cariUserPegawai');
-        $user = User::query()
-                   ->where('username', 'like', '%' . $cariUserPegawai . '%')
-                   ->orWhere('name', 'like', '%' . $cariUserPegawai . '%')
-                   ->orWhere('role', 'pegawai')
+        $user = User::where('role', 'pegawai')
+                   ->where(function($q) use ($cariUserPegawai) {
+                       $q->where('username', 'like', '%' . $cariUserPegawai . '%')
+                         ->orWhere('name', 'like', '%' . $cariUserPegawai . '%');
+                   })
                    ->paginate(5);
 
         return view("pages.dashboard.manajemen_setup.userPegawai.data_user_pegawai", [

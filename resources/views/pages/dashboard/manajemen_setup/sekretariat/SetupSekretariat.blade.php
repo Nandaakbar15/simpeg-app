@@ -6,7 +6,7 @@
 
             <!-- Left: Title -->
             <div class="mb-4 sm:mb-0">
-                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Form edit hukuman</h1>
+                <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Setup Instansi Lembaga</h1>
             </div>
 
         </div>
@@ -26,14 +26,14 @@
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <input type="hidden" name="gambarLama" value="{{ $sekretariat->gambarLama }}">
+                    <input type="hidden" name="gambarLama" value="{{ $sekretariat->gambar_logo }}">
                     <div class="mb-5">
                         <label for="nama_sekretariat" class="block mb-2.5 text-sm font-medium text-heading">Nama
                             sekretariat</label>
                         <input type="text" id="nama_sekretariat" name="nama_sekretariat"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama instansi lembaga" required
-                            value="{{ old('nama_sekretariat', $sekretariat->nama_instansi_lembaga) }}" />
+                            value="{{ old('nama_sekretariat', $sekretariat->nama_sekretariat) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="kabupaten_kota" class="block mb-2.5 text-sm font-medium text-heading">Kabupaten /

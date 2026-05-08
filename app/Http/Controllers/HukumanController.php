@@ -131,7 +131,7 @@ class HukumanController extends Controller
             'isi_teguran' => 'required|string',
             'pejabat_pengesahan_sk_hukuman' => 'required|string',
             'no_sk' => 'required|string',
-            'file_sk_hukuman' => 'file|mimes:pdf,docx,txt|max:10240',
+            'file_sk_hukuman' => 'nullable|file|mimes:pdf,docx,txt|max:10240',
             'tgl_pengesahan_sk' => 'required|date',
             'tmt_hukuman_mulai' => 'required|date',
             'tmt_hukuman_pemulihan' => 'required|date',
@@ -145,14 +145,17 @@ class HukumanController extends Controller
 
             if($request->hasFile('file_sk_hukuman')) {
 
-                if($request->fileLama) {
-                    Storage::disk('public')->delete($request->fileLama);
+                if($hukuman->file_sk_hukuman) {
+                    $oldPath = str_replace('/storage/', '', $hukuman->file_sk_hukuman);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
                 $file = $request->file('file_sk_hukuman');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('document', $fileName, 'public');
                 $validateData['file_sk_hukuman'] = '/storage/' . $path;
+            } else {
+                unset($validateData['file_sk_hukuman']);
             }
 
             $hukuman->update($validateData);

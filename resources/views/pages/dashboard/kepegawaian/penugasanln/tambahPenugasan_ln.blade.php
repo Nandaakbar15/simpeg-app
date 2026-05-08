@@ -26,8 +26,9 @@
                 <form action="/kepegawaian/penugasan_ln/tambah_penugasan" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -36,57 +37,59 @@
                     </div>
                     <div class="mb-5">
                         <label for="alasan_penugasan" class="block mb-2.5 text-sm font-medium text-heading">Alasan
-                            Penugasan</label>
+                            Penugasan <span class="text-red-500">*</span></label>
 
                         <textarea id="alasan_penugasan" name="alasan_penugasan" rows="4" cols="50"
                             placeholder="Masukan alasan penugasan"></textarea>
                     </div>
                     <div class="mb-5">
                         <label for="negara_tujuan" class="block mb-2.5 text-sm font-medium text-heading">Negara
-                            Tujuan</label>
+                            Tujuan <span class="text-red-500">*</span></label>
                         <input type="text" id="negara_tujuan" name="negara_tujuan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan negara tujuan" required />
                     </div>
                     <div class="mb-5">
-                        <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
+                        <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="tahun" name="tahun"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tahun penugasan" required />
                     </div>
                     <div class="mb-5">
                         <label for="durasi_hari" class="block mb-2.5 text-sm font-medium text-heading">Lama
-                            (Hari)</label>
+                            (Hari) <span class="text-red-500">*</span></label>
                         <input type="text" id="durasi_hari" name="durasi_hari"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan durasi hari" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_st" class="w-1/4 text-sm font-medium text-heading">Nomor dan Tanggal
-                            ST</label>
+                            ST <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_st" name="no_st"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor st" required />
 
                             <input type="date" id="tgl_st" name="tgl_st"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal st" />
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="st" class="block mb-2.5 text-sm font-medium text-heading">Surat Tugas</label>
+                        <label for="st" class="block mb-2.5 text-sm font-medium text-heading">Surat Tugas <span
+                                class="text-red-500">*</span></label>
                         <input type="file" id="st" name="st"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file ST" required />
                     </div>
                     <button type="submit"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none">Save</button>
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 text-sm px-4 py-2 focus:outline-none">Save</button>
                 </form>
             </div>
 
             <div class="mt-5">
-                <a href="/kepegawaian/penghargaan"
+                <a href="/kepegawaian/penugasan_ln"
                     class="inline-block rounded-lg shadow-lg text-white px-4 py-2 bg-slate-500 hover:bg-slate-700">Kembali</a>
             </div>
         </div>

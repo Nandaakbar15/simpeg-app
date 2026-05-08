@@ -88,6 +88,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
             Route::get('/sekretariat/create', [SekretariatController::class, 'create']);
             Route::post('/sekretariat/buat_data_sekretariat', [SekretariatController::class, 'store']);
             Route::get('/sekretariat/setup_sekretariat/{sekretariat}', [SekretariatController::class, 'edit']);
+            Route::put('/sekretariat/setup_sekretariat/{sekretariat}', [SekretariatController::class, 'update']);
 
 
             Route::get('/opd_skpd_unitkerja', [UnitKerjaController::class, 'index']);
@@ -114,7 +115,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::get('/view_form_tambah_user_pegawai', [UserPegawaiController::class, 'create']);
         Route::get('/view_form_edit_user_pegawai/{user}', [UserPegawaiController::class, 'edit']);
         Route::post('/tambah_user_pegawai', [UserPegawaiController::class, 'store']);
-        Route::put('/edit_data_user_pegawai', [UserPegawaiController::class, 'update']);
+        Route::put('/edit_data_user_pegawai/{user}', [UserPegawaiController::class, 'update']);
         Route::delete('/delete_user_pegawai/{user}', [UserPegawaiController::class, 'destroy']);
         Route::post('/data_user_pegawai/cariUserPegawai', [UserPegawaiController::class, 'cariUserPegawai']);
     });
@@ -217,6 +218,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('/master_pangkat/delete_master_pangkat/{masterPangkat}', [MasterPangkatController::class, 'destroy']);
         Route::post('/master_golongan/store', [MasterGolonganController::class, 'store']);
         Route::get('/master_golongan/view_form_edit_master_golongan/{masterGolongan}', [MasterGolonganController::class, 'edit']);
+        Route::put('/master_golongan/edit_master_golongan/{masterGolongan}', [MasterGolonganController::class, 'update']);
         Route::delete('/master_golongan/delete_master_golongan/{masterGolongan}', [MasterGolonganController::class, 'destroy']);
 
         // URL Kepegawaian hukuman
@@ -235,7 +237,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/diklat/tambah_diklat', [DiklatController::class, 'store']);
         Route::get('/diklat/view_form_edit_diklat/{diklat}', [DiklatController::class, 'edit']);
         Route::put('/diklat/edit_diklat/{diklat}', [DiklatController::class, 'update']);
-        Route::delete('/diklat/delete_data_diklat/{diklat}', [DiklatController::class, 'delete']);
+        Route::delete('/diklat/delete_data_diklat/{diklat}', [DiklatController::class, 'destroy']);
         Route::get('/diklat/download_sertifikat_diklat/{diklat}', [DiklatController::class, 'downloadSertifikatDiklat']);
         Route::post('/diklat/cariDiklat', [DiklatController::class, 'cariDiklat']);
 
@@ -255,6 +257,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::post('/penugasan_ln/tambah_penugasan', [PenugasanLuarNegeriController::class, 'store']);
         Route::get('/penugasan_ln/view_form_edit_penugasan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'edit']);
         Route::put('/penugasan_ln/edit_penugasan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'update']);
+        Route::delete('/penugasan_ln/delete_data_penghargaan/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'destroy']);
         Route::get('/penugasan_ln/download_surat_tugas/{penugasanLuarNegeri}', [PenugasanLuarNegeriController::class, 'download']);
         Route::post('/penugasan_ln/cariPenugasanLn', [PenugasanLuarNegeriController::class, 'cariPenugasanLn']);
 

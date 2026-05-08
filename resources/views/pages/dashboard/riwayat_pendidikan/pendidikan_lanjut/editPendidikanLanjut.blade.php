@@ -29,8 +29,9 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -42,8 +43,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenjang_pendidikan" class="block mb-2.5 text-sm font-medium text-heading">Jenjang
-                            Pendidikan</label>
-                        <select name="jenjang_pendidikan" id="jenjang_pendidikan">
+                            Pendidikan <span class="text-red-500">*</span></label>
+                        <select name="jenjang_pendidikan" id="jenjang_pendidikan" class="rounded-lg">
                             <option value="SD"
                                 {{ $riwayatPendidikanLanjut->jenjang_pendidikan == 'SD' ? 'selected' : '' }}>SD</option>
                             <option value="MI"
@@ -82,35 +83,38 @@
                     </div>
                     <div class="mb-5">
                         <label for="nama_sekolah_universitas" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Sekolah / Universitas</label>
+                            Sekolah / Universitas <span class="text-red-500">*</span></label>
                         <input type="text" id="nama_sekolah_universitas" name="nama_sekolah_universitas"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama sekolah / universitas" required
                             value="{{ $riwayatPendidikanLanjut->nama_sekolah_universitas }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="jurusan" class="block mb-2.5 text-sm font-medium text-heading">Jurusan</label>
+                        <label for="jurusan" class="block mb-2.5 text-sm font-medium text-heading">Jurusan <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="jurusan" name="jurusan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Jurusan atau Prodi" required
                             value="{{ $riwayatPendidikanLanjut->jurusan }}" />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="thn_mulai" class="w-1/4 text-sm font-medium text-heading">Periode</label>
+                        <label for="thn_mulai" class="w-1/4 text-sm font-medium text-heading">Periode <span
+                                class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="thn_mulai" name="thn_mulai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Tahun Mulai" required value="{{ $riwayatPendidikanLanjut->thn_mulai }}" />
 
                             <input type="text" id="thn_selesai" name="thn_selesai"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Tahun Selesai"
                                 value="{{ $riwayatPendidikanLanjut->thn_selesai }}" />
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="status" class="block mb-2.5 text-sm font-medium text-heading">Status</label>
-                        <select name="status" id="status">
+                        <label for="status" class="block mb-2.5 text-sm font-medium text-heading">Status <span
+                                class="text-red-500">*</span></label>
+                        <select name="status" id="status" class="rounded-lg">
                             <option value="Tugas Belajar"
                                 {{ $riwayatPendidikanLanjut->status == 'Tugas Belajar' ? 'selected' : '' }}>Tugas
                                 Belajar</option>

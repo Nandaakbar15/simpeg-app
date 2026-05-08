@@ -84,28 +84,29 @@ class InstansiLembagaController extends Controller
         $validateData = $request->validate([
             'nama_instansi_lembaga' => 'required|string',
             'kabupaten_kota' => 'required',
-            'nama_kota_kabupaten' => 'required|string',
             'alamat' => 'required|string',
             'no_telp' => 'required|string',
             'email' => 'required|string',
             'kepala_dinas' => 'required|string',
-            'nip' => 'required|string',
-            'gambar_logo' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+            'gambar_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
         ]);
 
         try {
             DB::beginTransaction();
 
-            if($request->hasFile('foto')) {
+            if($request->hasFile('gambar_logo')) {
 
-                if($request->gambarLama) {
-                    Storage::disk('public')->delete($request->gambarLama);
+                if($instansiLembaga->gambar_logo) {
+                    $oldPath = str_replace('/storage/', '', $instansiLembaga->gambar_logo);
+                    Storage::disk('public')->delete($oldPath);
                 }
 
-                $file = $request->file('foto');
+                $file = $request->file('gambar_logo');
                 $fileName = time() . '_' . $file->getClientOriginalName();
                 $path = $file->storeAs('images', $fileName, 'public');
-                $validateData['foto'] = '/storage/' . $path;
+                $validateData['gambar_logo'] = '/storage/' . $path;
+            } else {
+                unset($validateData['gambar_logo']);
             }
 
             $instansiLembaga->update($validateData);

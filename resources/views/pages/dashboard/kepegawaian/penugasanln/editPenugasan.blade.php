@@ -29,8 +29,9 @@
                     @method('PUT')
                     <input type="hidden" name="fileLama" id="fileLama" value="{{ $penugasanLuarNegeri->st }}">
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai --</option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}"
@@ -42,53 +43,55 @@
                     </div>
                     <div class="mb-5">
                         <label for="alasan_penugasan" class="block mb-2.5 text-sm font-medium text-heading">Alasan
-                            Penugasan</label>
+                            Penugasan <span class="text-red-500">*</span></label>
 
                         <textarea id="alasan_penugasan" name="alasan_penugasan" rows="4" cols="50"
-                            placeholder="Masukan alasan penugasan">{{ old('alasan_penugasan', $penugasanLuarNegeri->alasan_penugasan) }}</textarea>
+                            placeholder="Masukan alasan penugasan" class="rounded-lg">{{ old('alasan_penugasan', $penugasanLuarNegeri->alasan_penugasan) }}</textarea>
                     </div>
                     <div class="mb-5">
                         <label for="negara_tujuan" class="block mb-2.5 text-sm font-medium text-heading">Negara
-                            Tujuan</label>
+                            Tujuan <span class="text-red-500">*</span></label>
                         <input type="text" id="negara_tujuan" name="negara_tujuan"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan negara tujuan" required
                             value="{{ old('negara_tujuan', $penugasanLuarNegeri->negara_tujuan) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun</label>
+                        <label for="tahun" class="block mb-2.5 text-sm font-medium text-heading">Tahun <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="tahun" name="tahun"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan tahun penugasan" required
                             value="{{ old('tahun', $penugasanLuarNegeri->tahun) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="durasi_hari" class="block mb-2.5 text-sm font-medium text-heading">Lama
-                            (Hari)</label>
+                            (Hari) <span class="text-red-500">*</span></label>
                         <input type="text" id="durasi_hari" name="durasi_hari"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan durasi hari" required
                             value="{{ old('durasi_hari', $penugasanLuarNegeri->durasi_hari) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_st" class="w-1/4 text-sm font-medium text-heading">Nomor dan Tanggal
-                            ST</label>
+                            ST <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_st" name="no_st"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan nomor st" required
                                 value="{{ old('no_st', $penugasanLuarNegeri->no_st) }}" />
 
                             <input type="date" id="tgl_st" name="tgl_st"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required placeholder="Masukan tanggal st"
                                 value="{{ old('tgl_st', $penugasanLuarNegeri->tgl_st) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="st" class="block mb-2.5 text-sm font-medium text-heading">Surat Tugas</label>
+                        <label for="st" class="block mb-2.5 text-sm font-medium text-heading">Surat Tugas <span
+                                class="text-red-500">*</span></label>
                         <input type="file" id="st" name="st"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file ST" />
                     </div>
                     <button type="button"

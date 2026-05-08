@@ -27,7 +27,7 @@
             <form action="/kepegawaian/izin_kawin/cariIzinKawin" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="text" name="cariIzinKawin" id="cariIzinKawin" aria-label="Cari Izin Kawin"
-                    placeholder="Cari Izin Kawin..." value="{{ request('cariIzinKawin') }}">
+                    placeholder="Cari Izin Kawin..." value="{{ request('cariIzinKawin') }}" class="rounded-lg">
                 <button type="submit"
                     class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">
                     Cari

@@ -11,7 +11,7 @@
 
         </div>
 
-        <div x-data="{ openJabatan: false, openEselon: false }"
+        <div x-data="{}"
             class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 @if ($errors->any())
@@ -26,8 +26,9 @@
                 <form action="/kepegawaian/jabatan/tambah_data_jabatan" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -35,8 +36,8 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="master_jabatan_id"
-                            class="block mb-2.5 text-sm font-medium text-heading">Jabatan</label>
+                        <label for="master_jabatan_id" class="block mb-2.5 text-sm font-medium text-heading">Jabatan
+                            <span class="text-red-500">*</span></label>
                         <div x-data="jabatanComponent()">
                             <div class="flex gap-2">
                                 <select name="master_jabatan_id" id="master_jabatan_id"
@@ -97,18 +98,41 @@
                                                             <tr class="hover:bg-gray-50">
                                                                 <td class="border p-2 text-center" x-text="index + 1">
                                                                 </td>
-                                                                <td class="border p-2" x-text="item.nama_jabatan"></td>
+                                                                <td class="border p-2">
+                                                                    <span x-show="editId !== item.id"
+                                                                        x-text="item.nama_jabatan"></span>
+                                                                    <input x-show="editId === item.id" type="text"
+                                                                        x-model="editNama"
+                                                                        class="border rounded px-2 py-1 w-full text-sm">
+                                                                </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a :href="`/kepegawaian/master_jabatan/view_form_edit_master_jabatan/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600 confirm-edit"
-                                                                        data-title="Edit Master Jabatan"
-                                                                        data-message="Anda akan membuka form edit master jabatan ini. Lanjutkan?">
-                                                                        Edit
-                                                                    </a>
-                                                                    <button @click="deleteJabatan(item.id)"
-                                                                        class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
-                                                                        Delete
-                                                                    </button>
+                                                                    <template x-if="editId !== item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="startEdit(item)"
+                                                                                class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600">
+                                                                                Edit
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                @click="deleteJabatan(item.id)"
+                                                                                class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
+                                                                                Delete
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
+                                                                    <template x-if="editId === item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="saveEdit(item)"
+                                                                                class="inline-block bg-green-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-green-600">
+                                                                                Save
+                                                                            </button>
+                                                                            <button type="button" @click="cancelEdit()"
+                                                                                class="inline-block bg-gray-400 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-gray-500">
+                                                                                Batal
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -122,8 +146,8 @@
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="master_eselon_id"
-                            class="block mb-2.5 text-sm font-medium text-heading">Eselon</label>
+                        <label for="master_eselon_id" class="block mb-2.5 text-sm font-medium text-heading">Eselon <span
+                                class="text-red-500">*</span></label>
                         <div x-data="eselonComponent()">
                             <div class="flex gap-2">
                                 <select name="master_eselon_id" id="master_eselon_id"
@@ -183,17 +207,42 @@
                                                             <tr class="hover:bg-gray-50">
                                                                 <td class="border p-2 text-center" x-text="index + 1">
                                                                 </td>
-                                                                <td class="border p-2" x-text="item.nama_eselon">
+                                                                <td class="border p-2">
+                                                                    <span x-show="editId !== item.id"
+                                                                        x-text="item.nama_eselon"></span>
+                                                                    <input x-show="editId === item.id" type="text"
+                                                                        x-model="editNama"
+                                                                        class="border rounded px-2 py-1 w-full text-sm">
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a :href="`/kepegawaian/master_eselon/view_form_edit_master_eselon/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500 confirm-edit"
-                                                                        data-title="Edit Master Eselon"
-                                                                        data-message="Anda akan membuka form edit master eselon ini. Lanjutkan?">Edit</a>
-                                                                    <button @click="deleteEselon(item.id)"
-                                                                        class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
-                                                                        Delete
-                                                                    </button>
+                                                                    <template x-if="editId !== item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="startEdit(item)"
+                                                                                class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600">
+                                                                                Edit
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                @click="deleteEselon(item.id)"
+                                                                                class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
+                                                                                Delete
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
+                                                                    <template x-if="editId === item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="saveEdit(item)"
+                                                                                class="inline-block bg-green-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-green-600">
+                                                                                Save
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                @click="cancelEdit()"
+                                                                                class="inline-block bg-gray-400 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-gray-500">
+                                                                                Batal
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -208,7 +257,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_jabatan" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Jabatan</label>
+                            Jabatan <span class="text-red-500">*</span></label>
                         <select name="jenis_jabatan" id="jenis_jabatan" class="rounded-lg">
                             <option value="Jabatan Struktural">Jabatan Struktural</option>
                             <option value="Jabatan Fungsional Tertentu">Jabatan Fungsional Tertentu</option>
@@ -217,7 +266,7 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmt_jabatan_mulai" class="w-1/4 text-sm font-medium text-heading">TMT
-                            Jabatan</label>
+                            Jabatan <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tmt_jabatan_mulai" name="tmt_jabatan_mulai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -229,7 +278,8 @@
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="periode" class="block mb-2.5 text-sm font-medium text-heading">Periode</label>
+                        <label for="periode" class="block mb-2.5 text-sm font-medium text-heading">Periode <span
+                                class="text-red-500">*</span></label>
                         <select name="periode" id="periode" class="rounded-lg">
                             <option value="-">-</option>
                             <option value="I">I</option>
@@ -238,7 +288,8 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="tahun_ke" class="block mb-2.5 text-sm font-medium text-heading">Tahun Ke</label>
+                        <label for="tahun_ke" class="block mb-2.5 text-sm font-medium text-heading">Tahun Ke <span
+                                class="text-red-500">*</span></label>
                         <select name="tahun_ke" id="tahun_ke" class="rounded-lg">
                             <option value="-">-</option>
                             <option value="1">1</option>
@@ -250,7 +301,7 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
-                            SK</label>
+                            SK <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -263,7 +314,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="terbit" class="block mb-2.5 text-sm font-medium text-heading">Diterbitkan
-                            oleh</label>
+                            oleh <span class="text-red-500">*</span></label>
                         <input type="text" id="terbit" name="terbit"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Diterbikan oleh" required />
@@ -285,6 +336,8 @@
         return {
             openJabatan: false,
             nama_jabatan: '',
+            editId: null,
+            editNama: '',
             listJabatan: @json($masterJabatan),
 
             async addJabatan() {
@@ -307,6 +360,41 @@
                 this.nama_jabatan = '';
             },
 
+            startEdit(item) {
+                this.editId = item.id;
+                this.editNama = item.nama_jabatan;
+            },
+
+            cancelEdit() {
+                this.editId = null;
+                this.editNama = '';
+            },
+
+            async saveEdit(item) {
+                if (!this.editNama) return;
+
+                let res = await fetch(`/kepegawaian/master_jabatan/update_master_jabatan/${item.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        nama_jabatan: this.editNama
+                    })
+                });
+
+                if (res.ok) {
+                    let data = await res.json();
+                    let idx = this.listJabatan.findIndex(j => j.id === item.id);
+                    if (idx !== -1) this.listJabatan[idx].nama_jabatan = data.nama_jabatan;
+                    this.editId = null;
+                    this.editNama = '';
+                } else {
+                    alert('Gagal mengubah data');
+                }
+            },
+
             async deleteJabatan(id) {
                 showConfirm({
                     type: 'danger',
@@ -315,13 +403,13 @@
                     confirmText: 'Ya, Hapus',
                     callback: async () => {
                         let res = await fetch(
-                        `/kepegawaian/master_jabatan/delete_master_jabatan/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json'
-                            }
-                        });
+                            `/kepegawaian/master_jabatan/delete_master_jabatan/${id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                }
+                            });
 
                         if (res.ok) {
                             this.listJabatan = this.listJabatan.filter(item => item.id !== id);
@@ -338,6 +426,8 @@
         return {
             openEselon: false,
             nama_eselon: '',
+            editId: null,
+            editNama: '',
             listEselon: @json($masterEselon),
 
             async addEselon() {
@@ -358,6 +448,41 @@
 
                 this.listEselon.push(data);
                 this.nama_eselon = '';
+            },
+
+            startEdit(item) {
+                this.editId = item.id;
+                this.editNama = item.nama_eselon;
+            },
+
+            cancelEdit() {
+                this.editId = null;
+                this.editNama = '';
+            },
+
+            async saveEdit(item) {
+                if (!this.editNama) return;
+
+                let res = await fetch(`/kepegawaian/master_eselon/edit_master_eselon/${item.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        nama_eselon: this.editNama
+                    })
+                });
+
+                if (res.ok) {
+                    let data = await res.json();
+                    let idx = this.listEselon.findIndex(e => e.id === item.id);
+                    if (idx !== -1) this.listEselon[idx].nama_eselon = data.nama_eselon;
+                    this.editId = null;
+                    this.editNama = '';
+                } else {
+                    alert('Gagal mengubah data');
+                }
             },
 
             async deleteEselon(id) {

@@ -11,7 +11,7 @@
 
         </div>
 
-        <div x-data="{ openPangkat: false, openGolongan: false }"
+        <div x-data="{}"
             class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5">
             <div class="grid gap-6 mb-6 md:grid-cols-2">
                 @if ($errors->any())
@@ -26,8 +26,9 @@
                 <form action="/kepegawaian/pangkat/tambah_data_pangkat" method="POST">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
-                        <select name="pegawai_id" id="pegawai_id">
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
+                        <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
@@ -35,8 +36,8 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="master_pangkat_id"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pangkat</label>
+                        <label for="master_pangkat_id" class="block mb-2.5 text-sm font-medium text-heading">Pangkat
+                            <span class="text-red-500">*</span></label>
                         <div x-data="pangkatComponent()">
                             <div class="flex gap-2">
                                 <select name="master_pangkat_id" id="master_pangkat_id"
@@ -97,16 +98,41 @@
                                                             <tr class="hover:bg-gray-50">
                                                                 <td class="border p-2 text-center" x-text="index + 1">
                                                                 </td>
-                                                                <td class="border p-2" x-text="item.nama_pangkat"></td>
+                                                                <td class="border p-2">
+                                                                    <span x-show="editId !== item.id"
+                                                                        x-text="item.nama_pangkat"></span>
+                                                                    <input x-show="editId === item.id" type="text"
+                                                                        x-model="editNama"
+                                                                        class="border rounded px-2 py-1 w-full text-sm">
+                                                                </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a :href="`/kepegawaian/master_pangkat/view_form_edit_master_pangkat/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500 confirm-edit"
-                                                                        data-title="Edit Master Pangkat"
-                                                                        data-message="Anda akan membuka form edit master pangkat ini. Lanjutkan?">Edit</a>
-                                                                    <button @click="deletePangkat(item.id)"
-                                                                        class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
-                                                                        Delete
-                                                                    </button>
+                                                                    <template x-if="editId !== item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="startEdit(item)"
+                                                                                class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600">
+                                                                                Edit
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                @click="deletePangkat(item.id)"
+                                                                                class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
+                                                                                Delete
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
+                                                                    <template x-if="editId === item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="saveEdit(item)"
+                                                                                class="inline-block bg-green-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-green-600">
+                                                                                Save
+                                                                            </button>
+                                                                            <button type="button" @click="cancelEdit()"
+                                                                                class="inline-block bg-gray-400 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-gray-500">
+                                                                                Batal
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -120,8 +146,8 @@
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="master_golongan_id"
-                            class="block mb-2.5 text-sm font-medium text-heading">Golongan</label>
+                        <label for="master_golongan_id" class="block mb-2.5 text-sm font-medium text-heading">Golongan
+                            <span class="text-red-500">*</span></label>
                         <div x-data="golonganComponent()">
                             <div class="flex gap-2">
                                 <select name="master_golongan_id" id="master_golongan_id"
@@ -150,7 +176,8 @@
                                         <div class="relative bg-white rounded-lg shadow-xl sm:max-w-4xl sm:w-full">
                                             <div class="px-4 py-3 border-b flex justify-between items-center">
                                                 <h3 class="text-lg font-bold text-green-600">Master Data Golongan</h3>
-                                                <button @click="openGolongan = false" class="text-2xl">&times;</button>
+                                                <button @click="openGolongan = false"
+                                                    class="text-2xl">&times;</button>
                                             </div>
                                             <div class="p-6">
 
@@ -181,17 +208,42 @@
                                                             <tr class="hover:bg-gray-50">
                                                                 <td class="border p-2 text-center" x-text="index + 1">
                                                                 </td>
-                                                                <td class="border p-2" x-text="item.nama_golongan">
+                                                                <td class="border p-2">
+                                                                    <span x-show="editId !== item.id"
+                                                                        x-text="item.nama_golongan"></span>
+                                                                    <input x-show="editId === item.id" type="text"
+                                                                        x-model="editNama"
+                                                                        class="border rounded px-2 py-1 w-full text-sm">
                                                                 </td>
                                                                 <td class="border p-2 space-x-2">
-                                                                    <a :href="`/kepegawaian/master_golongan/view_form_edit_master_golongan/${item.id}`"
-                                                                        class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-500 confirm-edit"
-                                                                        data-title="Edit Master Golongan"
-                                                                        data-message="Anda akan membuka form edit master golongan ini. Lanjutkan?">Edit</a>
-                                                                    <button @click="deleteGolongan(item.id)"
-                                                                        class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
-                                                                        Delete
-                                                                    </button>
+                                                                    <template x-if="editId !== item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="startEdit(item)"
+                                                                                class="inline-block bg-blue-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-blue-600">
+                                                                                Edit
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                @click="deleteGolongan(item.id)"
+                                                                                class="inline-block bg-red-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-red-700">
+                                                                                Delete
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
+                                                                    <template x-if="editId === item.id">
+                                                                        <span>
+                                                                            <button type="button"
+                                                                                @click="saveEdit(item)"
+                                                                                class="inline-block bg-green-500 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-green-600">
+                                                                                Save
+                                                                            </button>
+                                                                            <button type="button"
+                                                                                @click="cancelEdit()"
+                                                                                class="inline-block bg-gray-400 text-white rounded-lg shadow-lg py-2 px-3 hover:bg-gray-500">
+                                                                                Batal
+                                                                            </button>
+                                                                        </span>
+                                                                    </template>
                                                                 </td>
                                                             </tr>
                                                         </template>
@@ -206,14 +258,14 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_pangkat" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Pangkat</label>
+                            Pangkat <span class="text-red-500">*</span></label>
                         <input type="text" id="jenis_pangkat" name="jenis_pangkat"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan jenis pangkat" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmt_pangkat_mulai" class="w-1/4 text-sm font-medium text-heading">TMT
-                            Pangkat</label>
+                            Pangkat <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tmt_pangkat_mulai" name="tmt_pangkat_mulai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -226,7 +278,7 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
-                            SK</label>
+                            SK <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -239,7 +291,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="pejabat_pengesah_sk" class="block mb-2.5 text-sm font-medium text-heading">Pejabat
-                            Pengesah SK</label>
+                            Pengesah SK <span class="text-red-500">*</span></label>
                         <input type="text" id="pejabat_pengesah_sk" name="pejabat_pengesah_sk"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Diterbikan oleh" required />
@@ -261,6 +313,8 @@
         return {
             openPangkat: false,
             nama_pangkat: '',
+            editId: null,
+            editNama: '',
             listPangkat: @json($masterPangkat),
 
             async addPangkat() {
@@ -278,9 +332,43 @@
                 });
 
                 let data = await res.json();
-
                 this.listPangkat.push(data);
                 this.nama_pangkat = '';
+            },
+
+            startEdit(item) {
+                this.editId = item.id;
+                this.editNama = item.nama_pangkat;
+            },
+
+            cancelEdit() {
+                this.editId = null;
+                this.editNama = '';
+            },
+
+            async saveEdit(item) {
+                if (!this.editNama) return;
+
+                let res = await fetch(`/kepegawaian/master_pangkat/edit_master_pangkat/${item.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        nama_pangkat: this.editNama
+                    })
+                });
+
+                if (res.ok) {
+                    let data = await res.json();
+                    let idx = this.listPangkat.findIndex(p => p.id === item.id);
+                    if (idx !== -1) this.listPangkat[idx].nama_pangkat = data.nama_pangkat;
+                    this.editId = null;
+                    this.editNama = '';
+                } else {
+                    alert('Gagal mengubah data');
+                }
             },
 
             async deletePangkat(id) {
@@ -290,7 +378,8 @@
                     message: 'Data master pangkat yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
                     confirmText: 'Ya, Hapus',
                     callback: async () => {
-                        let res = await fetch(`/kepegawaian/master_pangkat/delete_master_pangkat/${id}`, {
+                        let res = await fetch(
+                        `/kepegawaian/master_pangkat/delete_master_pangkat/${id}`, {
                             method: 'DELETE',
                             headers: {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -313,6 +402,8 @@
         return {
             openGolongan: false,
             nama_golongan: '',
+            editId: null,
+            editNama: '',
             listGolongan: @json($masterGolongan),
 
             async addGolongan() {
@@ -330,9 +421,43 @@
                 });
 
                 let data = await res.json();
-
                 this.listGolongan.push(data);
                 this.nama_golongan = '';
+            },
+
+            startEdit(item) {
+                this.editId = item.id;
+                this.editNama = item.nama_golongan;
+            },
+
+            cancelEdit() {
+                this.editId = null;
+                this.editNama = '';
+            },
+
+            async saveEdit(item) {
+                if (!this.editNama) return;
+
+                let res = await fetch(`/kepegawaian/master_golongan/edit_master_golongan/${item.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({
+                        nama_golongan: this.editNama
+                    })
+                });
+
+                if (res.ok) {
+                    let data = await res.json();
+                    let idx = this.listGolongan.findIndex(g => g.id === item.id);
+                    if (idx !== -1) this.listGolongan[idx].nama_golongan = data.nama_golongan;
+                    this.editId = null;
+                    this.editNama = '';
+                } else {
+                    alert('Gagal mengubah data');
+                }
             },
 
             async deleteGolongan(id) {
@@ -342,13 +467,14 @@
                     message: 'Data master golongan yang dihapus tidak dapat dikembalikan. Yakin ingin menghapus?',
                     confirmText: 'Ya, Hapus',
                     callback: async () => {
-                        let res = await fetch(`/kepegawaian/master_golongan/delete_master_golongan/${id}`, {
-                            method: 'DELETE',
-                            headers: {
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                                'Accept': 'application/json'
-                            }
-                        });
+                        let res = await fetch(
+                            `/kepegawaian/master_golongan/delete_master_golongan/${id}`, {
+                                method: 'DELETE',
+                                headers: {
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                }
+                            });
 
                         if (res.ok) {
                             this.listGolongan = this.listGolongan.filter(item => item.id !== id);

@@ -62,13 +62,13 @@ class MasterPangkatController extends Controller
 
             DB::commit();
 
-            return redirect('/kepegawaian/pangkat')->with('success', 'Berhasil mengubah data master pangkat');
+            return response()->json($masterPangkat);
         } catch(Exception $e) {
             DB::rollBack();
 
             Log::error('Gagal menambahkan data : ' . $e->getMessage());
 
-            return back()->withInput()->with('error', 'Error, terjadi kesalahan pada sistem!');
+            return response()->json(['error' => 'Gagal mengubah data'], 500);
         }
     }
 
@@ -77,8 +77,12 @@ class MasterPangkatController extends Controller
      */
     public function destroy(MasterPangkat $masterPangkat)
     {
-        $masterPangkat->delete();
-
-        return response()->json($masterPangkat);
+        try {
+            $masterPangkat->delete();
+            return response()->json(['message' => 'Berhasil menghapus data']);
+        } catch(Exception $e) {
+            Log::error('Gagal menghapus data : ' . $e->getMessage());
+            return response()->json(['error' => 'Gagal menghapus data'], 500);
+        }
     }
 }

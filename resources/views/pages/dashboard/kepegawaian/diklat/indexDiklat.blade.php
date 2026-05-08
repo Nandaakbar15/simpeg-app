@@ -106,7 +106,7 @@
                                 </td>
                                 <td class="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-medium text-gray-800 dark:text-gray-100">
-                                        <a href="/kepegawaian/download_sertifikat_diklat/{{ $data->id }}"
+                                        <a href="/kepegawaian/diklat/download_sertifikat_diklat/{{ $data->id }}"
                                             class="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-green-100 hover:bg-green-200 text-green-700 transition">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
                                                 viewBox="0 0 24 24">

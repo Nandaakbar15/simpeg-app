@@ -23,7 +23,7 @@
         </div>
 
         <!-- Table Card -->
-        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
+        <div x-data="tppDetail()" class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
 
             <!-- Table controls -->
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700 gap-3">
@@ -138,12 +138,31 @@
                                             </svg>
                                         </a>
                                         <!-- Detail / View -->
-                                        <a href="#" title="Detail"
+                                        <button type="button" title="Detail"
+                                            @click="openDetail({{ json_encode([
+                                                'pegawai'                  => $data->pegawai->nama ?? '-',
+                                                'periode'                  => $data->periode . ' ' . $data->tahun,
+                                                'jml_hari_kerja'           => $data->jml_hari_kerja,
+                                                'tidak_ada_produktifitas'  => $data->tidak_ada_produktifitas,
+                                                'terlambat_1_30'           => $data->terlambat_1_30,
+                                                'terlambat_31_60'          => $data->terlambat_31_60,
+                                                'terlambat_61_90'          => $data->terlambat_61_90,
+                                                'terlambat_91_lebih'       => $data->terlambat_91_lebih,
+                                                'pulang_awal_1_30'         => $data->pulang_awal_1_30,
+                                                'pulang_awal_31_60'        => $data->pulang_awal_31_60,
+                                                'pulang_awal_61_90'        => $data->pulang_awal_61_90,
+                                                'pulang_awal_91_lebih'     => $data->pulang_awal_91_lebih,
+                                                'tidak_masuk_kerja'        => $data->tidak_masuk_kerja,
+                                                'nilai_basic_tpp'          => number_format($data->nilai_basic_tpp, 0, ',', '.'),
+                                                'pengurangan_produktifitas'=> number_format($data->pengurangan_produktifitas, 0, ',', '.'),
+                                                'pengurangan_disiplin'     => number_format($data->pengurangan_disiplin, 0, ',', '.'),
+                                                'tpp_diterima'             => number_format($data->tpp_diterima, 0, ',', '.'),
+                                            ]) }})"
                                             class="inline-flex items-center justify-center w-8 h-8 rounded text-white bg-green-500 hover:bg-green-600 shadow-sm">
                                             <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
                                                 <path d="M8 3C4.5 3 1.5 5.1.1 8c1.4 2.9 4.4 5 7.9 5s6.5-2.1 7.9-5C14.5 5.1 11.5 3 8 3zm0 8c-1.7 0-3-1.3-3-3s1.3-3 3-3 3 1.3 3 3-1.3 3-3 3zm0-4c-.6 0-1 .4-1 1s.4 1 1 1 1-.4 1-1-.4-1-1-1z"/>
                                             </svg>
-                                        </a>
+                                        </button>
                                         <!-- Delete -->
                                         <form action="{{ route('tpp.destroy', $data->id) }}" method="POST">
                                             @csrf
@@ -180,6 +199,119 @@
                     {{ $tpp->links() }}
                 </div>
             </div>
+
+            <!-- Modal Detail TPP -->
+            <div x-show="open" class="fixed inset-0 z-50 overflow-y-auto" x-cloak
+                x-transition:enter="transition ease-out duration-200"
+                x-transition:enter-start="opacity-0"
+                x-transition:enter-end="opacity-100"
+                x-transition:leave="transition ease-in duration-150"
+                x-transition:leave-start="opacity-100"
+                x-transition:leave-end="opacity-0">
+                <div class="flex items-center justify-center min-h-screen p-4">
+                    <div class="fixed inset-0 bg-black/40 backdrop-blur-sm" @click="open = false"></div>
+                    <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-lg">
+                        <div class="px-5 py-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100">Detail Rincian TPP</h3>
+                            <button @click="open = false" class="text-gray-400 hover:text-gray-600 text-2xl leading-none">&times;</button>
+                        </div>
+                        <div class="p-5 space-y-3 text-sm text-gray-700 dark:text-gray-300">
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="font-medium">Pegawai</span>
+                                <span x-text="detail.pegawai"></span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="font-medium">Periode</span>
+                                <span x-text="detail.periode"></span>
+                            </div>
+                            <div class="flex justify-between border-b pb-2">
+                                <span class="font-medium">Jml. Hari Kerja</span>
+                                <span x-text="detail.jml_hari_kerja + ' Hari'"></span>
+                            </div>
+                            <p class="font-semibold text-gray-600 dark:text-gray-400 pt-1">Produktifitas Kerja</p>
+                            <div class="flex justify-between pl-3">
+                                <span>Tidak Ada Produktifitas</span>
+                                <span x-text="detail.tidak_ada_produktifitas + ' Hari'"></span>
+                            </div>
+                            <p class="font-semibold text-gray-600 dark:text-gray-400 pt-1">Keterlambatan</p>
+                            <div class="flex justify-between pl-3">
+                                <span>Terlambat 1 &lt; 31 Menit</span>
+                                <span x-text="detail.terlambat_1_30 + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pl-3">
+                                <span>Terlambat 31 &lt; 61 Menit</span>
+                                <span x-text="detail.terlambat_31_60 + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pl-3">
+                                <span>Terlambat 61 &lt; 91 Menit</span>
+                                <span x-text="detail.terlambat_61_90 + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pl-3">
+                                <span>Terlambat &gt; 91 Menit</span>
+                                <span x-text="detail.terlambat_91_lebih + ' Hari'"></span>
+                            </div>
+                            <p class="font-semibold text-gray-600 dark:text-gray-400 pt-1">Pulang Sebelum Waktunya</p>
+                            <div class="flex justify-between pl-3">
+                                <span>Pulang Awal 1 &lt; 31 Menit</span>
+                                <span x-text="detail.pulang_awal_1_30 + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pl-3">
+                                <span>Pulang Awal 31 &lt; 61 Menit</span>
+                                <span x-text="detail.pulang_awal_31_60 + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pl-3">
+                                <span>Pulang Awal 61 &lt; 91 Menit</span>
+                                <span x-text="detail.pulang_awal_61_90 + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pl-3">
+                                <span>Pulang Awal &gt; 91 Menit</span>
+                                <span x-text="detail.pulang_awal_91_lebih + ' Hari'"></span>
+                            </div>
+                            <p class="font-semibold text-gray-600 dark:text-gray-400 pt-1">Mangkir</p>
+                            <div class="flex justify-between pl-3 border-b pb-2">
+                                <span>Tidak Masuk Kerja</span>
+                                <span x-text="detail.tidak_masuk_kerja + ' Hari'"></span>
+                            </div>
+                            <div class="flex justify-between pt-1">
+                                <span class="font-medium">Nilai Basic TPP</span>
+                                <span x-text="'Rp ' + detail.nilai_basic_tpp"></span>
+                            </div>
+                            <div class="flex justify-between text-red-600">
+                                <span class="font-medium">Pengurangan Produktifitas</span>
+                                <span x-text="'Rp ' + detail.pengurangan_produktifitas"></span>
+                            </div>
+                            <div class="flex justify-between text-red-600">
+                                <span class="font-medium">Pengurangan Disiplin</span>
+                                <span x-text="'Rp ' + detail.pengurangan_disiplin"></span>
+                            </div>
+                            <div class="flex justify-between border-t pt-2 font-bold text-green-600 text-base">
+                                <span>TPP Diterima</span>
+                                <span x-text="'Rp ' + detail.tpp_diterima"></span>
+                            </div>
+                        </div>
+                        <div class="px-5 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end">
+                            <button @click="open = false"
+                                class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm rounded shadow-sm">
+                                Tutup
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    function tppDetail() {
+        return {
+            open: false,
+            detail: {},
+            openDetail(data) {
+                this.detail = data;
+                this.open = true;
+            }
+        }
+    }
+</script>

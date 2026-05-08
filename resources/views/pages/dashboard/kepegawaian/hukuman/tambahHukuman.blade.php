@@ -25,7 +25,8 @@
                 <form action="/kepegawaian/hukuman/tambah_data_hukuman" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-5">
-                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai</label>
+                        <label for="pegawai_id" class="block mb-2.5 text-sm font-medium text-heading">Pegawai <span
+                                class="text-red-500">*</span></label>
                         <select name="pegawai_id" id="pegawai_id" class="rounded-lg">
                             <option value="">--Pilih Pegawai -- </option>
                             @foreach ($pegawai as $item)
@@ -35,14 +36,15 @@
                     </div>
                     <div class="mb-5">
                         <label for="pelanggaran_yg_dilakukan"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pelanggaran yang dilakukan</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pelanggaran yang dilakukan <span
+                                class="text-red-500">*</span></label>
 
                         <textarea id="pelanggaran_yg_dilakukan" name="pelanggaran_yg_dilakukan" rows="4" cols="50"
                             placeholder="Masukan pelanggaran yang dilakukan" class="rounded-lg"></textarea>
                     </div>
                     <div class="mb-5">
                         <label for="tingkat_hukuman" class="block mb-2.5 text-sm font-medium text-heading">Tingkat
-                            Hukuman</label>
+                            Hukuman <span class="text-red-500">*</span></label>
                         <select name="tingkat_hukuman" id="tingkat_hukuman" class="rounded-lg">
                             <option value="Ringan">Ringan</option>
                             <option value="Sedang">Sedang</option>
@@ -51,7 +53,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="jenis_hukuman" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            Hukuman</label>
+                            Hukuman <span class="text-red-500">*</span></label>
                         <select name="jenis_hukuman" id="jenis_hukuman" class="rounded-lg">
                             <option value="Teguran Lisan">Teguran Lisan</option>
                             <option value="Teguran Tertulis">Teguran Tertulis</option>
@@ -62,20 +64,21 @@
                     </div>
                     <div class="mb-5">
                         <label for="isi_teguran" class="block mb-2.5 text-sm font-medium text-heading">Isi
-                            teguran</label>
+                            teguran <span class="text-red-500">*</span></label>
 
                         <textarea id="isi_teguran" name="isi_teguran" rows="4" cols="50" class="rounded-lg"></textarea>
                     </div>
                     <div class="mb-5">
                         <label for="pejabat_pengesahan_sk_hukuman"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pengesahan Hukuman</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pengesahan Hukuman <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pejabat_pengesahan_sk_hukuman" name="pejabat_pengesahan_sk_hukuman"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pejabat pengesahan hukuman" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
-                            pengesahan SK</label>
+                            pengesahan SK <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk" name="no_sk"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -88,7 +91,7 @@
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmt_hukuman_mulai" class="w-1/4 text-sm font-medium text-heading">TMT
-                            Hukuman</label>
+                            Hukuman <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="date" id="tmt_hukuman_mulai" name="tmt_hukuman_mulai"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -101,14 +104,15 @@
                     </div>
                     <div class="mb-5">
                         <label for="pejabat_pemulihan_hukuman"
-                            class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pemulihan Hukuman</label>
+                            class="block mb-2.5 text-sm font-medium text-heading">Pejabat Pemulihan Hukuman <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="pejabat_pemulihan_hukuman" name="pejabat_pemulihan_hukuman"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan pejabat pemulihan hukuman" required />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk" class="w-1/4 text-sm font-medium text-heading">Nomor dan tanggal
-                            pemulihan hukuman</label>
+                            pemulihan hukuman <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_pemulihan_hukuman" name="no_pemulihan_hukuman"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
@@ -121,7 +125,7 @@
                     </div>
                     <div class="mb-5">
                         <label for="file_sk_hukuman" class="block mb-2.5 text-sm font-medium text-heading">File SK
-                            Hukuman</label>
+                            Hukuman <span class="text-red-500">*</span></label>
                         <input type="file" id="file_sk_hukuman" name="file_sk_hukuman"
                             class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan file sk hukuman" required />

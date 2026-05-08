@@ -14,12 +14,7 @@ class MasterGolongan extends Model
 
     public function golongan()
     {
-        return $this->hasOne(Golongan::class, 'id');
-    }
-
-    public function pegawai()
-    {
-        return $this->hasMany(Pegawai::class, 'id');
+        return $this->hasMany(Golongan::class, 'master_golongan_id');
     }
 
     use HasFactory;

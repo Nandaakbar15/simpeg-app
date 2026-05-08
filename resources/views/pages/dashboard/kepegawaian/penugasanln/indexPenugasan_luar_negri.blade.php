@@ -116,7 +116,7 @@
                                             Edit
                                         </a>
                                         <form
-                                            action="/kepegawaian/penghargaan/delete_data_penghargaan/{{ $data->id }}"
+                                            action="/kepegawaian/penugasan_ln/delete_data_penghargaan/{{ $data->id }}"
                                             method="POST">
                                             @csrf
                                             @method('DELETE')

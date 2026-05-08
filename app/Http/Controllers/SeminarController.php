@@ -170,7 +170,7 @@ class SeminarController extends Controller
         try {
             $seminar->delete();
 
-            return redirect("success", 'Berhasil menghapus data!');
+            return redirect('/kepegawaian/seminar')->with('success', 'Berhasil menghapus data!');
         } catch(Exception $e) {
             DB::rollBack();
             Log::error('Gagal menghapus data : ' . $e->getMessage());
