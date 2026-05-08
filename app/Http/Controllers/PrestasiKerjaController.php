@@ -25,6 +25,11 @@ class PrestasiKerjaController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $prestasiKerja = $myPegawai
+                ? PrestasiKerja::with('pegawai')->where('pegawai_id', $myPegawai->id)->paginate(5)
+                : collect()->paginate(5);
         } else {
             $prestasiKerja = PrestasiKerja::with('pegawai')->paginate(5);
         }
@@ -43,6 +48,8 @@ class PrestasiKerjaController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -125,6 +132,12 @@ class PrestasiKerjaController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $prestasiKerja->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -204,6 +217,15 @@ class PrestasiKerjaController extends Controller
      */
     public function destroy(PrestasiKerja $prestasiKerja)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $prestasiKerja->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         $prestasiKerja->delete();
 
         return redirect('/skp_prestasi_kerja/data_prestasi_kerja')->with('success', 'Berhasil menghapus data!');
@@ -215,11 +237,18 @@ class PrestasiKerjaController extends Controller
 
         $query = PrestasiKerja::with('pegawai');
 
-        // Filter berdasarkan role admin
+        // Filter berdasarkan role
         if ($user->role === 'admin') {
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if($request->cariPrestasiKerja) {

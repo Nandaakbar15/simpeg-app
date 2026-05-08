@@ -25,6 +25,11 @@ class RiwayatKeluargaSuamiIstriController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $riwayatkeluargaSuamiIstri = $myPegawai
+                ? RiwayatKeluargaSuamiIstri::with('pegawai')->where('pegawai_id', $myPegawai->id)->paginate(5)
+                : RiwayatKeluargaSuamiIstri::whereRaw('1=0')->paginate(5);
         } else {
             $riwayatkeluargaSuamiIstri = RiwayatKeluargaSuamiIstri::with('pegawai')->paginate(5);
         }
@@ -43,6 +48,8 @@ class RiwayatKeluargaSuamiIstriController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -67,6 +74,15 @@ class RiwayatKeluargaSuamiIstriController extends Controller
             'pekerjaan' => 'required|string',
             'status_hubungan' => 'required'
         ]);
+
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -95,6 +111,12 @@ class RiwayatKeluargaSuamiIstriController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatKeluargaSuamiIstri->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -121,6 +143,15 @@ class RiwayatKeluargaSuamiIstriController extends Controller
             'status_hubungan' => 'required'
         ]);
 
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatKeluargaSuamiIstri->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -145,6 +176,15 @@ class RiwayatKeluargaSuamiIstriController extends Controller
      */
     public function destroy(RiwayatKeluargaSuamiIstri $riwayatKeluargaSuamiIstri)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatKeluargaSuamiIstri->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         $riwayatKeluargaSuamiIstri->delete();
 
         return redirect('/riwayat_keluarga/suami_istri')->with('success', 'Berhasil menghapus data');
@@ -161,6 +201,13 @@ class RiwayatKeluargaSuamiIstriController extends Controller
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         // Filter search

@@ -26,6 +26,11 @@ class RiwayatPendidikanLanjutController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $riwayatPendidikanLanjut = $myPegawai
+                ? RiwayatPendidikanLanjut::with('pegawai')->where('pegawai_id', $myPegawai->id)->paginate(5)
+                : RiwayatPendidikanLanjut::whereRaw('1=0')->paginate(5);
         } else {
             $riwayatPendidikanLanjut = RiwayatPendidikanLanjut::with('pegawai')->paginate(5);
         }
@@ -44,6 +49,8 @@ class RiwayatPendidikanLanjutController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -67,6 +74,15 @@ class RiwayatPendidikanLanjutController extends Controller
             'thn_selesai' => 'required',
             'status' => 'required'
         ]);
+
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -94,6 +110,12 @@ class RiwayatPendidikanLanjutController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanLanjut->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -118,6 +140,15 @@ class RiwayatPendidikanLanjutController extends Controller
             'status' => 'required'
         ]);
 
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanLanjut->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -140,6 +171,15 @@ class RiwayatPendidikanLanjutController extends Controller
      */
     public function destroy(RiwayatPendidikanLanjut $riwayatPendidikanLanjut)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanLanjut->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         $riwayatPendidikanLanjut->delete();
 
         return redirect('/riwayat_pendidikan/pendidikan_lanjut')->with('success', 'Berhasil menghapus data!');
@@ -156,6 +196,13 @@ class RiwayatPendidikanLanjutController extends Controller
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if($request->cariPendidikanLanjut) {

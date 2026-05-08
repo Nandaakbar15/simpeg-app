@@ -1,6 +1,8 @@
 <x-app-layout>
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
-        <div class="sm:flex sm:justify-between sm:items-center mb-4">
+
+        {{-- Header halaman --}}
+        <div class="sm:flex sm:justify-between sm:items-center mb-4 no-print">
             <div>
                 <nav class="text-sm text-gray-500 dark:text-gray-400 mb-1 flex items-center gap-1">
                     <span class="font-semibold text-gray-700 dark:text-gray-200">Rekapitulasi</span>
@@ -25,7 +27,7 @@
         {{-- Notifikasi pegawai tanpa data --}}
         @if ($pegawaiTanpaData > 0)
             <div id="alertBanner"
-                class="flex items-start justify-between gap-3 bg-green-50 border border-green-300 text-green-800 text-sm rounded px-4 py-3 mb-6">
+                class="no-print flex items-start justify-between gap-3 bg-green-50 border border-green-300 text-green-800 text-sm rounded px-4 py-3 mb-6">
                 <div class="flex items-start gap-2">
                     <svg class="w-4 h-4 mt-0.5 shrink-0 fill-current text-green-600" viewBox="0 0 16 16">
                         <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zm0 12a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm1-3H7V4h2v5z"/>
@@ -45,17 +47,16 @@
             </div>
         @endif
 
-        <div class="grid grid-cols-12 gap-6">
+        {{-- ===== AREA SCREEN (tabel + chart) ===== --}}
+        <div class="no-print grid grid-cols-12 gap-6">
 
-            <div
-                class="col-span-full xl:col-span-5 bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
+            <div class="col-span-full xl:col-span-5 bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
                 <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700">
                     <h2 class="font-semibold text-gray-800 dark:text-gray-100">Daftar Unit Kerja</h2>
                 </header>
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-                        <thead
-                            class="text-xs font-semibold uppercase text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50">
+                        <thead class="text-xs font-semibold uppercase text-gray-500 bg-gray-50 dark:bg-gray-700 dark:bg-opacity-50">
                             <tr>
                                 <th class="px-4 py-3 text-left">No</th>
                                 <th class="px-4 py-3 text-left">OPD / SKPD / Unit Kerja</th>
@@ -66,8 +67,7 @@
                             @foreach ($unitKerja as $index => $data)
                                 <tr>
                                     <td class="px-4 py-3">{{ $index + 1 }}</td>
-                                    <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">
-                                        {{ $data->nama_unit }}</td>
+                                    <td class="px-4 py-3 font-medium text-gray-800 dark:text-gray-100">{{ $data->nama_unit }}</td>
                                     <td class="px-4 py-3 text-center">{{ $data->pegawai_count }}</td>
                                 </tr>
                             @endforeach
@@ -82,14 +82,70 @@
                 </div>
             </div>
 
-            <div
-                class="col-span-full xl:col-span-7 bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
+            <div class="col-span-full xl:col-span-7 bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
                 <header class="px-5 py-4 border-b border-gray-100 dark:border-gray-700">
                     <h2 class="font-semibold text-gray-800 dark:text-gray-100">Statistik OPD / SKPD / Unit Kerja</h2>
                 </header>
                 <div class="p-3">
                     <canvas id="unitKerjaChart" height="300"></canvas>
                 </div>
+            </div>
+
+        </div>
+
+        {{-- ===== AREA PRINT ===== --}}
+        <div class="print-area">
+
+            {{-- Kop Surat --}}
+            <div class="kop-surat">
+                @if ($instansi && $instansi->gambar_logo)
+                    <img src="{{ asset($instansi->gambar_logo) }}" alt="Logo" class="kop-logo">
+                @else
+                    <div class="kop-logo-placeholder"></div>
+                @endif
+                <div class="kop-text">
+                    <p class="kop-pemerintah">PEMERINTAH {{ strtoupper($instansi->kabupaten_kota ?? 'KABUPATEN/KOTA') }} {{ strtoupper($instansi->nama_kota_kabupaten ?? '') }}</p>
+                    <p class="kop-instansi">{{ strtoupper($instansi->nama_instansi_lembaga ?? 'BADAN KEPEGAWAIAN') }}</p>
+                    <p class="kop-alamat">{{ $instansi->alamat ?? '' }}</p>
+                </div>
+            </div>
+            <div class="kop-garis"></div>
+
+            {{-- Judul --}}
+            <p class="print-judul">REKAPITULASI PEGAWAI BERDASARKAN OPD / SKPD / UNIT KERJA</p>
+
+            {{-- Tabel --}}
+            <table class="print-table">
+                <thead>
+                    <tr>
+                        <th style="width:8%">NO.</th>
+                        <th>OPD / SKPD / UNIT KERJA</th>
+                        <th style="width:20%">JUMLAH PEGAWAI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($unitKerja as $index => $data)
+                        <tr>
+                            <td style="text-align:center">{{ $index + 1 }}</td>
+                            <td>{{ $data->nama_unit }}</td>
+                            <td style="text-align:center">{{ $data->pegawai_count }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
+            {{-- Tanda Tangan --}}
+            <div class="ttd-wrapper">
+                <p class="ttd-kota">{{ $instansi->nama_kota_kabupaten ?? 'Cilacap' }}, {{ \Carbon\Carbon::now()->translatedFormat('j F Y') }}</p>
+                <p class="ttd-jabatan">
+                    KEPALA {{ strtoupper($instansi->nama_instansi_lembaga ?? 'BADAN KEPEGAWAIAN DAN PENGEMBANGAN SUMBER DAYA MANUSIA') }}<br>
+                    <strong>KABUPATEN {{ strtoupper($instansi->nama_kota_kabupaten ?? 'CILACAP') }}</strong>
+                </p>
+                <div class="ttd-ruang"></div>
+                <p class="ttd-nama"><strong>{{ $instansi->kepala_dinas ?? '' }}</strong></p>
+                @if ($instansi && $instansi->nip)
+                    <p class="ttd-nip">NIP. {{ $instansi->nip }}</p>
+                @endif
             </div>
 
         </div>
@@ -136,5 +192,121 @@
                 }
             });
         </script>
+
+        <style>
+            /* ===== SCREEN: sembunyikan print-area ===== */
+            .print-area { display: none; }
+
+            /* ===== PRINT STYLES ===== */
+            @media print {
+                /* Sembunyikan semua elemen UI */
+                body * { visibility: hidden; }
+
+                /* Tampilkan hanya area print */
+                .print-area,
+                .print-area * { visibility: visible; }
+
+                .print-area {
+                    display: block !important;
+                    position: fixed;
+                    top: 0; left: 0;
+                    width: 100%;
+                    padding: 20mm 20mm 15mm 20mm;
+                    font-family: 'Times New Roman', Times, serif;
+                    font-size: 11pt;
+                    color: #000;
+                    box-sizing: border-box;
+                }
+
+                .no-print { display: none !important; }
+
+                /* Kop Surat */
+                .kop-surat {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    margin-bottom: 6px;
+                }
+                .kop-logo {
+                    width: 80px;
+                    height: 80px;
+                    object-fit: contain;
+                }
+                .kop-logo-placeholder {
+                    width: 80px;
+                    height: 80px;
+                    flex-shrink: 0;
+                }
+                .kop-text {
+                    flex: 1;
+                    text-align: center;
+                }
+                .kop-pemerintah {
+                    font-size: 11pt;
+                    margin: 0;
+                }
+                .kop-instansi {
+                    font-size: 14pt;
+                    font-weight: bold;
+                    margin: 2px 0;
+                    line-height: 1.3;
+                }
+                .kop-alamat {
+                    font-size: 10pt;
+                    margin: 0;
+                }
+                .kop-garis {
+                    border-top: 3px solid #000;
+                    border-bottom: 1px solid #000;
+                    margin-bottom: 16px;
+                    padding-bottom: 2px;
+                }
+
+                /* Judul */
+                .print-judul {
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: 12pt;
+                    margin-bottom: 12px;
+                    text-transform: uppercase;
+                }
+
+                /* Tabel */
+                .print-table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 11pt;
+                    margin-bottom: 24px;
+                }
+                .print-table th,
+                .print-table td {
+                    border: 1px solid #000;
+                    padding: 5px 8px;
+                }
+                .print-table thead tr {
+                    font-weight: bold;
+                    text-align: center;
+                }
+
+                /* Tanda Tangan */
+                .ttd-wrapper {
+                    margin-top: 24px;
+                    text-align: right;
+                    font-size: 11pt;
+                    line-height: 1.6;
+                }
+                .ttd-wrapper p { margin: 0; }
+                .ttd-kota { margin-bottom: 4px; }
+                .ttd-jabatan { line-height: 1.4; }
+                .ttd-ruang { height: 70px; }
+                .ttd-nama { font-size: 12pt; text-decoration: underline; }
+                .ttd-nip { font-size: 11pt; }
+
+                @page {
+                    size: A4 portrait;
+                    margin: 0;
+                }
+            }
+        </style>
     @endpush
 </x-app-layout>

@@ -25,6 +25,11 @@ class RiwayatKeluargaAnakController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $riwayatKeluargaAnak = $myPegawai
+                ? RiwayatKeluargaAnak::with('pegawai')->where('pegawai_id', $myPegawai->id)->paginate(5)
+                : collect()->paginate(5);
         } else {
             $riwayatKeluargaAnak = RiwayatKeluargaAnak::with('pegawai')->paginate(5);
         }
@@ -43,6 +48,8 @@ class RiwayatKeluargaAnakController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -68,6 +75,15 @@ class RiwayatKeluargaAnakController extends Controller
             'pekerjaan' => 'required',
             'status_hubungan' => 'required'
         ]);
+
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -95,6 +111,12 @@ class RiwayatKeluargaAnakController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatKeluargaAnak->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -122,6 +144,15 @@ class RiwayatKeluargaAnakController extends Controller
             'status_hubungan' => 'required'
         ]);
 
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatKeluargaAnak->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -144,6 +175,15 @@ class RiwayatKeluargaAnakController extends Controller
      */
     public function destroy(RiwayatKeluargaAnak $riwayatKeluargaAnak)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatKeluargaAnak->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         $riwayatKeluargaAnak->delete();
 
         return redirect('/riwayat_keluarga/anak')->with('success', 'Berhasil menghapus data!');
@@ -155,11 +195,18 @@ class RiwayatKeluargaAnakController extends Controller
 
         $query = RiwayatKeluargaAnak::with('pegawai');
 
-        // Filter berdasarkan role admin
+        // Filter berdasarkan role
         if ($user->role === 'admin') {
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if($request->cariPegawaiAnak) {

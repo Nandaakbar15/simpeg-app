@@ -23,6 +23,8 @@ use App\Models\IzinKawin;
 use App\Models\PrestasiKerja;
 use App\Models\Tpp;
 use App\Models\UnitKerja;
+use App\Models\InstansiLembaga;
+use App\Models\PenugasanLuarNegeri;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -106,6 +108,71 @@ class ProfilePegawaiController extends Controller
             'hukuman', 'penghargaan', 'diklat', 'seminar',
             'latihanJab', 'cuti', 'tunjangan', 'mutasi', 'izinKawin',
             'skp', 'tpp', 'allPangkat'
+        ));
+    }
+
+    /**
+     * Print biodata pegawai.
+     */
+    public function print()
+    {
+        $user    = Auth::user();
+        $pegawai = Pegawai::with(['unit_kerja'])
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$pegawai) {
+            return redirect('/profile_saya')->with('error', 'Data pegawai tidak ditemukan!');
+        }
+
+        // Pangkat terakhir
+        $pangkat = Pangkat::with(['master_pangkat', 'master_golongan'])
+            ->where('pegawai_id', $pegawai->id)
+            ->latest('tmt_pangkat_mulai')
+            ->first();
+
+        // Jabatan aktif
+        $jabatan = Jabatan::with(['master_jabatan', 'master_eselon'])
+            ->where('pegawai_id', $pegawai->id)
+            ->latest('tmt_jabatan_mulai')
+            ->first();
+
+        // Semua riwayat jabatan
+        $allJabatan = Jabatan::with(['master_jabatan'])
+            ->where('pegawai_id', $pegawai->id)
+            ->orderBy('tmt_jabatan_mulai', 'desc')
+            ->get();
+
+        // Semua riwayat pangkat
+        $allPangkat = Pangkat::with(['master_pangkat', 'master_golongan'])
+            ->where('pegawai_id', $pegawai->id)
+            ->orderBy('tmt_pangkat_mulai', 'desc')
+            ->get();
+
+        // Pendidikan
+        $pendidikanSekolah = RiwayatPendidikanSekolah::where('pegawai_id', $pegawai->id)->get();
+        $pendidikanLanjut  = RiwayatPendidikanLanjut::where('pegawai_id', $pegawai->id)->get();
+        $pendidikanBahasa  = RiwayatPendidikanBahasa::where('pegawai_id', $pegawai->id)->get();
+
+        // Keluarga
+        $suamiIstri = RiwayatKeluargaSuamiIstri::where('pegawai_id', $pegawai->id)->get();
+        $anak       = RiwayatKeluargaAnak::where('pegawai_id', $pegawai->id)->get();
+        $orangTua   = RiwayatKeluargaOrangtua::where('pegawai_id', $pegawai->id)->get();
+
+        // Kepegawaian
+        $hukuman     = Hukuman::where('pegawai_id', $pegawai->id)->get();
+        $penghargaan = Penghargaan::where('pegawai_id', $pegawai->id)->get();
+        $penugasanLN = PenugasanLuarNegeri::where('pegawai_id', $pegawai->id)->get();
+
+        // Instansi
+        $instansi = InstansiLembaga::first();
+
+        return view('pages.dashboard.profile_pegawai.printBiodataPegawai', compact(
+            'pegawai', 'pangkat', 'jabatan', 'allJabatan', 'allPangkat',
+            'pendidikanSekolah', 'pendidikanLanjut', 'pendidikanBahasa',
+            'suamiIstri', 'anak', 'orangTua',
+            'hukuman', 'penghargaan', 'penugasanLN',
+            'instansi'
         ));
     }
 

@@ -27,6 +27,13 @@ class JabatanController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->first();
+            $jabatan = $pegawai
+                ? Jabatan::with(['master_jabatan', 'master_eselon', 'pegawai'])
+                    ->where('pegawai_id', $pegawai->id)
+                    ->paginate(5)
+                : collect()->paginate(5);
         } else {
             $jabatan = Jabatan::with(['master_jabatan', 'master_eselon'])->paginate(5);
         }
@@ -45,6 +52,8 @@ class JabatanController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -77,6 +86,15 @@ class JabatanController extends Controller
             'terbit' => 'required|string'
         ]);
 
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -104,6 +122,12 @@ class JabatanController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $jabatan->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -138,6 +162,15 @@ class JabatanController extends Controller
             'terbit' => 'required|string'
         ]);
 
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $jabatan->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -160,6 +193,15 @@ class JabatanController extends Controller
      */
     public function destroy(Jabatan $jabatan)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $jabatan->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             $jabatan->delete();
 
@@ -177,11 +219,18 @@ class JabatanController extends Controller
 
         $query = Jabatan::with(['pegawai', 'master_jabatan', 'master_eselon']);
 
-        // Filter berdasarkan role admin
+        // Filter berdasarkan role
         if ($user->role === 'admin') {
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if ($request->cariJabatan) {

@@ -17,5 +17,10 @@ class MasterPangkat extends Model
         return $this->hasMany(Pangkat::class, 'master_pangkat_id');
     }
 
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class, 'id');
+    }
+
     use HasFactory;
 }

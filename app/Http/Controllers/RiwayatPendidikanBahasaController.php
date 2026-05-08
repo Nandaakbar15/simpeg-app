@@ -25,6 +25,11 @@ class RiwayatPendidikanBahasaController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $riwayatPendidikanBahasa = $myPegawai
+                ? RiwayatPendidikanBahasa::with('pegawai')->where('pegawai_id', $myPegawai->id)->paginate(5)
+                : RiwayatPendidikanBahasa::whereRaw('1=0')->paginate(5);
         } else {
             $riwayatPendidikanBahasa = RiwayatPendidikanBahasa::with('pegawai')->paginate(5);
         }
@@ -43,6 +48,8 @@ class RiwayatPendidikanBahasaController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -63,6 +70,15 @@ class RiwayatPendidikanBahasaController extends Controller
             'bahasa' => 'required|string',
             'kemampuan_bicara' => 'required'
         ]);
+
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -89,6 +105,12 @@ class RiwayatPendidikanBahasaController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanBahasa->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -110,6 +132,15 @@ class RiwayatPendidikanBahasaController extends Controller
             'bahasa' => 'required|string',
             'kemampuan_bicara' => 'required'
         ]);
+
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanBahasa->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -134,6 +165,15 @@ class RiwayatPendidikanBahasaController extends Controller
     public function destroy(RiwayatPendidikanBahasa $riwayatPendidikanBahasa)
     {
         try {
+            // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+            $user = Auth::user();
+            if ($user->role === 'pegawai') {
+                $myPegawai = Pegawai::where('user_id', $user->id)->first();
+                if (!$myPegawai || $riwayatPendidikanBahasa->pegawai_id != $myPegawai->id) {
+                    abort(403, 'Akses ditolak');
+                }
+            }
+
             $riwayatPendidikanBahasa->delete();
 
             return redirect('/riwayat_pendidikan/pendidikan_bahasa')->with('success', 'Berhasil menghapus data!');
@@ -157,6 +197,13 @@ class RiwayatPendidikanBahasaController extends Controller
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if($request->cariPendidikanBahasa) {

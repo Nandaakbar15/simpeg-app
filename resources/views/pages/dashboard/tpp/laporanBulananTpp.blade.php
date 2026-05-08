@@ -16,15 +16,15 @@
                     @endif
                 </nav>
                 <h1 class="text-2xl md:text-3xl text-gray-800 dark:text-gray-100 font-bold">Report
-                    <span class="text-base font-normal text-gray-500 dark:text-gray-400">Tambahan Penghasilan Pegawai / TPP</span>
+                    <span class="text-base font-normal text-gray-500 dark:text-gray-400">Tambahan Penghasilan Pegawai /
+                        TPP</span>
                 </h1>
             </div>
             @if ($selectedBulan && $selectedTahun && $data->isNotEmpty())
                 <div>
-                    <a href="{{ route('tpp.laporan_bulanan', ['periode' => $selectedBulan, 'tahun' => $selectedTahun, 'export' => 1]) }}"
-                        class="btn bg-green-500 hover:bg-green-600 text-white">
+                    <a href="{{ route('tpp.export_excel_laporan_tpp', ['periode' => $selectedBulan, 'tahun' => $selectedTahun]) }}" class="btn bg-green-500 hover:bg-green-600 text-white">
                         <svg class="w-4 h-4 fill-current opacity-80 shrink-0" viewBox="0 0 16 16">
-                            <path d="M8 12l-4-4h2.5V2h3v6H12L8 12zm-5 2h10v-2H3v2z"/>
+                            <path d="M8 12l-4-4h2.5V2h3v6H12L8 12zm-5 2h10v-2H3v2z" />
                         </svg>
                         <span class="ml-2">Export</span>
                     </a>
@@ -33,8 +33,10 @@
         </div>
 
         <!-- Filter Card -->
-        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5 mb-6">
-            <form method="GET" action="{{ route('tpp.laporan_bulanan') }}" class="flex flex-col sm:flex-row items-end gap-3">
+        <div
+            class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700 p-5 mb-6">
+            <form method="GET" action="{{ route('tpp.laporan_bulanan') }}"
+                class="flex flex-col sm:flex-row items-end gap-3">
                 <div class="flex flex-col gap-1 flex-1">
                     <label class="text-sm font-medium text-gray-700 dark:text-gray-300">Pilih Periode</label>
                     <div class="flex gap-3">
@@ -51,7 +53,8 @@
                             class="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-800 dark:text-gray-200 text-sm rounded focus:ring-indigo-500 focus:border-indigo-500 block w-full px-3 py-2.5">
                             <option value="">-- Tahun --</option>
                             @for ($y = date('Y'); $y >= 2020; $y--)
-                                <option value="{{ $y }}" {{ $selectedTahun == $y ? 'selected' : '' }}>{{ $y }}</option>
+                                <option value="{{ $y }}" {{ $selectedTahun == $y ? 'selected' : '' }}>
+                                    {{ $y }}</option>
                             @endfor
                         </select>
                     </div>
@@ -59,7 +62,8 @@
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-4 py-2.5 bg-green-500 hover:bg-green-600 text-white text-sm font-medium rounded shadow-sm whitespace-nowrap">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 16 16">
-                        <path d="M15.7 14.3l-3.7-3.7c.9-1.2 1.4-2.6 1.4-4.1C13.4 2.9 10.5 0 7 0S.6 2.9.6 6.5 3.5 13 7 13c1.5 0 2.9-.5 4.1-1.4l3.7 3.7.9-.9zM2 6.5C2 3.7 4.2 1.5 7 1.5S12 3.7 12 6.5 9.8 11.5 7 11.5 2 9.3 2 6.5z"/>
+                        <path
+                            d="M15.7 14.3l-3.7-3.7c.9-1.2 1.4-2.6 1.4-4.1C13.4 2.9 10.5 0 7 0S.6 2.9.6 6.5 3.5 13 7 13c1.5 0 2.9-.5 4.1-1.4l3.7 3.7.9-.9zM2 6.5C2 3.7 4.2 1.5 7 1.5S12 3.7 12 6.5 9.8 11.5 7 11.5 2 9.3 2 6.5z" />
                     </svg>
                     Get Report
                 </button>
@@ -71,7 +75,8 @@
             <div class="bg-white dark:bg-gray-800 shadow-lg rounded-sm border border-gray-200 dark:border-gray-700">
 
                 <!-- Table top controls -->
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700 gap-3">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-5 py-4 border-b border-gray-200 dark:border-gray-700 gap-3">
                     <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                         <span>Show</span>
                         <select id="perPageSelect"
@@ -93,45 +98,64 @@
 
                 <div class="overflow-x-auto">
                     <table id="laporanTable" class="w-full text-sm text-left text-body">
-                        <thead class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 border-t border-b border-gray-200 dark:border-gray-700">
+                        <thead
+                            class="text-xs font-semibold uppercase text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-700/50 border-t border-b border-gray-200 dark:border-gray-700">
                             <tr>
                                 <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                                     <div class="font-semibold text-left">No</div>
                                 </th>
-                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none" data-col="0">
+                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none"
+                                    data-col="0">
                                     <div class="font-semibold text-left flex items-center gap-1">
                                         Pegawai
-                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16"><path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z"/></svg>
+                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16">
+                                            <path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z" />
+                                        </svg>
                                     </div>
                                 </th>
-                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none" data-col="1">
+                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none"
+                                    data-col="1">
                                     <div class="font-semibold text-left flex items-center gap-1">
                                         Jabatan
-                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16"><path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z"/></svg>
+                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16">
+                                            <path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z" />
+                                        </svg>
                                     </div>
                                 </th>
-                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none" data-col="2">
+                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none"
+                                    data-col="2">
                                     <div class="font-semibold text-right flex items-center justify-end gap-1">
                                         Nilai Basic TPP
-                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16"><path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z"/></svg>
+                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16">
+                                            <path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z" />
+                                        </svg>
                                     </div>
                                 </th>
-                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none" data-col="3">
+                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none"
+                                    data-col="3">
                                     <div class="font-semibold text-right flex items-center justify-end gap-1">
                                         Pengurangan Produktifitas
-                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16"><path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z"/></svg>
+                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16">
+                                            <path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z" />
+                                        </svg>
                                     </div>
                                 </th>
-                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none" data-col="4">
+                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none"
+                                    data-col="4">
                                     <div class="font-semibold text-right flex items-center justify-end gap-1">
                                         Pengurangan Disiplin
-                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16"><path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z"/></svg>
+                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16">
+                                            <path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z" />
+                                        </svg>
                                     </div>
                                 </th>
-                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none" data-col="5">
+                                <th class="px-3 first:pl-5 last:pr-5 py-3 whitespace-nowrap cursor-pointer select-none"
+                                    data-col="5">
                                     <div class="font-semibold text-right flex items-center justify-end gap-1">
                                         TPP Diterima
-                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16"><path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z"/></svg>
+                                        <svg class="w-3 h-3 fill-current opacity-50" viewBox="0 0 16 16">
+                                            <path d="M8 1l4 6H4l4-6zm0 14l-4-6h8l-4 6z" />
+                                        </svg>
                                     </div>
                                 </th>
                             </tr>
@@ -188,7 +212,8 @@
                 </div>
 
                 <!-- Table bottom: info + pagination -->
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-5 py-4 border-t border-gray-200 dark:border-gray-700 gap-3">
+                <div
+                    class="flex flex-col sm:flex-row sm:items-center sm:justify-between px-5 py-4 border-t border-gray-200 dark:border-gray-700 gap-3">
                     <div id="tableInfo" class="text-sm text-gray-500 dark:text-gray-400">
                         Showing 0 to 0 of 0 entries
                     </div>
@@ -207,109 +232,126 @@
     </div>
 
     @push('scripts')
-    <script>
-        (function () {
-            const allRows   = Array.from(document.querySelectorAll('#tableBody .table-row'));
-            const tableInfo = document.getElementById('tableInfo');
-            const prevBtn   = document.getElementById('prevBtn');
-            const nextBtn   = document.getElementById('nextBtn');
-            const pageNums  = document.getElementById('pageNumbers');
-            const searchInput = document.getElementById('tableSearch');
-            const perPageSel  = document.getElementById('perPageSelect');
+        <script>
+            (function() {
+                const allRows = Array.from(document.querySelectorAll('#tableBody .table-row'));
+                const tableInfo = document.getElementById('tableInfo');
+                const prevBtn = document.getElementById('prevBtn');
+                const nextBtn = document.getElementById('nextBtn');
+                const pageNums = document.getElementById('pageNumbers');
+                const searchInput = document.getElementById('tableSearch');
+                const perPageSel = document.getElementById('perPageSelect');
 
-            if (!allRows.length) {
-                if (tableInfo) tableInfo.textContent = 'Showing 0 to 0 of 0 entries';
-                return;
-            }
+                if (!allRows.length) {
+                    if (tableInfo) tableInfo.textContent = 'Showing 0 to 0 of 0 entries';
+                    return;
+                }
 
-            let currentPage = 1;
-            let perPage     = parseInt(perPageSel?.value ?? 10);
-            let filtered    = [...allRows];
+                let currentPage = 1;
+                let perPage = parseInt(perPageSel?.value ?? 10);
+                let filtered = [...allRows];
 
-            // --- Search ---
-            function applySearch() {
-                const q = (searchInput?.value ?? '').toLowerCase().trim();
-                filtered = allRows.filter(row => row.textContent.toLowerCase().includes(q));
-                currentPage = 1;
-                render();
-            }
+                // --- Search ---
+                function applySearch() {
+                    const q = (searchInput?.value ?? '').toLowerCase().trim();
+                    filtered = allRows.filter(row => row.textContent.toLowerCase().includes(q));
+                    currentPage = 1;
+                    render();
+                }
 
-            // --- Render ---
-            function render() {
-                const total = filtered.length;
-                const totalPages = Math.max(1, Math.ceil(total / perPage));
-                currentPage = Math.min(currentPage, totalPages);
+                // --- Render ---
+                function render() {
+                    const total = filtered.length;
+                    const totalPages = Math.max(1, Math.ceil(total / perPage));
+                    currentPage = Math.min(currentPage, totalPages);
 
-                const start = (currentPage - 1) * perPage;
-                const end   = Math.min(start + perPage, total);
+                    const start = (currentPage - 1) * perPage;
+                    const end = Math.min(start + perPage, total);
 
-                // Hide all, show only current page slice
-                allRows.forEach(r => r.style.display = 'none');
-                filtered.forEach((r, i) => {
-                    r.style.display = (i >= start && i < end) ? '' : 'none';
-                    // Re-number visible rows
-                    if (i >= start && i < end) {
-                        const noCell = r.querySelector('.row-no');
-                        if (noCell) noCell.textContent = i + 1;
+                    // Hide all, show only current page slice
+                    allRows.forEach(r => r.style.display = 'none');
+                    filtered.forEach((r, i) => {
+                        r.style.display = (i >= start && i < end) ? '' : 'none';
+                        // Re-number visible rows
+                        if (i >= start && i < end) {
+                            const noCell = r.querySelector('.row-no');
+                            if (noCell) noCell.textContent = i + 1;
+                        }
+                    });
+
+                    // Info text
+                    if (tableInfo) {
+                        tableInfo.textContent = total === 0 ?
+                            'Showing 0 to 0 of 0 entries' :
+                            `Showing ${start + 1} to ${end} of ${total} entries`;
+                    }
+
+                    // Prev / Next
+                    if (prevBtn) prevBtn.disabled = currentPage <= 1;
+                    if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
+
+                    // Page numbers
+                    if (pageNums) {
+                        pageNums.innerHTML = '';
+                        const range = buildPageRange(currentPage, totalPages);
+                        range.forEach(p => {
+                            if (p === '...') {
+                                const span = document.createElement('span');
+                                span.textContent = '...';
+                                span.className = 'px-2 py-1 text-gray-400';
+                                pageNums.appendChild(span);
+                            } else {
+                                const btn = document.createElement('button');
+                                btn.textContent = p;
+                                btn.className = p === currentPage ?
+                                    'px-3 py-1 rounded bg-indigo-500 text-white text-sm font-medium' :
+                                    'px-3 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm';
+                                btn.addEventListener('click', () => {
+                                    currentPage = p;
+                                    render();
+                                });
+                                pageNums.appendChild(btn);
+                            }
+                        });
+                    }
+                }
+
+                function buildPageRange(current, total) {
+                    if (total <= 7) return Array.from({
+                        length: total
+                    }, (_, i) => i + 1);
+                    const pages = [1];
+                    if (current > 3) pages.push('...');
+                    for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) pages.push(i);
+                    if (current < total - 2) pages.push('...');
+                    pages.push(total);
+                    return pages;
+                }
+
+                // Events
+                searchInput?.addEventListener('input', applySearch);
+                perPageSel?.addEventListener('change', () => {
+                    perPage = parseInt(perPageSel.value);
+                    currentPage = 1;
+                    render();
+                });
+                prevBtn?.addEventListener('click', () => {
+                    if (currentPage > 1) {
+                        currentPage--;
+                        render();
+                    }
+                });
+                nextBtn?.addEventListener('click', () => {
+                    const total = filtered.length;
+                    if (currentPage < Math.ceil(total / perPage)) {
+                        currentPage++;
+                        render();
                     }
                 });
 
-                // Info text
-                if (tableInfo) {
-                    tableInfo.textContent = total === 0
-                        ? 'Showing 0 to 0 of 0 entries'
-                        : `Showing ${start + 1} to ${end} of ${total} entries`;
-                }
-
-                // Prev / Next
-                if (prevBtn) prevBtn.disabled = currentPage <= 1;
-                if (nextBtn) nextBtn.disabled = currentPage >= totalPages;
-
-                // Page numbers
-                if (pageNums) {
-                    pageNums.innerHTML = '';
-                    const range = buildPageRange(currentPage, totalPages);
-                    range.forEach(p => {
-                        if (p === '...') {
-                            const span = document.createElement('span');
-                            span.textContent = '...';
-                            span.className = 'px-2 py-1 text-gray-400';
-                            pageNums.appendChild(span);
-                        } else {
-                            const btn = document.createElement('button');
-                            btn.textContent = p;
-                            btn.className = p === currentPage
-                                ? 'px-3 py-1 rounded bg-indigo-500 text-white text-sm font-medium'
-                                : 'px-3 py-1 rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 text-sm';
-                            btn.addEventListener('click', () => { currentPage = p; render(); });
-                            pageNums.appendChild(btn);
-                        }
-                    });
-                }
-            }
-
-            function buildPageRange(current, total) {
-                if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
-                const pages = [1];
-                if (current > 3) pages.push('...');
-                for (let i = Math.max(2, current - 1); i <= Math.min(total - 1, current + 1); i++) pages.push(i);
-                if (current < total - 2) pages.push('...');
-                pages.push(total);
-                return pages;
-            }
-
-            // Events
-            searchInput?.addEventListener('input', applySearch);
-            perPageSel?.addEventListener('change', () => { perPage = parseInt(perPageSel.value); currentPage = 1; render(); });
-            prevBtn?.addEventListener('click', () => { if (currentPage > 1) { currentPage--; render(); } });
-            nextBtn?.addEventListener('click', () => {
-                const total = filtered.length;
-                if (currentPage < Math.ceil(total / perPage)) { currentPage++; render(); }
-            });
-
-            // Initial render
-            render();
-        })();
-    </script>
+                // Initial render
+                render();
+            })();
+        </script>
     @endpush
 </x-app-layout>

@@ -37,6 +37,8 @@ use App\Http\Controllers\TppController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ProfilePegawaiController;
 use App\Http\Controllers\BackupDatabaseController;
+use App\Http\Controllers\KGBController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +65,7 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/profile_saya/edit', [ProfilePegawaiController::class, 'edit'])->name('profile.pegawai.edit');
     Route::put('/profile_saya/update', [ProfilePegawaiController::class, 'update'])->name('profile.pegawai.update');
     Route::post('/profile_saya/upload_foto', [ProfilePegawaiController::class, 'uploadFoto'])->name('profile.pegawai.upload_foto');
+    Route::get('/profile_saya/print', [ProfilePegawaiController::class, 'print'])->name('profile.pegawai.print');
 
     Route::prefix('data_pegawai')->group(function() {
         Route::get('/pegawai', [PegawaiController::class, 'index']);
@@ -344,6 +347,14 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
         Route::delete('/hapus_tpp/{tpp}', [TppController::class, 'destroy'])->name('tpp.destroy');
         Route::get('/laporan_bulanan', [TppController::class, 'laporanBulanan'])->name('tpp.laporan_bulanan');
         Route::post('/cariTpp', [TppController::class, 'cariTpp'])->name('tpp.cari');
+        Route::get('/exportExcelLaporanTpp', [TppController::class, 'exportExcelLaporanTpp'])->name('tpp.export_excel_laporan_tpp');
+    });
+
+    Route::prefix('notifikasi_kgb')->group(function () {
+        Route::get('/data_notifikasi_kgb', [KGBController::class, 'index']);
+        Route::get('/view_buat_kgb', [KGBController::class, 'create']);
+        Route::post('/buat_kgb', [KGBController::class, 'store']);
+        Route::get('/export_excel_kgb', [KGBController::class, 'exportExcelKGB'])->name('kgb.export_excel');
     });
 
     // Rekapitulasi

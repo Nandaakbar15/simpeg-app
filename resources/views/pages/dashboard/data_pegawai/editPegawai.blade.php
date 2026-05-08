@@ -29,10 +29,10 @@
                     @method('PUT')
                     <div class="mb-5">
                         <label for="user_id" class="block mb-2.5 text-sm font-medium text-heading">
-                            Hubungkan ke Akun User Pegawai
+                            Hubungkan ke Akun User Pegawai <span class="text-red-500">*</span>
                         </label>
                         <select name="user_id" id="user_id"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                             required>
                             <option value="">-- Pilih Akun User Pegawai --</option>
                             @foreach ($userPegawai as $u)
@@ -46,50 +46,51 @@
                             terhubung ke pegawai lain.</p>
                     </div>
                     <div class="mb-5">
-                        <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP</label>
+                        <label for="nip" class="block mb-2.5 text-sm font-medium text-heading">NIP <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nip" name="nip"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan NIP" required value="{{ old('nip', $pegawai->nip) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="nama" class="block mb-2.5 text-sm font-medium text-heading">Nama
-                            Pegawai</label>
+                            Pegawai <span class="text-red-500">*</span></label>
                         <input type="text" id="nama" name="nama"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan nama pegawai" required value="{{ old('nama', $pegawai->nama) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="gelar_depan" name="gelar_depan"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan Gelar depan" required
                                 value="{{ old('gelar_depan', $pegawai->gelar_depan) }}" />
 
                             <input type="text" id="gelar" name="gelar"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 placeholder="Masukan Gelar Belakang" required
                                 value="{{ old('gelar', $pegawai->gelar) }}" />
                         </div>
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="tmpt_lahir" class="w-1/4 text-sm font-medium text-heading">Tempat, Tanggal
-                            Lahir</label>
+                            Lahir <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="tmpt_lahir" name="tmpt_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan tempat lahir" required
                                 value="{{ old('tmpt_lahir', $pegawai->tmpt_lahir) }}" />
 
                             <input type="date" id="tgl_lahir" name="tgl_lahir"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required value="{{ old('tgl_lahir', $pegawai->tgl_lahir) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="jenis_kelamin" class="block mb-2.5 text-sm font-medium text-heading">Jenis
-                            kelamin</label>
-                        <select name="jenis_kelamin" id="jenis_kelamin">
+                            kelamin <span class="text-red-500">*</span></label>
+                        <select name="jenis_kelamin" id="jenis_kelamin" class="rounded-lg">
                             <option value="laki-laki"
                                 {{ $pegawai->status_pernikahan == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="perempuan"
@@ -97,8 +98,9 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="agama" class="block mb-2.5 text-sm font-medium text-heading">Agama</label>
-                        <select name="agama" id="agama">
+                        <label for="agama" class="block mb-2.5 text-sm font-medium text-heading">Agama <span
+                                class="text-red-500">*</span></label>
+                        <select name="agama" id="agama" class="rounded-lg">
                             <option value="Islam" {{ $pegawai->agama == 'Islam' ? 'selected' : '' }}>Islam</option>
                             <option value="Protestan" {{ $pegawai->agama == 'Protestan' ? 'selected' : '' }}>Protestan
                             </option>
@@ -115,7 +117,8 @@
                             Darah</label>
                         <select name="golongan_darah" id="golongan_darah">
                             <option value="A" {{ $pegawai->golongan_darah == 'A' ? 'selected' : '' }}>A</option>
-                            <option value="AB" {{ $pegawai->golongan_darah == 'AB' ? 'selected' : '' }}>AB</option>
+                            <option value="AB" {{ $pegawai->golongan_darah == 'AB' ? 'selected' : '' }}>AB
+                            </option>
                             <option value="B" {{ $pegawai->golongan_darah == 'B' ? 'selected' : '' }}>B</option>
                             <option value="O" {{ $pegawai->golongan_darah == 'O' ? 'selected' : '' }}>O</option>
                             <option value="Tidak Tahu"
@@ -124,8 +127,8 @@
                     </div>
                     <div class="mb-5">
                         <label for="status_pernikahan" class="block mb-2.5 text-sm font-medium text-heading">Status
-                            Pernikahan</label>
-                        <select name="status_pernikahan" id="status_pernikahan">
+                            Pernikahan <span class="text-red-500">*</span></label>
+                        <select name="status_pernikahan" id="status_pernikahan" class="rounded-lg">
                             <option value="Nikah" {{ $pegawai->status_pernikahan == 'Nikah' ? 'selected' : '' }}>
                                 Nikah
                             </option>
@@ -139,59 +142,62 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">NIK</label>
+                        <label for="nik" class="block mb-2.5 text-sm font-medium text-heading">NIK <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="nik" name="nik"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan NIK Pegawai" required value="{{ old('nik', $pegawai->nik) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="no_hp" class="block mb-2.5 text-sm font-medium text-heading">Nomor
-                            Telepon</label>
+                            Telepon <span class="text-red-500">*</span></label>
                         <input type="text" id="no_hp" name="no_hp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Nomor Telepon" required
                             value="{{ old('no_hp', $pegawai->no_hp) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email</label>
+                        <label for="email" class="block mb-2.5 text-sm font-medium text-heading">Email <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="email" name="email"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Email" required value="{{ old('email', $pegawai->email) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="email_gov" class="block mb-2.5 text-sm font-medium text-heading">Email
-                            Gov</label>
+                            Gov <span class="text-red-500">*</span></label>
                         <input type="text" id="email_gov" name="email_gov"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Email gov" required
                             value="{{ old('email_gov', $pegawai->email_gov) }}" />
                     </div>
                     <div class="mb-5">
-                        <label for="alamat" class="block mb-2.5 text-sm font-medium text-heading">Alamat</label>
+                        <label for="alamat" class="block mb-2.5 text-sm font-medium text-heading">Alamat <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="alamat" name="alamat"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Alamat" required value="{{ old('alamat', $pegawai->alamat) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="no_npwp" class="block mb-2.5 text-sm font-medium text-heading">No.
-                            NPWP</label>
+                            NPWP <span class="text-red-500">*</span></label>
                         <input type="text" id="no_npwp" name="no_npwp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan No. NPWP" required
                             value="{{ old('no_npwp', $pegawai->no_npwp) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="no_bpjs" class="block mb-2.5 text-sm font-medium text-heading">No.
-                            BPJS</label>
+                            BPJS <span class="text-red-500">*</span></label>
                         <input type="text" id="no_bpjs" name="no_bpjs"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan No. BPJS" required
                             value="{{ old('no_bpjs', $pegawai->no_bpjs) }}" />
                     </div>
                     <div class="mb-5">
                         <label for="status_kepegawaian" class="block mb-2.5 text-sm font-medium text-heading">Status
-                            Kepegawaian</label>
-                        <select name="status_kepegawaian" id="status_kepegawaian">
+                            Kepegawaian <span class="text-red-500">*</span></label>
+                        <select name="status_kepegawaian" id="status_kepegawaian" class="rounded-lg">
                             <option value="PNS" {{ $pegawai->status_kepegawaian == 'PNS' ? 'selected' : '' }}>PNS
                             </option>
                             <option value="PPPK" {{ $pegawai->status_kepegawaian == 'PPPK' ? 'selected' : '' }}>PPPK
@@ -205,45 +211,46 @@
                         </select>
                     </div>
                     <div class="mb-5">
-                        <label for="karpeg" class="block mb-2.5 text-sm font-medium text-heading">Karpeg</label>
+                        <label for="karpeg" class="block mb-2.5 text-sm font-medium text-heading">Karpeg <span
+                                class="text-red-500">*</span></label>
                         <input type="text" id="karpeg" name="karpeg"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan karpeg" required value="{{ old('karpeg', $pegawai->karpeg) }}" />
                     </div>
                     <div class="flex items-center mb-5">
                         <label for="no_sk_cpns" class="w-1/4 text-sm font-medium text-heading">No. SK & TMT
-                            CPNS</label>
+                            CPNS <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk_cpns" name="no_sk_cpns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 placeholder="No. SK CPNS" required
                                 value="{{ old('no_sk_cpns', $pegawai->no_sk_cpns) }}" />
 
                             <input type="date" id="tmt_cpns" name="tmt_cpns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required value="{{ old('tmt_cpns', $pegawai->tmt_cpns) }}" />
                         </div>
                     </div>
 
                     <div class="flex items-center mb-5">
                         <label for="no_sk_pns" class="w-1/4 text-sm font-medium text-heading">No. SK & TMT
-                            PNS</label>
+                            PNS <span class="text-red-500">*</span></label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="no_sk_pns" name="no_sk_pns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 placeholder="No. SK PNS" required
                                 value="{{ old('no_sk_pns', $pegawai->no_sk_pns) }}" />
 
                             <input type="date" id="tmt_pns" name="tmt_pns"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
                                 required value="{{ old('tmt_pns', $pegawai->tmt_pns) }}" />
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="gol_awal" class="block mb-2.5 text-sm font-medium text-heading">Gol
-                            Awal</label>
+                            Awal <span class="text-red-500">*</span></label>
                         <input type="text" id="gol_awal" name="gol_awal"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Gol Awal" required
                             value="{{ old('gol_awal', $pegawai->gol_awal) }}" />
                     </div>
@@ -251,8 +258,8 @@
                         <label for="unit_kerja_id" class="block mb-2.5 text-sm font-medium text-heading">OPD /
                             SKPD /
                             Unit
-                            Kerja</label>
-                        <select name="unit_kerja_id" id="unit_kerja_id">
+                            Kerja <span class="text-red-500">*</span></label>
+                        <select name="unit_kerja_id" id="unit_kerja_id" class="rounded-lg">
                             <option value="">--Pilih Unit Kerja --</option>
                             @foreach ($unitKerja as $item)
                                 <option value="{{ $item->id }}"
@@ -270,9 +277,9 @@
                         @endif
                         <div class="img-preview">
                             <label for="foto" class="block mb-2.5 text-sm font-medium text-heading">Foto
-                                Pegawai</label>
+                                Pegawai <span class="text-red-500">*</span></label>
                             <input type="file" id="foto" name="foto"
-                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                                class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                                 placeholder="Masukan Foto pegawai" />
                         </div>
                     </div>
@@ -281,14 +288,15 @@
                     </div>
                     <div class="mb-5">
                         <label for="nilai_tpp" class="block mb-2.5 text-sm font-medium text-heading">Nilai
-                            Tpp</label>
+                            Tpp <span class="text-red-500">*</span></label>
                         <input type="number" id="nilai_tpp" name="nilai_tpp"
-                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                            class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
                             placeholder="Masukan Nilai awai TPP" required
                             value="{{ old('nilai_tpp', $pegawai->nilai_tpp) }}" />
                     </div>
                     <button type="button"
-                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5 rounded-base text-sm px-4 py-2 focus:outline-none confirm-save"
+                        class="text-white bg-blue-500 box-border border border-transparent hover:bg-blue-700 focus:ring-4 rounded-lg focus:ring-brand-medium shadow-lg font-medium leading-5
+                         text-sm px-4 py-2 focus:outline-none confirm-save"
                         data-title="Simpan Perubahan"
                         data-message="Apakah Anda yakin ingin menyimpan perubahan data pegawai ini?">Save</button>
                 </form>

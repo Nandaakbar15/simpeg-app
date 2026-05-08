@@ -135,8 +135,8 @@ class PenghargaanController extends Controller
 
             if($request->hasFile('file_sertifikat_penghargaan')) {
 
-                if($hukuman->file_sertifikat_penghargaan) {
-                    $oldPath = str_replace('/storage/', '', $hukuman->file_sertifikat_penghargaan);
+                if($penghargaan->file_sertifikat_penghargaan) {
+                    $oldPath = str_replace('/storage/', '', $penghargaan->file_sertifikat_penghargaan);
                     Storage::disk('public')->delete($oldPath);
                 }
 

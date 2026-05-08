@@ -27,6 +27,13 @@ class PangkatController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->first();
+            $pangkat = $pegawai
+                ? Pangkat::with(['master_pangkat', 'master_golongan', 'pegawai'])
+                    ->where('pegawai_id', $pegawai->id)
+                    ->paginate(5)
+                : collect()->paginate(5);
         } else {
             $pangkat = Pangkat::with(['master_pangkat', 'master_golongan'])->paginate(5);
         }
@@ -45,6 +52,8 @@ class PangkatController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -76,6 +85,15 @@ class PangkatController extends Controller
             'pejabat_pengesah_sk' => 'required|string'
         ]);
 
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -102,6 +120,12 @@ class PangkatController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $pangkat->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -134,6 +158,15 @@ class PangkatController extends Controller
             'pejabat_pengesah_sk' => 'required|string'
         ]);
 
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $pangkat->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -156,6 +189,15 @@ class PangkatController extends Controller
      */
     public function destroy(Pangkat $pangkat)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $pangkat->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             $pangkat->delete();
 
@@ -173,11 +215,18 @@ class PangkatController extends Controller
 
         $query = Pangkat::with(['master_pangkat', 'master_golongan', 'pegawai']);
 
-        // Filter berdasarkan role admin
+        // Filter berdasarkan role
         if ($user->role === 'admin') {
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if ($request->cariPangkat) {

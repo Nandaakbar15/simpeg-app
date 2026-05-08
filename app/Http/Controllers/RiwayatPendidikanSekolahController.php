@@ -25,6 +25,11 @@ class RiwayatPendidikanSekolahController extends Controller
                     $query->where('unit_kerja_id', $user->unit_kerja_id);
                 })
                 ->paginate(5);
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $riwayanPendidikanSekolah = $myPegawai
+                ? RiwayatPendidikanSekolah::with('pegawai')->where('pegawai_id', $myPegawai->id)->paginate(5)
+                : RiwayatPendidikanSekolah::whereRaw('1=0')->paginate(5);
         } else {
             $riwayanPendidikanSekolah = RiwayatPendidikanSekolah::with('pegawai')->paginate(5);
         }
@@ -43,6 +48,8 @@ class RiwayatPendidikanSekolahController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->get();
         } else {
             $pegawai = Pegawai::all();
         }
@@ -67,6 +74,15 @@ class RiwayatPendidikanSekolahController extends Controller
             'tgl_ijazah' => 'required|date',
             'nama_kepsek_rektor' => 'required|string'
         ]);
+
+        // Pastikan pegawai role hanya bisa simpan data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $validateData['pegawai_id'] != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
 
         try {
             DB::beginTransaction();
@@ -93,6 +109,12 @@ class RiwayatPendidikanSekolahController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanSekolah->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::all();
         }
@@ -119,6 +141,15 @@ class RiwayatPendidikanSekolahController extends Controller
             'nama_kepsek_rektor' => 'required|string'
         ]);
 
+        // Pastikan pegawai role hanya bisa update data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $riwayatPendidikanSekolah->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             DB::beginTransaction();
 
@@ -142,6 +173,15 @@ class RiwayatPendidikanSekolahController extends Controller
     public function destroy(RiwayatPendidikanSekolah $riwayatPendidikanSekolah)
     {
         try {
+            // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+            $user = Auth::user();
+            if ($user->role === 'pegawai') {
+                $myPegawai = Pegawai::where('user_id', $user->id)->first();
+                if (!$myPegawai || $riwayatPendidikanSekolah->pegawai_id != $myPegawai->id) {
+                    abort(403, 'Akses ditolak');
+                }
+            }
+
             $riwayatPendidikanSekolah->delete();
 
             return redirect('/riwayat_pendidikan/sekolah')->with('success', 'Berhasil menghapus data!');
@@ -163,6 +203,13 @@ class RiwayatPendidikanSekolahController extends Controller
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if($request->cariPendidikanSekolah) {

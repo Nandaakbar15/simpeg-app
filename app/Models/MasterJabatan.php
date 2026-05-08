@@ -17,5 +17,10 @@ class MasterJabatan extends Model
         return $this->hasMany(Jabatan::class, 'master_jabatan_id');
     }
 
+    public function pegawai()
+    {
+        return $this->hasMany(Pegawai::class, 'id');
+    }
+
     use HasFactory;
 }

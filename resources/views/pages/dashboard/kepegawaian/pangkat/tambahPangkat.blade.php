@@ -67,7 +67,7 @@
                                         <div class="relative bg-white rounded-lg shadow-xl sm:max-w-4xl sm:w-full">
                                             <div class="px-4 py-3 border-b flex justify-between items-center">
                                                 <h3 class="text-lg font-bold text-blue-600">Master Nama Pangkat</h3>
-                                                <button @click="openPangkat = false" class="text-2xl">&times;</button>
+                                                <button type="button" @click="openPangkat = false" class="text-2xl">&times;</button>
                                             </div>
                                             <div class="p-6">
 
@@ -176,7 +176,7 @@
                                         <div class="relative bg-white rounded-lg shadow-xl sm:max-w-4xl sm:w-full">
                                             <div class="px-4 py-3 border-b flex justify-between items-center">
                                                 <h3 class="text-lg font-bold text-green-600">Master Data Golongan</h3>
-                                                <button @click="openGolongan = false"
+                                                <button type="button" @click="openGolongan = false"
                                                     class="text-2xl">&times;</button>
                                             </div>
                                             <div class="p-6">

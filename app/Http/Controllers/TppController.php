@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TppExport;
 
 class TppController extends Controller
 {
@@ -26,6 +28,11 @@ class TppController extends Controller
                 })
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            $tpp = $myPegawai
+                ? Tpp::with('pegawai')->where('pegawai_id', $myPegawai->id)->orderBy('created_at', 'desc')->paginate(10)
+                : collect()->paginate(10);
         } else {
             $tpp = Tpp::with('pegawai')->orderBy('created_at', 'desc')->paginate(10);
         }
@@ -44,6 +51,8 @@ class TppController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->orderBy('nama')->get();
+        } elseif ($user->role === 'pegawai') {
+            $pegawai = Pegawai::where('user_id', $user->id)->orderBy('nama')->get();
         } else {
             $pegawai = Pegawai::orderBy('nama')->get();
         }
@@ -149,6 +158,12 @@ class TppController extends Controller
 
         if ($user->role === 'admin') {
             $pegawai = Pegawai::where('unit_kerja_id', $user->unit_kerja_id)->orderBy('nama')->get();
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $tpp->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+            $pegawai = collect([$myPegawai]);
         } else {
             $pegawai = Pegawai::orderBy('nama')->get();
         }
@@ -241,6 +256,15 @@ class TppController extends Controller
      */
     public function destroy(Tpp $tpp)
     {
+        // Pastikan pegawai role hanya bisa hapus data miliknya sendiri
+        $user = Auth::user();
+        if ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if (!$myPegawai || $tpp->pegawai_id != $myPegawai->id) {
+                abort(403, 'Akses ditolak');
+            }
+        }
+
         try {
             $tpp->delete();
             return redirect('/tpp/input_tpp')->with('success', 'Data TPP berhasil dihapus!');
@@ -287,11 +311,18 @@ class TppController extends Controller
 
         $query = Tpp::with('pegawai');
 
-        // Filter berdasarkan role admin
+        // Filter berdasarkan role
         if ($user->role === 'admin') {
             $query->whereHas('pegawai', function($q) use ($user) {
                 $q->where('unit_kerja_id', $user->unit_kerja_id);
             });
+        } elseif ($user->role === 'pegawai') {
+            $myPegawai = Pegawai::where('user_id', $user->id)->first();
+            if ($myPegawai) {
+                $query->where('pegawai_id', $myPegawai->id);
+            } else {
+                $query->whereRaw('1=0');
+            }
         }
 
         if ($request->cariTpp) {
@@ -309,5 +340,14 @@ class TppController extends Controller
         return view('pages.dashboard.tpp.indexTpp', [
             'tpp' => $tpp,
         ]);
+    }
+
+    public function exportExcelLaporanTpp(Request $request)
+    {
+        $periode  = $request->input('periode');
+        $tahun    = $request->input('tahun');
+        $filename = 'LaporanTPP' . ($periode ? "_$periode" : '') . ($tahun ? "_$tahun" : '') . '.xlsx';
+
+        return Excel::download(new TppExport($periode, $tahun), $filename);
     }
 }
