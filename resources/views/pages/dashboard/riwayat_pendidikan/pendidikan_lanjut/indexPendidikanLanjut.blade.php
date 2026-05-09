@@ -29,7 +29,7 @@
                 @csrf
                 <input type="text" name="cariPendidikanLanjut" id="cariPendidikanLanjut"
                     value="{{ request('cariPendidikanLanjut') }}" aria-label="Cari Riwayat Pendidikan Lanjut"
-                    placeholder="Cari Riwayat Pendidikan Lanjut...">
+                    placeholder="Cari Riwayat Pendidikan Lanjut..." class="rounded-lg">
                 <button type="submit"
                     class="inline-block text-white rounded-lg shadow-lg px-3 py-2 bg-blue-500 hover:bg-blue-700">
                     Cari

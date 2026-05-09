@@ -56,16 +56,15 @@
                             placeholder="Masukan nama pegawai" required />
                     </div>
                     <div class="flex items-center mb-5">
-                        <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar <span
-                                class="text-red-500">*</span></label>
+                        <label for="gelar_depan" class="w-1/4 text-sm font-medium text-heading">Gelar</label>
                         <div class="flex w-3/4 gap-4">
                             <input type="text" id="gelar_depan" name="gelar_depan"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
-                                placeholder="Masukan Gelar depan" required />
+                                placeholder="Masukan Gelar depan" />
 
                             <input type="text" id="gelar" name="gelar"
                                 class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-lg focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs"
-                                placeholder="Masukan Gelar Belakang" required />
+                                placeholder="Masukan Gelar Belakang" />
                         </div>
                     </div>
                     <div class="flex items-center mb-5">
